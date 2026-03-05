@@ -4,10 +4,13 @@ import { Cloud, Flower2, HeartHandshake, Coffee, LogIn } from 'lucide-react';
 export default function Login({ onLogin, onGoRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('Kasir');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email && password) onLogin();
+    if (email && password && role) {
+      onLogin({ email, role });
+    }
   };
 
   return (
