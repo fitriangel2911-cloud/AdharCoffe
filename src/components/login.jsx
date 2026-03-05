@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Cloud, Flower2, HeartHandshake, Coffee, LogIn, Sparkles } from 'lucide-react';
+import { Coffee, Mail, Lock } from 'lucide-react';
 
 export default function Login({ onLogin, onGoRegister }) {
   const [email, setEmail] = useState('');
@@ -8,88 +8,92 @@ export default function Login({ onLogin, onGoRegister }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email && password) {
-      // Role implicitly defaulted since it's removed from the new minimal UI design
       onLogin({ email, role: 'Kasir' });
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#fdf2f8] to-[#fae8ff] flex items-center justify-center p-4 relative overflow-hidden">
-
-      {/* Background Decorative Outline Icons */}
-      <Cloud className="absolute top-16 left-16 w-48 h-48 text-white stroke-[1.5px] opacity-60" />
-      <Flower2 className="absolute top-32 right-24 w-32 h-32 text-pink-200 stroke-[1.5px] opacity-60" />
-      <Cloud className="absolute bottom-12 right-12 w-64 h-64 text-white stroke-[1.5px] opacity-60" />
+    <div className="min-h-screen bg-gradient-to-br from-[#e2e8f0] to-[#fce7f3] flex items-center justify-center p-4">
 
       {/* Main Card */}
-      <div className="bg-white/80 backdrop-blur-xl px-8 py-10 rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.05)] w-full max-w-md border border-white/50 relative z-10 text-center">
+      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-[400px] overflow-hidden border border-white/40">
 
-        {/* Logo Icon */}
-        <div className="w-[4.5rem] h-[4.5rem] mx-auto bg-gradient-to-br from-sky-300 to-pink-300 rounded-[1.25rem] flex items-center justify-center mb-6 shadow-inner border border-white/40">
-          <Coffee className="w-8 h-8 text-white" strokeWidth={2} />
-        </div>
-
-        {/* Title & Subtitle */}
-        <h1 className="text-[2.2rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-pink-500 font-serif mb-2 tracking-tight">
-          Adhar Coffe
-        </h1>
-        <div className="flex items-center justify-center gap-1.5 mb-8">
-          <Sparkles className="w-3.5 h-3.5 text-pink-500" strokeWidth={2.5} />
-          <span className="text-pink-600 font-bold tracking-[0.15em] text-[10.5px] uppercase">
-            SMART POS SYARIAH
-          </span>
-          <Sparkles className="w-3.5 h-3.5 text-pink-500" strokeWidth={2.5} />
-        </div>
-
-        {/* Quote Box */}
-        <div className="bg-sky-50/60 border border-sky-100 rounded-2xl p-4 mb-8 flex items-start gap-4 text-left shadow-sm">
-          <HeartHandshake className="w-6 h-6 text-sky-500 shrink-0 mt-0.5" strokeWidth={2.5} />
-          <p className="text-sm text-sky-800/80 italic font-bold leading-relaxed pr-2">
-            "Sempurnakan takaran dan timbangan, jalankan amanah perniagaan dengan jujur untuk meraih keberkahan."
-          </p>
-        </div>
-
-        {/* Form Inputs */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-5 py-4 rounded-xl border-2 border-pink-50 bg-white/60 text-sky-500 font-bold placeholder-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-300 transition-all text-sm"
-              placeholder="Email Karyawan (kasir@adharcoffe.com)"
-            />
+        {/* Top Header Section (Sky Blue) extending deeper */}
+        <div className="bg-[#1ca3f4] pt-14 pb-12 rounded-b-[2rem] flex flex-col items-center justify-center text-white relative z-10">
+          {/* Logo Icon */}
+          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-5 backdrop-blur-sm">
+            <Coffee className="w-8 h-8 text-white" strokeWidth={2.5} />
           </div>
 
-          <div className="relative">
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-5 py-4 rounded-xl border-2 border-pink-50 bg-white/60 text-sky-500 font-bold placeholder-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-300 transition-all text-sm"
-              placeholder="Kata Sandi (••••••••)"
-            />
+          <h1 className="text-3xl font-black tracking-wide mb-1">SMART POS</h1>
+          <p className="text-sm font-semibold opacity-90">Adhar Coffe (Syariah)</p>
+        </div>
+
+        {/* Content Section */}
+        <div className="px-8 pt-8 pb-10">
+
+          <div className="text-center mb-6">
+            <p className="text-[#0284c7] font-arabic italic text-[1.1rem] mb-2 font-bold tracking-wider">
+              بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+            </p>
+            <h2 className="text-[#0c4a6e] text-[1.7rem] font-black tracking-tight mt-1">Masuk Kasir</h2>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-[#44bdf8] via-[#a78bfa] to-[#f472b6] hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-md shadow-pink-200/50 transition-opacity flex justify-center items-center gap-2 mt-4 text-base"
-          >
-            <LogIn className="w-[18px] h-[18px]" strokeWidth={2.5} />
-            <span>Mulai Berniaga</span>
-          </button>
-        </form>
+          {/* Form Inputs */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-[13px] font-bold text-[#0c4a6e] mb-1.5 ml-1">Email</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Mail className="h-[18px] w-[18px] text-[#f472b6]" strokeWidth={2.5} />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
+                  placeholder="kasir@adharcoffe.com"
+                />
+              </div>
+            </div>
 
-        {/* Footer Link */}
-        <p className="text-center text-sm text-[#0369a1] mt-8 font-bold">
-          Vendor Baru? {' '}
-          <button onClick={onGoRegister} className="text-pink-500 hover:text-pink-600 underline underline-offset-[5px] decoration-2 decoration-pink-300 transition-all ml-1">
-            Daftar Kemitraan
-          </button>
-        </p>
+            <div className="pt-1">
+              <label className="block text-[13px] font-bold text-[#0c4a6e] mb-1.5 ml-1">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock className="h-[18px] w-[18px] text-[#f472b6]" strokeWidth={2.5} />
+                </div>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
 
+            <div className="pt-4">
+              <button
+                type="submit"
+                className="w-full bg-[#f472b6] hover:bg-[#ec4899] text-white font-black text-[15px] py-4 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2"
+              >
+                Masuk
+              </button>
+            </div>
+          </form>
+
+          {/* Footer Link */}
+          <div className="mt-8 text-center text-[13px] text-[#0c4a6e] font-medium">
+            Belum punya akun? {' '}
+            <button onClick={onGoRegister} className="font-extrabold text-[#f472b6] hover:text-[#ec4899] transition-colors">
+              Daftar di sini
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   );
