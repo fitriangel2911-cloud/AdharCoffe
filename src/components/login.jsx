@@ -4,11 +4,33 @@ import { Coffee, Mail, Lock } from 'lucide-react';
 export default function Login({ onLogin, onGoRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      onLogin({ email, role: 'Kasir' });
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onLogin(data.user);
+      } else {
+        setError(data.detail || 'Login gagal. Periksa email dan password Anda.');
+      }
+    } catch (err) {
+      console.error("Login Fetch Error:", err);
+      setError('Gagal menghubungkan ke server. (' + err.message + ')');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,6 +61,12 @@ export default function Login({ onLogin, onGoRegister }) {
             <h2 className="text-[#0c4a6e] text-[1.7rem] font-black tracking-tight mt-1">Masuk Kasir</h2>
           </div>
 
+          {error && (
+            <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg mb-4 border border-red-200 text-center font-medium shadow-sm">
+              {error}
+            </div>
+          )}
+
           {/* Form Inputs */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -54,6 +82,7 @@ export default function Login({ onLogin, onGoRegister }) {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
                   placeholder="kasir@adharcoffe.com"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -71,6 +100,7 @@ export default function Login({ onLogin, onGoRegister }) {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
                   placeholder="••••••••"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -78,9 +108,10 @@ export default function Login({ onLogin, onGoRegister }) {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-[#f472b6] hover:bg-[#ec4899] text-white font-black text-[15px] py-4 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2"
+                disabled={loading}
+                className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#f472b6] hover:bg-[#ec4899]'} text-white font-black text-[15px] py-4 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2`}
               >
-                Masuk
+                {loading ? 'Memproses...' : 'Masuk'}
               </button>
             </div>
           </form>

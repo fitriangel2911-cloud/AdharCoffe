@@ -5,17 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:python": "venv\\Scripts\\python.exe -m uvicorn backend.main:app --reload",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:python\"",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "recharts": "^3.8.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.27",
+    "concurrently": "^9.2.1",
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.19",
     "vite": "^7.3.1"

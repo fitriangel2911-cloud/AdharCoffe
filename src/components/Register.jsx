@@ -5,16 +5,41 @@ export default function Register({ onRegister, onGoLogin }) {
     const [formData, setFormData] = useState({
         nama: '', email: '', password: '', confirm: ''
     });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
         if (formData.password !== formData.confirm) {
             setError('Kata sandi tidak cocok. Mohon periksa kembali.');
             return;
         }
-        if (formData.nama && formData.email && formData.password) {
-            onRegister();
+
+        setLoading(true);
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nama: formData.nama,
+                    email: formData.email,
+                    password: formData.password
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                onRegister();
+            } else {
+                setError(data.detail || 'Registrasi gagal. Coba lagi nanti.');
+            }
+        } catch (err) {
+            setError('Gagal menghubungkan ke server.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -65,6 +90,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
                                     placeholder="Kedai Langit Biru"
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -81,6 +107,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
                                     placeholder="vendor@domain.com"
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -97,6 +124,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
                                     placeholder="••••••••"
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -113,6 +141,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     onChange={(e) => setFormData({ ...formData, confirm: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
                                     placeholder="••••••••"
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -120,9 +149,10 @@ export default function Register({ onRegister, onGoLogin }) {
                         <div className="pt-2">
                             <button
                                 type="submit"
-                                className="w-full bg-[#f472b6] hover:bg-[#ec4899] text-white font-black text-[15px] py-3.5 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2"
+                                disabled={loading}
+                                className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#f472b6] hover:bg-[#ec4899]'} text-white font-black text-[15px] py-3.5 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2`}
                             >
-                                Daftarkan Vendor
+                                {loading ? 'Mendaftarkan...' : 'Daftarkan Vendor'}
                             </button>
                         </div>
                     </form>
