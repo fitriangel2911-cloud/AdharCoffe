@@ -7,6 +7,8 @@
     "dev": "vite",
     "dev:python": "venv\\Scripts\\python.exe -m uvicorn backend.main:app --reload",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:python\"",
+    "dev:all:host": "concurrently \"npm run dev\" \"venv\\Scripts\\python.exe -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000\"",
+    "tunnel": "npx ngrok http 5173 --host-header=rewrite",
     "build": "vite build",
     "preview": "vite preview"
   },

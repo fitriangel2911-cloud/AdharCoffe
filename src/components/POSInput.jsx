@@ -197,7 +197,7 @@ export default function POSInput({ user, onLogout }) {
     });
 
     const totalDebit = cart.reduce((sum, item) => sum + (Number(item.harga) * item.qty), 0);
-    const zakatPerniagaan = totalDebit * 0.025;
+    const infaqSedekah = totalDebit * 0.025;
     const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
 
     return (
@@ -502,8 +502,8 @@ export default function POSInput({ user, onLogout }) {
                                     <span className="font-bold">{formatRp(totalDebit)}</span>
                                 </div>
                                 <div className="flex justify-between text-[#db2777]">
-                                    <span>Zakat Perniagaan (2.5%)</span>
-                                    <span className="font-bold">{formatRp(zakatPerniagaan)}</span>
+                                    <span>Infaq/Sedekah (2.5%)</span>
+                                    <span className="font-bold">{formatRp(infaqSedekah)}</span>
                                 </div>
                             </div>
 
