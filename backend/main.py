@@ -72,6 +72,7 @@ class Transaksi(BaseModel):
     nama_pembeli: Optional[str] = "Umum"
     no_meja: Optional[int] = None
     metode_pembayaran: Optional[str] = "Tunai"
+    tipe_pesanan: Optional[str] = "Makan Ditempat"
     kontak: Optional[str] = ""
     created_at: Optional[str] = None
 
