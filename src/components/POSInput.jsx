@@ -18,7 +18,8 @@ import {
     Leaf,
     Utensils,
     Monitor,
-    Layout
+    Layout,
+    MessageCircle
 } from 'lucide-react';
 
 export default function POSInput({ user, onLogout }) {
@@ -150,6 +151,30 @@ export default function POSInput({ user, onLogout }) {
 
     const handlePrint = () => {
         window.print();
+    };
+
+    const handleKirimWA = () => {
+        // Ganti nomor ini dengan nomor Admin/Kasir restoran yang asli
+        const nomorAdmin = "6281234567890"; // Format harus 62xxx
+
+        let pesan = `*PESANAN BARU - ADHAR COFFE*\n\n`;
+        pesan += `*Pemesan:* ${namaPembeli || 'Pelanggan'}\n`;
+        pesan += `*No. Meja:* ${selectedTable || '-'}\n`;
+        pesan += `*Tipe:* ${tipePesanan}\n`;
+        pesan += `*Pembayaran:* ${metodePembayaran}\n`;
+        if (kontak) pesan += `*Kontak Pelanggan:* ${kontak}\n`;
+        pesan += `\n*Rincian Pesanan:*\n`;
+        
+        cart.forEach(item => {
+            pesan += `- ${item.nama_menu} (${item.qty}x) = ${formatRp(Number(item.harga) * item.qty)}\n`;
+        });
+
+        pesan += `\n*Infaq (2.5%):* ${formatRp(infaqSedekah)}\n`;
+        pesan += `*TOTAL TAGIHAN:* ${formatRp(totalDebit)}\n\n`;
+        pesan += `_Mohon segera diproses, terima kasih!_`;
+
+        const url = `https://wa.me/${nomorAdmin}?text=${encodeURIComponent(pesan)}`;
+        window.open(url, '_blank');
     };
 
     // Helper component for Table Layout to keep code clean
@@ -574,14 +599,21 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                         </div>
 
-                        {/* Print Button */}
-                        <div className="p-4 bg-white border-t border-slate-100">
+                        {/* Tombol Aksi */}
+                        <div className="p-4 bg-white border-t border-slate-100 flex gap-2">
                             <button
                                 onClick={handlePrint}
-                                className="w-full bg-[#f472b6] hover:bg-[#ec4899] text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2"
+                                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl shadow-sm transition-colors flex items-center justify-center gap-2"
                             >
                                 <Printer className="w-5 h-5" />
-                                <span>Cetak Struk</span>
+                                <span>Cetak</span>
+                            </button>
+                            <button
+                                onClick={handleKirimWA}
+                                className="flex-[2] bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2"
+                            >
+                                <MessageCircle className="w-5 h-5" />
+                                <span>Kirim ke Admin (WA)</span>
                             </button>
                         </div>
                     </div>
