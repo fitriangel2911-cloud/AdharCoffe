@@ -571,6 +571,11 @@ export default function POSInput({ user, onLogout }) {
                             <div className="mt-6 text-center text-slate-400 text-[11px] font-medium leading-relaxed">
                                 <p>Silakan bawa struk pesanan ini ke Kasir</p>
                                 <p>untuk melakukan transaksi pembayaran.</p>
+                                {kontak && kontak.includes('@') && (
+                                    <p className="mt-2 text-[#0ea5e9] italic">
+                                        *Salinan struk telah dikirim ke email Anda.
+                                    </p>
+                                )}
                             </div>
                         </div>
 

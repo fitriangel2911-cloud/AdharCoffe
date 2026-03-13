@@ -1,10 +1,14 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from backend.database import get_supabase
 from datetime import datetime
 import time
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = FastAPI(title="SmartPOS API")
 
@@ -196,12 +200,105 @@ async def delete_kategori(item_id: int):
 async def ping():
     return {"message": "pong"}
 
+def send_receipt_email_task(to_email: str, order_summary: dict, total_bayar: int, nama_pembeli: str):
+    sender_email = os.environ.get("SMTP_EMAIL")
+    sender_password = os.environ.get("SMTP_PASSWORD")
+    
+    if not sender_email or not sender_password or not to_email or "@" not in to_email:
+        print("DEBUG: Skipping email sending, invalid credentials or email.")
+        return
+        
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "Struk Pesanan - Adhar Coffe"
+        msg["From"] = f"Adhar Coffe <{sender_email}>"
+        msg["To"] = to_email
+
+        html_content = f"""
+        <html>
+          <body style="font-family: Arial, sans-serif; color: #333;">
+            <div style="max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #0ea5e9; text-align: center;">ADHAR COFFE</h2>
+                <h3 style="text-align: center;">Terima kasih atas pesanan Anda, {nama_pembeli}!</h3>
+                <p>Berikut adalah rincian pesanan Anda:</p>
+                <div style="border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; padding: 10px 0;">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+        """
+        for name, data in order_summary.items():
+            html_content += f"""
+                        <li style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                            <div><strong>{name}</strong><br><small>{data['qty']} x Rp{data['price']:,}</small></div>
+                            <div style="font-weight: bold;">Rp{data['subtotal']:,}</div>
+                        </li>
+            """
+        
+        infaq = int(total_bayar * 0.025)
+        html_content += f"""
+                    </ul>
+                </div>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between;">
+                    <span>Subtotal</span><span>Rp{total_bayar:,}</span>
+                </div>
+                <div style="margin-top: 5px; display: flex; justify-content: space-between; color: #db2777;">
+                    <span>Infaq/Sedekah (2.5%)</span><span>Rp{infaq:,}</span>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: #e0f2fe; border-radius: 8px; font-size: 18px; font-weight: bold; text-align: center;">
+                    Total: Rp{total_bayar:,}
+                </div>
+                <p style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">Email ini dihasilkan secara otomatis oleh sistem SmartPOS.</p>
+            </div>
+          </body>
+        </html>
+        """
+        
+        part = MIMEText(html_content, "html")
+        msg.attach(part)
+        
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, to_email, msg.as_string())
+        server.quit()
+        print(f"DEBUG: Email receipt sent to {to_email}")
+    except Exception as e:
+        print(f"EMAIL ERROR: {str(e)}")
+
 @app.post("/api/checkout")
-async def checkout(items: List[Transaksi]):
+async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
     sb = get_supabase()
     try:
         data = [item.dict(exclude_none=True) for item in items]
         res = sb.table("transaksi").insert(data).execute()
+        
+        # Format Data for Email Receipt
+        to_email = None
+        nama_pembeli = "Pelanggan"
+        total_bayar = 0
+        
+        if items:
+            to_email = items[0].kontak
+            nama_pembeli = items[0].nama_pembeli
+            for item in items:
+                total_bayar += item.harga
+                
+        if to_email and "@" in to_email:
+            # Map item IDs to names
+            try:
+                id_menus = list(set([i.id_menu for i in items]))
+                res_menu = sb.table("menu").select("id, nama_menu").in_("id", id_menus).execute()
+                menu_map = {m['id']: m['nama_menu'] for m in (res_menu.data or [])}
+                
+                order_summary = {}
+                for item in items:
+                    name = menu_map.get(item.id_menu, f"Item #{item.id_menu}")
+                    if name not in order_summary:
+                        order_summary[name] = {"qty": 0, "price": item.harga, "subtotal": 0}
+                    order_summary[name]["qty"] += 1
+                    order_summary[name]["subtotal"] += item.harga
+                
+                background_tasks.add_task(send_receipt_email_task, to_email, order_summary, total_bayar, nama_pembeli)
+            except Exception as email_prep_error:
+                print(f"EMAIL PREP ERROR: {email_prep_error}")
+                
         return {"message": "Transaksi berhasil disimpan", "data": res.data}
     except Exception as e:
         print(f"CHECKOUT ERROR: {str(e)}")
