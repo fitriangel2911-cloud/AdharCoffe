@@ -211,7 +211,7 @@ export default function POSInput({ user, onLogout }) {
                     </div>
                     <div>
                         <h1 className="text-xl font-black tracking-wide leading-tight flex items-center gap-2">
-                            SMART POS
+                            Adhar Coffe - Self Order
                             <Flower2 className="w-4 h-4 text-pink-300" strokeWidth={3} />
                         </h1>
                         <p className="text-[12px] font-medium opacity-90 flex items-center gap-1.5 mt-0.5">
@@ -224,8 +224,8 @@ export default function POSInput({ user, onLogout }) {
                     <div className="flex items-center gap-2 bg-[#0284c7] hover:bg-[#0369a1] cursor-default px-4 py-2.5 rounded-full transition-colors shadow-inner">
                         <UserCircle className="w-5 h-5" />
                         <div className="flex flex-col leading-none">
-                            <span className="text-[10px] uppercase font-black opacity-70">Kasir Bertugas</span>
-                            <span className="text-sm font-bold tracking-wide">{user?.nama || 'Kasir'}</span>
+                            <span className="text-[10px] uppercase font-black opacity-70">Selamat Datang</span>
+                            <span className="text-sm font-bold tracking-wide">{user?.nama || 'Pelanggan'}</span>
                         </div>
                     </div>
                     <button
@@ -350,7 +350,7 @@ export default function POSInput({ user, onLogout }) {
                             <div className="flex items-center gap-2">
                                 <div className="bg-sky-50 text-sky-600 text-[11px] font-black px-3 py-1 rounded-full border border-sky-100 flex items-center gap-1.5 whitespace-nowrap">
                                     <UserCircle className="w-3.5 h-3.5" />
-                                    {user?.nama || 'Kasir'}
+                                    {user?.nama || 'Pelanggan'}
                                 </div>
                                 <div className="bg-[#f472b6] text-white text-[13px] font-bold px-3 py-1 rounded-full shadow-sm">
                                     {cart.length}
@@ -438,7 +438,7 @@ export default function POSInput({ user, onLogout }) {
                             onClick={handleCheckout}
                             className="w-full bg-[#e2e8f0] disabled:bg-[#e2e8f0] disabled:text-[#94a3b8] hover:enabled:bg-[#ec4899] enabled:bg-[#f472b6] enabled:text-white enabled:shadow-lg font-black py-4 rounded-xl transition-all text-lg flex items-center justify-center tracking-wide"
                         >
-                            Proses Pembayaran
+                            Pesan Sekarang (Bayar di Kasir)
                         </button>
                     </div>
                 </aside>
@@ -456,11 +456,11 @@ export default function POSInput({ user, onLogout }) {
                             <div className="w-12 h-12 bg-white/20 rounded-xl mx-auto flex items-center justify-center mb-3">
                                 <Coffee className="w-6 h-6 text-white" />
                             </div>
-                            <h3 className="font-black text-xl mb-1">SMART POS</h3>
+                            <h3 className="font-black text-xl mb-1">PESANAN PELANGGAN</h3>
                             <p className="text-sm font-medium opacity-90">Adhar Coffe (Syariah)</p>
                             <div className="mt-2 flex items-center justify-center gap-2">
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
-                                    Kasir: {user?.nama || 'Kasir'}
+                                    Pemesan: {user?.nama || 'Pelanggan'}
                                 </div>
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
                                     Meja: {selectedTable || '-'}
@@ -477,10 +477,10 @@ export default function POSInput({ user, onLogout }) {
                                 <p className="text-[#0ea5e9] font-arabic italic text-lg mb-1">
                                     بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                                 </p>
-                                <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Bukti Pembayaran</p>
+                                <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Bukti Pesanan</p>
                                 <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-bold px-1">
                                     <span>{new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                                    <span>KASIR: {user?.nama?.toUpperCase() || 'KASIR'}</span>
+                                    <span>PEMESAN: {user?.nama?.toUpperCase() || 'PELANGGAN'}</span>
                                 </div>
                             </div>
 
@@ -515,8 +515,8 @@ export default function POSInput({ user, onLogout }) {
                             </div>
 
                             <div className="mt-6 text-center text-slate-400 text-[11px] font-medium leading-relaxed">
-                                <p>Terima kasih atas kunjungannya.</p>
-                                <p>Semoga rezeki yang diperoleh membawa keberkahan.</p>
+                                <p>Silakan bawa struk pesanan ini ke Kasir</p>
+                                <p>untuk melakukan transaksi pembayaran.</p>
                             </div>
                         </div>
 
