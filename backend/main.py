@@ -70,6 +70,9 @@ class Transaksi(BaseModel):
     hpp: int
     harga: int
     nama_pembeli: Optional[str] = "Umum"
+    no_meja: Optional[int] = None
+    metode_pembayaran: Optional[str] = "Tunai"
+    kontak: Optional[str] = ""
     created_at: Optional[str] = None
 
 @app.post("/api/auth/register")

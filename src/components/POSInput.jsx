@@ -30,6 +30,8 @@ export default function POSInput({ user, onLogout }) {
     const [activeCategory, setActiveCategory] = useState('Semua');
     const [searchTerm, setSearchTerm] = useState('');
     const [namaPembeli, setNamaPembeli] = useState('');
+    const [kontak, setKontak] = useState('');
+    const [metodePembayaran, setMetodePembayaran] = useState('Tunai');
     const [selectedTable, setSelectedTable] = useState(null);
     const [showTableModal, setShowTableModal] = useState(false);
     const [activeFloor, setActiveFloor] = useState(1);
@@ -99,6 +101,7 @@ export default function POSInput({ user, onLogout }) {
         if (window.confirm("Hapus semua pesanan?")) {
             setCart([]);
             setNamaPembeli('');
+            setKontak('');
         }
     };
 
@@ -114,7 +117,9 @@ export default function POSInput({ user, onLogout }) {
                     hpp: Number(item.hpp || 0),
                     harga: Number(item.harga),
                     nama_pembeli: namaPembeli || 'Umum',
-                    no_meja: selectedTable
+                    no_meja: selectedTable,
+                    metode_pembayaran: metodePembayaran,
+                    kontak: kontak
                 });
             }
         });
@@ -360,27 +365,55 @@ export default function POSInput({ user, onLogout }) {
                     </div>
 
                     {/* Customer Name Input */}
-                    <div className="px-6 py-4 bg-sky-50 border-b border-sky-100">
+                    <div className="px-6 py-4 bg-sky-50 border-b border-sky-100 flex flex-col gap-3">
                         <div className="flex gap-2">
                             <div className="flex-1">
-                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembeli</label>
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembelian</label>
                                 <input
                                     type="text"
                                     placeholder="Nama..."
                                     value={namaPembeli}
                                     onChange={(e) => setNamaPembeli(e.target.value)}
-                                    className="w-full bg-white px-4 py-2 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 group"
+                                    className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900"
                                 />
                             </div>
                             <div className="w-1/3">
                                 <label className="block text-[10px] font-black text-[#f472b6] uppercase tracking-widest mb-1 ml-1">Meja</label>
                                 <button
                                     onClick={() => setShowTableModal(true)}
-                                    className={`w-full h-[38px] flex items-center justify-center gap-2 rounded-xl border border-pink-100 font-black text-sm transition-all shadow-sm ${selectedTable ? 'bg-[#f472b6] text-white border-transparent' : 'bg-white text-pink-500 hover:bg-pink-50'}`}
+                                    className={`w-full h-[42px] flex items-center justify-center gap-2 rounded-xl border border-pink-100 font-black text-sm transition-all shadow-sm ${selectedTable ? 'bg-[#f472b6] text-white border-transparent' : 'bg-white text-pink-500 hover:bg-pink-50'}`}
                                 >
                                     <Monitor className="w-4 h-4" />
                                     {selectedTable ? `#${selectedTable}` : 'Pilih'}
                                 </button>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                            <div className="flex-1">
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">No. WA / Email</label>
+                                <input
+                                    type="text"
+                                    placeholder="0812... / email@..."
+                                    value={kontak}
+                                    onChange={(e) => setKontak(e.target.value)}
+                                    className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                            <div className="flex-1">
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Pembayaran</label>
+                                <select
+                                    value={metodePembayaran}
+                                    onChange={(e) => setMetodePembayaran(e.target.value)}
+                                    className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 appearance-none"
+                                >
+                                    <option value="Tunai">Tunai (Bayar di Kasir)</option>
+                                    <option value="QRIS">QRIS (Bayar di Kasir)</option>
+                                    <option value="Transfer">Transfer Bank</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -458,17 +491,22 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                             <h3 className="font-black text-xl mb-1">PESANAN PELANGGAN</h3>
                             <p className="text-sm font-medium opacity-90">Adhar Coffe (Syariah)</p>
-                            <div className="mt-2 flex items-center justify-center gap-2">
+                            <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
-                                    Pemesan: {user?.nama || 'Pelanggan'}
+                                    Pemesan: {namaPembeli || 'Pelanggan'}
                                 </div>
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
                                     Meja: {selectedTable || '-'}
                                 </div>
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
-                                    Kmr: {namaPembeli || 'Umum'}
+                                    Via: {metodePembayaran}
                                 </div>
                             </div>
+                            {kontak && (
+                                <div className="mt-1 text-[10px] text-white/80 font-medium">
+                                    Kontak: {kontak}
+                                </div>
+                            )}
                         </div>
 
                         {/* Receipt Content (Scrollable) */}
