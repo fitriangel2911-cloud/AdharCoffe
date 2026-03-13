@@ -58,7 +58,7 @@ export default function Login({ onLogin, onGoRegister }) {
             <p className="text-[#0284c7] font-arabic italic text-[1.1rem] mb-2 font-bold tracking-wider">
               بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
             </p>
-            <h2 className="text-[#0c4a6e] text-[1.7rem] font-black tracking-tight mt-1">Masuk Kasir</h2>
+            <h2 className="text-[#0c4a6e] text-[1.7rem] font-black tracking-tight mt-1">Masuk Akun</h2>
           </div>
 
           {error && (
@@ -81,7 +81,7 @@ export default function Login({ onLogin, onGoRegister }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
-                  placeholder="kasir@adharcoffe.com"
+                  placeholder="pelanggan@email.com"
                   disabled={loading}
                 />
               </div>

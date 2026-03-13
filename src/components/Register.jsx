@@ -57,7 +57,7 @@ export default function Register({ onRegister, onGoLogin }) {
                     </div>
 
                     <h1 className="text-3xl font-black tracking-wide mb-1">REGISTRASI</h1>
-                    <p className="text-sm font-semibold opacity-90">Kemitraan Vendor</p>
+                    <p className="text-sm font-semibold opacity-90">Pelanggan Baru</p>
                 </div>
 
                 {/* Content Section */}
@@ -79,7 +79,7 @@ export default function Register({ onRegister, onGoLogin }) {
                     {/* Form Inputs */}
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
-                            <label className="block text-[13px] font-bold text-[#0c4a6e] mb-1.5 ml-1">Nama Vendor / Toko</label>
+                            <label className="block text-[13px] font-bold text-[#0c4a6e] mb-1.5 ml-1">Nama Lengkap</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <User className="h-[18px] w-[18px] text-[#f472b6]" strokeWidth={2.5} />
@@ -89,7 +89,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     value={formData.nama}
                                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
-                                    placeholder="Kedai Langit Biru"
+                                    placeholder="Misal: Budi Santoso"
                                     disabled={loading}
                                 />
                             </div>
@@ -106,7 +106,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm"
-                                    placeholder="vendor@domain.com"
+                                    placeholder="email@domain.com"
                                     disabled={loading}
                                 />
                             </div>
@@ -152,7 +152,7 @@ export default function Register({ onRegister, onGoLogin }) {
                                 disabled={loading}
                                 className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#f472b6] hover:bg-[#ec4899]'} text-white font-black text-[15px] py-3.5 rounded-xl shadow-[0_4px_14px_0_rgba(244,114,182,0.39)] transition-all transform active:scale-[0.98] mt-2`}
                             >
-                                {loading ? 'Mendaftarkan...' : 'Daftarkan Vendor'}
+                                {loading ? 'Mendaftarkan...' : 'Daftarkan Akun'}
                             </button>
                         </div>
                     </form>
