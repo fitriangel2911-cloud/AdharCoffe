@@ -32,6 +32,7 @@ export default function POSInput({ user, onLogout }) {
     const [namaPembeli, setNamaPembeli] = useState('');
     const [kontak, setKontak] = useState('');
     const [metodePembayaran, setMetodePembayaran] = useState('Tunai');
+    const [tipePesanan, setTipePesanan] = useState('Makan Ditempat');
     const [selectedTable, setSelectedTable] = useState(null);
     const [showTableModal, setShowTableModal] = useState(false);
     const [activeFloor, setActiveFloor] = useState(1);
@@ -119,7 +120,8 @@ export default function POSInput({ user, onLogout }) {
                     nama_pembeli: namaPembeli || 'Umum',
                     no_meja: selectedTable,
                     metode_pembayaran: metodePembayaran,
-                    kontak: kontak
+                    kontak: kontak,
+                    tipe_pesanan: tipePesanan
                 });
             }
         });
@@ -368,7 +370,7 @@ export default function POSInput({ user, onLogout }) {
                     <div className="px-6 py-4 bg-sky-50 border-b border-sky-100 flex flex-col gap-3">
                         <div className="flex gap-2">
                             <div className="flex-1">
-                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembelian</label>
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembeli</label>
                                 <input
                                     type="text"
                                     placeholder="Nama..."
@@ -403,6 +405,17 @@ export default function POSInput({ user, onLogout }) {
                         </div>
 
                         <div className="flex gap-2">
+                            <div className="flex-1">
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Tipe Pesanan</label>
+                                <select
+                                    value={tipePesanan}
+                                    onChange={(e) => setTipePesanan(e.target.value)}
+                                    className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 appearance-none"
+                                >
+                                    <option value="Makan Ditempat">Makan di Tempat</option>
+                                    <option value="Bawa Pulang">Bawa Pulang</option>
+                                </select>
+                            </div>
                             <div className="flex-1">
                                 <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Pembayaran</label>
                                 <select
@@ -500,6 +513,9 @@ export default function POSInput({ user, onLogout }) {
                                 </div>
                                 <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
                                     Via: {metodePembayaran}
+                                </div>
+                                <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
+                                    Tipe: {tipePesanan}
                                 </div>
                             </div>
                             {kontak && (
