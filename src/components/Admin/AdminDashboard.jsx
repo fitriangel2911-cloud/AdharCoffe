@@ -1,34 +1,43 @@
 import React, { useState } from 'react';
 import {
-    LayoutDashboard,
-    UtensilsCrossed,
-    Tags,
-    BarChart3,
     LogOut,
     ChevronRight,
     Menu as MenuIcon,
-    X
+    X,
+    Coffee as CoffeeIcon,
+    LayoutDashboard,
+    Tags,
+    BarChart3,
+    LineChart,
+    Wallet,
+    Coffee
 } from 'lucide-react';
 import MenuManager from './MenuManager';
 import CategoryManager from './CategoryManager';
 import DashboardStats from './DashboardStats';
+import FinancialReports from './FinancialReports';
+import ExpenseManager from './ExpenseManager';
 
-export default function AdminDashboard({ onLogout }) {
+export default function AdminDashboard({ user, onLogout }) {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [isSidebarOpen, setSidebarOpen] = useState(true);
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-        { id: 'menu', label: 'Kelola Menu', icon: UtensilsCrossed },
+        { id: 'reports', label: 'Laporan Keuangan', icon: LineChart },
+        { id: 'operasional', label: 'Biaya Operasional', icon: Wallet },
+        { id: 'menu', label: 'Kelola Menu', icon: Coffee },
         { id: 'kategori', label: 'Kelola Kategori', icon: Tags },
-        { id: 'reports', label: 'Laporan', icon: BarChart3 },
     ];
 
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
-            case 'reports':
                 return <DashboardStats />;
+            case 'reports':
+                return <FinancialReports />;
+            case 'operasional':
+                return <ExpenseManager />;
             case 'menu':
                 return <MenuManager />;
             case 'kategori':
@@ -55,7 +64,7 @@ export default function AdminDashboard({ onLogout }) {
                 <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-[#1ca3f4] rounded-xl flex items-center justify-center shadow-lg shadow-sky-100">
-                            <UtensilsCrossed className="text-white w-5 h-5" />
+                            <CoffeeIcon className="text-white w-5 h-5" />
                         </div>
                         <div>
                             <h1 className="text-lg font-black text-slate-800 leading-tight">ADMIN</h1>
@@ -105,11 +114,13 @@ export default function AdminDashboard({ onLogout }) {
                     </h2>
                     <div className="flex items-center gap-4">
                         <div className="text-right hidden sm:block">
-                            <p className="text-sm font-black text-slate-800">Administrator</p>
+                            <p className="text-sm font-black text-slate-800">{user?.nama || 'Administrator'}</p>
                             <p className="text-[11px] font-bold text-green-500 uppercase tracking-widest">Sistem Online</p>
                         </div>
                         <div className="w-10 h-10 bg-slate-100 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
-                            <span className="font-black text-slate-500">AD</span>
+                            <span className="font-black text-slate-500">
+                                {user?.nama ? user.nama.substring(0, 2).toUpperCase() : 'AD'}
+                            </span>
                         </div>
                     </div>
                 </header>

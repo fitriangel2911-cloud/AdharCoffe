@@ -5,16 +5,20 @@ import {
     ShieldCheck,
     HeartHandshake,
     Coffee,
-    ShoppingCart,
     Plus,
     Minus,
     Trash2,
     LogOut,
     Printer,
     X,
-    User,
+    UserCircle,
     Loader2,
-    Search
+    Search,
+    ShoppingBag,
+    Leaf,
+    Utensils,
+    Monitor,
+    Layout
 } from 'lucide-react';
 
 export default function POSInput({ user, onLogout }) {
@@ -26,6 +30,9 @@ export default function POSInput({ user, onLogout }) {
     const [activeCategory, setActiveCategory] = useState('Semua');
     const [searchTerm, setSearchTerm] = useState('');
     const [namaPembeli, setNamaPembeli] = useState('');
+    const [selectedTable, setSelectedTable] = useState(null);
+    const [showTableModal, setShowTableModal] = useState(false);
+    const [activeFloor, setActiveFloor] = useState(1);
 
     const colors = [
         'bg-[#8b5cf6]', 'bg-[#5b21b6]', 'bg-[#7c3aed]',
@@ -61,6 +68,19 @@ export default function POSInput({ user, onLogout }) {
         }
     };
 
+    const getMenuIcon = (name, category) => {
+        const lowerName = name.toLowerCase();
+        if (category === 'Makanan') {
+            return Utensils;
+        }
+        
+        // Minuman
+        if (lowerName.includes('teh') || lowerName.includes('tea') || lowerName.includes('matcha')) {
+            return Leaf;
+        }
+        return Coffee;
+    };
+
     const updateQty = (id, delta) => {
         setCart(cart.map(item => {
             if (item.id === id) {
@@ -75,6 +95,13 @@ export default function POSInput({ user, onLogout }) {
         setCart(cart.filter(item => item.id !== id));
     };
 
+    const clearCart = () => {
+        if (window.confirm("Hapus semua pesanan?")) {
+            setCart([]);
+            setNamaPembeli('');
+        }
+    };
+
     const handleCheckout = async () => {
         if (cart.length === 0) return;
 
@@ -86,7 +113,8 @@ export default function POSInput({ user, onLogout }) {
                     id_menu: item.id,
                     hpp: Number(item.hpp || 0),
                     harga: Number(item.harga),
-                    nama_pembeli: namaPembeli || 'Umum'
+                    nama_pembeli: namaPembeli || 'Umum',
+                    no_meja: selectedTable
                 });
             }
         });
@@ -102,6 +130,7 @@ export default function POSInput({ user, onLogout }) {
                 setShowReceipt(true);
                 // We keep the cart and name for receipt, 
                 // but usually you'd clear on close or start new order
+                setSelectedTable(null);
             } else {
                 const err = await response.json();
                 alert("Gagal menyimpan transaksi: " + (err.detail || "Error"));
@@ -114,6 +143,51 @@ export default function POSInput({ user, onLogout }) {
 
     const handlePrint = () => {
         window.print();
+    };
+
+    // Helper component for Table Layout to keep code clean
+    const TableComponent = ({ table, selectedTable, onSelect }) => (
+        <div className="flex flex-col items-center justify-center">
+            <div className="relative group cursor-pointer" onClick={() => onSelect(table.id)}>
+                {/* Chairs */}
+                <div className="absolute -inset-2">
+                    {table.seats === 4 ? (
+                        <>
+                            <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-5 h-2.5 rounded-t-sm ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                            <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-5 h-2.5 rounded-b-sm ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                            <div className={`absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-2.5 h-5 rounded-l-sm ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                            <div className={`absolute right-0 top-1/2 translate-x-full -translate-y-1/2 w-2.5 h-5 rounded-r-sm ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                        </>
+                    ) : (
+                        <>
+                            <div className={`absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-2.5 h-6 rounded-l-full ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                            <div className={`absolute right-0 top-1/2 translate-x-full -translate-y-1/2 w-2.5 h-6 rounded-r-full ${selectedTable === table.id ? 'bg-sky-400' : 'bg-slate-200 group-hover:bg-sky-200'}`}></div>
+                        </>
+                    )}
+                </div>
+
+                {/* Table Surface */}
+                <div className={`relative transition-all duration-300 flex items-center justify-center font-black text-sm shadow-[0_4px_10px_rgba(0,0,0,0.05)]
+                    ${table.seats === 4 ? 'w-16 h-12 rounded-xl' : 'w-10 h-10 rounded-full'}
+                    ${selectedTable === table.id ? 'bg-sky-500 text-white scale-125 shadow-xl ring-8 ring-sky-500/10' : 'bg-white border-2 border-slate-100 text-slate-400 group-hover:border-sky-300 group-hover:text-sky-500'}
+                `}>
+                    {table.id}
+                    {selectedTable === table.id && <div className="absolute -top-1.5 -right-1.5 bg-pink-500 rounded-full p-0.5 border-2 border-white shadow-md"><ShieldCheck className="w-3 h-3 text-white" /></div>}
+                </div>
+            </div>
+            <span className="text-[7px] font-black text-slate-400 mt-4 uppercase tracking-[0.1em]">{table.seats} Kursi</span>
+        </div>
+    );
+
+    const tables = {
+        1: [
+            ...Array.from({ length: 6 }, (_, i) => ({ id: i + 1, seats: 4 })),
+            ...Array.from({ length: 8 }, (_, i) => ({ id: i + 7, seats: 2 }))
+        ],
+        2: [
+            ...Array.from({ length: 6 }, (_, i) => ({ id: i + 15, seats: 4 })),
+            ...Array.from({ length: 8 }, (_, i) => ({ id: i + 21, seats: 2 }))
+        ]
     };
 
     const filteredMenu = menuItems.filter(item => {
@@ -148,8 +222,11 @@ export default function POSInput({ user, onLogout }) {
 
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 bg-[#0284c7] hover:bg-[#0369a1] cursor-default px-4 py-2.5 rounded-full transition-colors shadow-inner">
-                        <User className="w-4 h-4" />
-                        <span className="text-sm font-bold tracking-wide">{user?.nama || 'Kasir'}</span>
+                        <UserCircle className="w-5 h-5" />
+                        <div className="flex flex-col leading-none">
+                            <span className="text-[10px] uppercase font-black opacity-70">Kasir Bertugas</span>
+                            <span className="text-sm font-bold tracking-wide">{user?.nama || 'Kasir'}</span>
+                        </div>
                     </div>
                     <button
                         onClick={onLogout}
@@ -230,8 +307,10 @@ export default function POSInput({ user, onLogout }) {
                                         HALAL
                                     </div>
 
-                                    <div className={`w-20 h-20 ${colors[idx % colors.length]} rounded-full mb-5 flex items-center justify-center shadow-inner mt-2 opacity-90 group-hover:opacity-100 transition-opacity`}>
-                                        <Coffee className="w-8 h-8 text-white/50" />
+                                    <div className="w-20 h-20 bg-sky-500 rounded-full mb-5 flex items-center justify-center shadow-md mt-2 opacity-90 group-hover:opacity-100 transition-all group-hover:scale-110">
+                                        {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), {
+                                            className: "w-8 h-8 text-white"
+                                        })}
                                     </div>
 
                                     <h3 className="font-black text-[15px] mb-2 text-[#0c4a6e] group-hover:text-[#0284c7] line-clamp-2 min-h-[40px] leading-tight px-1">
@@ -255,30 +334,61 @@ export default function POSInput({ user, onLogout }) {
                 <aside className="w-full lg:w-[400px] bg-white flex flex-col z-10 shrink-0 border-l border-slate-100 shadow-xl">
                     <div className="px-6 py-5 border-b border-[#fce7f3] bg-white flex justify-between items-center">
                         <h2 className="text-[19px] font-black text-[#0c4a6e] flex items-center gap-3">
-                            <ShoppingCart className="w-[22px] h-[22px] text-[#f472b6]" strokeWidth={2.5} />
+                            <ShoppingBag className="w-[22px] h-[22px] text-[#f472b6]" strokeWidth={2.5} />
                             Pesanan Anda
                         </h2>
-                        <div className="bg-[#f472b6] text-white text-[13px] font-bold px-3 py-1 rounded-full shadow-sm">
-                            {cart.length} item
+                        <div className="flex items-center gap-2">
+                            {cart.length > 0 && (
+                                <button
+                                    onClick={clearCart}
+                                    className="text-[11px] font-black text-rose-500 hover:text-rose-600 bg-rose-50 px-2 py-1 rounded-lg transition-colors flex items-center gap-1"
+                                >
+                                    <Trash2 className="w-3 h-3" />
+                                    Hapus Semua
+                                </button>
+                            )}
+                            <div className="flex items-center gap-2">
+                                <div className="bg-sky-50 text-sky-600 text-[11px] font-black px-3 py-1 rounded-full border border-sky-100 flex items-center gap-1.5 whitespace-nowrap">
+                                    <UserCircle className="w-3.5 h-3.5" />
+                                    {user?.nama || 'Kasir'}
+                                </div>
+                                <div className="bg-[#f472b6] text-white text-[13px] font-bold px-3 py-1 rounded-full shadow-sm">
+                                    {cart.length}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {/* Customer Name Input */}
                     <div className="px-6 py-4 bg-sky-50 border-b border-sky-100">
-                        <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembeli</label>
-                        <input
-                            type="text"
-                            placeholder="Contoh: Budi"
-                            value={namaPembeli}
-                            onChange={(e) => setNamaPembeli(e.target.value)}
-                            className="w-full bg-white px-4 py-2 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 group"
-                        />
+                        <div className="flex gap-2">
+                            <div className="flex-1">
+                                <label className="block text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1 ml-1">Nama Pembeli</label>
+                                <input
+                                    type="text"
+                                    placeholder="Nama..."
+                                    value={namaPembeli}
+                                    onChange={(e) => setNamaPembeli(e.target.value)}
+                                    className="w-full bg-white px-4 py-2 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 group"
+                                />
+                            </div>
+                            <div className="w-1/3">
+                                <label className="block text-[10px] font-black text-[#f472b6] uppercase tracking-widest mb-1 ml-1">Meja</label>
+                                <button
+                                    onClick={() => setShowTableModal(true)}
+                                    className={`w-full h-[38px] flex items-center justify-center gap-2 rounded-xl border border-pink-100 font-black text-sm transition-all shadow-sm ${selectedTable ? 'bg-[#f472b6] text-white border-transparent' : 'bg-white text-pink-500 hover:bg-pink-50'}`}
+                                >
+                                    <Monitor className="w-4 h-4" />
+                                    {selectedTable ? `#${selectedTable}` : 'Pilih'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex-1 overflow-y-auto w-full bg-white relative">
                         {cart.length === 0 ? (
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-[#e0f2fe] pointer-events-none">
-                                <ShoppingCart className="w-24 h-24 mb-4" />
+                                <ShoppingBag className="w-24 h-24 mb-4" />
                                 <p className="text-[16px] font-bold text-[#0ea5e9]">Belum ada pesanan</p>
                             </div>
                         ) : (
@@ -298,6 +408,13 @@ export default function POSInput({ user, onLogout }) {
                                                 <Plus className="w-3.5 h-3.5" strokeWidth={3} />
                                             </button>
                                         </div>
+                                        <button
+                                            onClick={() => removeFromCart(item.id)}
+                                            className="ml-2 p-2 text-rose-300 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors"
+                                            title="Hapus Item"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -341,8 +458,16 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                             <h3 className="font-black text-xl mb-1">SMART POS</h3>
                             <p className="text-sm font-medium opacity-90">Adhar Coffe (Syariah)</p>
-                            <div className="mt-2 bg-white/20 px-3 py-1 rounded-full text-[12px] font-bold inline-block">
-                                Pembeli: {namaPembeli || 'Umum'}
+                            <div className="mt-2 flex items-center justify-center gap-2">
+                                <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
+                                    Kasir: {user?.nama || 'Kasir'}
+                                </div>
+                                <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
+                                    Meja: {selectedTable || '-'}
+                                </div>
+                                <div className="bg-white/20 px-3 py-1 rounded-full text-[11px] font-bold inline-block border border-white/10">
+                                    Kmr: {namaPembeli || 'Umum'}
+                                </div>
                             </div>
                         </div>
 
@@ -353,6 +478,10 @@ export default function POSInput({ user, onLogout }) {
                                     بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                                 </p>
                                 <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Bukti Pembayaran</p>
+                                <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-bold px-1">
+                                    <span>{new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                                    <span>KASIR: {user?.nama?.toUpperCase() || 'KASIR'}</span>
+                                </div>
                             </div>
 
                             <div className="border-t border-b border-dashed border-slate-300 py-4 mb-4 space-y-3">
@@ -399,6 +528,97 @@ export default function POSInput({ user, onLogout }) {
                             >
                                 <Printer className="w-5 h-5" />
                                 <span>Cetak Struk</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Table Selection Modal */}
+            {showTableModal && (
+                <div className="fixed inset-0 bg-[#0c4a6e]/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-[600px] overflow-hidden flex flex-col max-h-[90vh]">
+                        <div className="bg-sky-500 p-6 text-white flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <Layout className="w-6 h-6" />
+                                <h3 className="font-black text-xl italic tracking-tight">MANAJEMEN MEJA</h3>
+                            </div>
+                            <button onClick={() => setShowTableModal(false)} className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        
+                        <div className="p-4 bg-sky-50 border-b border-sky-100 flex gap-2">
+                            <button 
+                                onClick={() => setActiveFloor(1)}
+                                className={`flex-1 py-3 rounded-2xl font-black transition-all ${activeFloor === 1 ? 'bg-sky-500 text-white shadow-lg' : 'bg-white text-sky-400 hover:bg-sky-100'}`}
+                            >
+                                LANTAI 1
+                            </button>
+                            <button 
+                                onClick={() => setActiveFloor(2)}
+                                className={`flex-1 py-3 rounded-2xl font-black transition-all ${activeFloor === 2 ? 'bg-sky-500 text-white shadow-lg' : 'bg-white text-sky-400 hover:bg-sky-100'}`}
+                            >
+                                LANTAI 2
+                            </button>
+                        </div>
+
+                        <div className="p-8 flex-1 overflow-y-auto bg-slate-100/30">
+                            {/* Visual Floor Plan */}
+                            <div className="relative w-full min-h-[420px] bg-white rounded-[40px] border-4 border-white shadow-2xl p-10 overflow-hidden">
+                                {/* Decor: Floor Texture/Aisle */}
+                                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-24 bg-slate-50/50 border-x border-dashed border-slate-100 z-0"></div>
+                                
+                                {/* Floor Area Annotation */}
+                                <div className="absolute top-6 left-8 flex items-center gap-3 text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] z-10">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+                                    ADHAR COFFE - LANTAI {activeFloor}
+                                </div>
+
+                                <div className="relative z-10 space-y-12 h-full flex flex-col justify-around">
+                                    {/* Zona Atas (Wall Side) */}
+                                    <div className="flex justify-between items-center px-4">
+                                        {tables[activeFloor].slice(0, 4).map(table => (
+                                            <TableComponent key={table.id} table={table} selectedTable={selectedTable} onSelect={(id) => { setSelectedTable(id); setShowTableModal(false); }} />
+                                        ))}
+                                    </div>
+
+                                    {/* Zona Tengah (Main Area - Spacious) */}
+                                    <div className="flex justify-around items-center px-2 py-4 border-y border-slate-50 gap-10">
+                                        {tables[activeFloor].slice(4, 7).map(table => (
+                                            <TableComponent key={table.id} table={table} selectedTable={selectedTable} onSelect={(id) => { setSelectedTable(id); setShowTableModal(false); }} />
+                                        ))}
+                                    </div>
+
+                                    <div className="flex justify-around items-center px-2 py-4 gap-10">
+                                        {tables[activeFloor].slice(7, 10).map(table => (
+                                            <TableComponent key={table.id} table={table} selectedTable={selectedTable} onSelect={(id) => { setSelectedTable(id); setShowTableModal(false); }} />
+                                        ))}
+                                    </div>
+
+                                    {/* Zona Bawah (Window/Wall Side) */}
+                                    <div className="flex justify-between items-center px-4">
+                                        {tables[activeFloor].slice(10, 14).map(table => (
+                                            <TableComponent key={table.id} table={table} selectedTable={selectedTable} onSelect={(id) => { setSelectedTable(id); setShowTableModal(false); }} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Design Decoration */}
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[9px] font-bold text-slate-300 uppercase tracking-widest bg-white px-4">Area Pintu Masuk / Tangga</div>
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                            <div className="text-slate-400">
+                                <span className="text-[10px] font-black uppercase tracking-widest block">Kapasitas</span>
+                                <span className="text-sm font-bold text-slate-600">80 Orang (2 Lantai)</span>
+                            </div>
+                            <button 
+                                onClick={() => setShowTableModal(false)}
+                                className="bg-[#0c4a6e] hover:bg-[#0284c7] text-white font-black px-8 py-3 rounded-2xl transition-all shadow-lg"
+                            >
+                                SELESAI
                             </button>
                         </div>
                     </div>

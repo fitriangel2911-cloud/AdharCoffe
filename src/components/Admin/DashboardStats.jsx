@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-    TrendingUp,
-    Users,
-    Coffee,
     DollarSign,
     ArrowUpRight,
-    ArrowDownRight
+    ArrowDownRight,
+    Wallet,
+    Zap,
+    TrendingUp,
+    Coffee
 } from 'lucide-react';
 import {
     LineChart,
@@ -16,7 +17,10 @@ import {
     Tooltip,
     ResponsiveContainer,
     AreaChart,
-    Area
+    Area,
+    BarChart,
+    Bar,
+    Cell
 } from 'recharts';
 
 const data = [
@@ -55,18 +59,18 @@ export default function DashboardStats() {
     );
 
     const stats = statsData?.summary || [
-        { label: 'Total Penjualan', value: 'Rp 0', icon: DollarSign, color: 'sky', trend: '0%' },
-        { label: 'Pesanan Baru', value: '0', icon: Coffee, color: 'pink', trend: '0%' },
-        { label: 'Pelanggan', value: '0', icon: Users, color: 'violet', trend: '0%' },
-        { label: 'Pertumbuhan', value: '0%', icon: TrendingUp, color: 'green', trend: '0%' },
+        { label: 'Total Penjualan', value: 'Rp 0', icon: DollarSign, color: 'sky', trend: '+0%' },
+        { label: 'Total Laba', value: 'Rp 0', icon: TrendingUp, color: 'pink', trend: '+0%' },
+        { label: 'Menu Terjual', value: '0', icon: Coffee, color: 'violet', trend: '+0%' },
+        { label: 'Efisiensi', value: '0%', icon: Zap, color: 'green', trend: '+0%' },
     ];
 
     const chartData = statsData?.chart_data || [];
     const iconMap = {
-        'Total Penjualan': DollarSign,
+        'Total Penjualan': Wallet,
         'Total Laba': TrendingUp,
         'Menu Terjual': Coffee,
-        'Efisiensi': Users
+        'Efisiensi': Zap
     };
 
     return (
@@ -186,6 +190,87 @@ export default function DashboardStats() {
                                     activeDot={{ r: 8 }}
                                 />
                             </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+
+            {/* Trending Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Food Trends */}
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 className="text-lg font-black text-slate-800">Makanan Populer</h3>
+                            <p className="text-sm font-bold text-slate-400">Paling Banyak Dipesan</p>
+                        </div>
+                        <div className="p-3 bg-sky-50 rounded-2xl text-sky-500">
+                            <TrendingUp size={20} />
+                        </div>
+                    </div>
+                    <div className="h-[250px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={statsData?.top_makanan || []} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <XAxis 
+                                    dataKey="name" 
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fontWeight: 900, fill: '#64748b' }}
+                                    interval={0}
+                                    angle={-15}
+                                    textAnchor="end"
+                                />
+                                <YAxis hide />
+                                <Tooltip 
+                                    cursor={{ fill: '#f8fafc' }}
+                                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 900 }}
+                                />
+                                <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={40}>
+                                    {(statsData?.top_makanan || []).map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={index === 0 ? '#0ea5e9' : '#bae6fd'} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Drink Trends */}
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 className="text-lg font-black text-slate-800">Minuman Terlaris</h3>
+                            <p className="text-sm font-bold text-slate-400">Favorit Pelanggan</p>
+                        </div>
+                        <div className="p-3 bg-pink-50 rounded-2xl text-pink-500">
+                            <Coffee size={20} />
+                        </div>
+                    </div>
+                    <div className="h-[250px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={statsData?.top_minuman || []} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <XAxis 
+                                    dataKey="name" 
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fontWeight: 900, fill: '#64748b' }}
+                                    interval={0}
+                                    angle={-15}
+                                    textAnchor="end"
+                                />
+                                <YAxis hide />
+                                <Tooltip 
+                                    cursor={{ fill: '#f8fafc' }}
+                                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 900 }}
+                                />
+                                <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={40}>
+                                    {(statsData?.top_minuman || []).map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={index === 0 ? '#ec4899' : '#fbcfe8'} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
