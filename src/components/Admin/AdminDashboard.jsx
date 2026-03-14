@@ -10,13 +10,17 @@ import {
     BarChart3,
     LineChart,
     Wallet,
-    Coffee
+    Coffee,
+    Package,
+    ClipboardList
 } from 'lucide-react';
 import MenuManager from './MenuManager';
 import CategoryManager from './CategoryManager';
 import DashboardStats from './DashboardStats';
 import FinancialReports from './FinancialReports';
 import ExpenseManager from './ExpenseManager';
+import InventoryManager from '../InventoryManager';
+import AdminOrderManager from './AdminOrderManager';
 
 export default function AdminDashboard({ user, onLogout }) {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -24,9 +28,11 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'orders', label: 'Antrian Pesanan', icon: ClipboardList },
         { id: 'reports', label: 'Laporan Keuangan', icon: LineChart },
         { id: 'operasional', label: 'Biaya Operasional', icon: Wallet },
         { id: 'menu', label: 'Kelola Menu', icon: Coffee },
+        { id: 'inventory', label: 'Stok & Inventaris', icon: Package },
         { id: 'kategori', label: 'Kelola Kategori', icon: Tags },
     ];
 
@@ -34,12 +40,16 @@ export default function AdminDashboard({ user, onLogout }) {
         switch (activeTab) {
             case 'dashboard':
                 return <DashboardStats />;
+            case 'orders':
+                return <AdminOrderManager />;
             case 'reports':
                 return <FinancialReports />;
             case 'operasional':
                 return <ExpenseManager />;
             case 'menu':
                 return <MenuManager />;
+            case 'inventory':
+                return <InventoryManager />;
             case 'kategori':
                 return <CategoryManager />;
             default:
@@ -60,7 +70,8 @@ export default function AdminDashboard({ user, onLogout }) {
             )}
 
             {/* Sidebar */}
-            <div className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed lg:relative z-40 w-72 h-screen bg-white border-r border-slate-200 transition-transform duration-300 ease-in-out flex flex-col`}>
+            <div className={`${isSidebarOpen ? 'translate-x-0 w-72 border-r border-slate-200' : '-translate-x-full w-72 border-r-0 lg:translate-x-0 lg:w-0'} fixed lg:relative z-40 h-screen bg-white transition-all duration-300 ease-in-out shrink-0 overflow-hidden`}>
+                <div className="w-72 h-full flex flex-col">
                 <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-[#1ca3f4] rounded-xl flex items-center justify-center shadow-lg shadow-sky-100">
@@ -104,14 +115,23 @@ export default function AdminDashboard({ user, onLogout }) {
                         <span>Keluar Sistem</span>
                     </button>
                 </div>
+                </div>
             </div>
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col h-screen overflow-hidden">
                 <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-                    <h2 className="text-xl font-black text-slate-800">
-                        {menuItems.find(i => i.id === activeTab)?.label}
-                    </h2>
+                    <div className="flex items-center gap-4">
+                        <button 
+                            onClick={() => setSidebarOpen(!isSidebarOpen)}
+                            className="p-2 text-slate-400 hover:bg-slate-50 hover:text-sky-500 rounded-xl transition-colors"
+                        >
+                            <MenuIcon size={24} />
+                        </button>
+                        <h2 className="text-xl font-black text-slate-800 hidden sm:block">
+                            {menuItems.find(i => i.id === activeTab)?.label}
+                        </h2>
+                    </div>
                     <div className="flex items-center gap-4">
                         <div className="text-right hidden sm:block">
                             <p className="text-sm font-black text-slate-800">{user?.nama || 'Administrator'}</p>

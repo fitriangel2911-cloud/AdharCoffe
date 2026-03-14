@@ -1,0 +1,16 @@
+FAILED (Enum Error): Role 'Admin'
+SUCCESS: Role 'admin' is valid!
+FAILED (Enum Error): Role 'Kasir'
+SUCCESS: Role 'kasir' is valid!
+FAILED (Enum Error): Role 'Pelanggan'
+FAILED (Enum Error): Role 'pelanggan'
+FAILED (Enum Error): Role 'Dapur'
+FAILED (Enum Error): Role 'dapur'
+FAILED (Enum Error): Role 'Staff'
+FAILED (Enum Error): Role 'staff'
+FAILED (Enum Error): Role 'Staff Dapur'
+FAILED (Enum Error): Role 'staff_dapur'
+FAILED (Enum Error): Role 'Koki'
+FAILED (Enum Error): Role 'koki'
+FAILED (Enum Error): Role 'Barista'
+FAILED (Enum Error): Role 'barista'

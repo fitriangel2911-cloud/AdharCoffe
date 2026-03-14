@@ -18,7 +18,8 @@ import {
     Leaf,
     Utensils,
     Monitor,
-    Layout
+    Layout,
+    ShoppingCart
 } from 'lucide-react';
 
 export default function POSInput({ user, onLogout }) {
@@ -44,6 +45,12 @@ export default function POSInput({ user, onLogout }) {
     ];
 
     useEffect(() => {
+        if (tipePesanan !== 'Diantar' && metodePembayaran === 'Tunai') {
+            setMetodePembayaran('QRIS');
+        }
+    }, [tipePesanan, metodePembayaran]);
+
+    useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
@@ -64,6 +71,14 @@ export default function POSInput({ user, onLogout }) {
 
     const addToCart = (product) => {
         const existing = cart.find(item => item.id === product.id);
+        const currentQty = existing ? existing.qty : 0;
+        
+        // Cek apakah stok mencukupi
+        if (product.stok !== undefined && currentQty >= product.stok) {
+            alert(`Stok ${product.nama_menu} tidak mencukupi!`);
+            return;
+        }
+
         if (existing) {
             setCart(cart.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item));
         } else {
@@ -88,6 +103,13 @@ export default function POSInput({ user, onLogout }) {
         setCart(cart.map(item => {
             if (item.id === id) {
                 const newQty = item.qty + delta;
+                
+                // Cek stok saat menambah quantity
+                if (delta > 0 && item.stok !== undefined && newQty > item.stok) {
+                    alert(`Maksimal stok ${item.nama_menu} adalah ${item.stok}`);
+                    return item;
+                }
+
                 return newQty > 0 ? { ...item, qty: newQty } : item;
             }
             return item;
@@ -114,11 +136,11 @@ export default function POSInput({ user, onLogout }) {
         cart.forEach(item => {
             for (let i = 0; i < item.qty; i++) {
                 transaksiData.push({
-                    id_menu: item.id,
+                    kuantitas_menu: item.id,
                     hpp: Number(item.hpp || 0),
                     harga: Number(item.harga),
                     nama_pembeli: namaPembeli || 'Umum',
-                    no_meja: selectedTable,
+                    no_meja: tipePesanan === 'Makan Ditempat' ? selectedTable : null,
                     metode_pembayaran: metodePembayaran,
                     kontak: kontak,
                     tipe_pesanan: tipePesanan
@@ -134,9 +156,26 @@ export default function POSInput({ user, onLogout }) {
             });
 
             if (response.ok) {
+                const result = await response.json();
+                
+                // Simpan identitas pesanan terakhir untuk pelacakan antrian
+                if (result.data && result.data.length > 0) {
+                    const firstItem = result.data[0];
+                    localStorage.setItem('lastOrderKey', `${firstItem.nama_pembeli}_${firstItem.created_at}`);
+                }
+
                 setShowReceipt(true);
-                // We keep the cart and name for receipt, 
-                // but usually you'd clear on close or start new order
+                // Refresh menu data to update stock levels
+                const menuRes = await fetch('/api/menu');
+                const rawMenuData = await menuRes.json();
+                // Ensure numeric values for stock logic
+                const processedMenuData = rawMenuData.map(item => ({
+                    ...item,
+                    stok: Number(item.stok || 0),
+                    min_stok: Number(item.min_stok || 0)
+                }));
+                setMenuItems(processedMenuData);
+                
                 setSelectedTable(null);
             } else {
                 const err = await response.json();
@@ -228,6 +267,15 @@ export default function POSInput({ user, onLogout }) {
                 </div>
 
                 <div className="flex items-center gap-4">
+                    {localStorage.getItem('lastOrderKey') && (
+                        <button
+                            onClick={() => window.dispatchEvent(new CustomEvent('navToWaiting'))}
+                            className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full font-bold shadow-sm transition-all text-sm border border-white/10 flex items-center gap-2"
+                        >
+                            <ShoppingCart className="w-4 h-4" />
+                            Antrian Saya
+                        </button>
+                    )}
                     <div className="flex items-center gap-2 bg-[#0284c7] hover:bg-[#0369a1] cursor-default px-4 py-2.5 rounded-full transition-colors shadow-inner">
                         <UserCircle className="w-5 h-5" />
                         <div className="flex flex-col leading-none">
@@ -320,10 +368,24 @@ export default function POSInput({ user, onLogout }) {
                                         })}
                                     </div>
 
-                                    <h3 className="font-black text-[15px] mb-2 text-[#0c4a6e] group-hover:text-[#0284c7] line-clamp-2 min-h-[40px] leading-tight px-1">
+                                    <h3 className="font-black text-[15px] mb-1 text-[#0c4a6e] group-hover:text-[#0284c7] line-clamp-2 min-h-[40px] leading-tight px-1">
                                         {produk.nama_menu}
                                     </h3>
-                                    <p className="text-[#f472b6] font-black text-[17px]">{formatRp(produk.harga)}</p>
+                                    <div className="flex flex-col items-center gap-1 mb-2">
+                                        <p className="text-[#f472b6] font-black text-[17px] leading-none">{formatRp(produk.harga)}</p>
+                                        <div className="flex items-center gap-1.5">
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                                produk.stok <= 0 ? 'bg-rose-100 text-rose-600' :
+                                                produk.stok <= (produk.min_stok || 5) ? 'bg-amber-100 text-amber-600' :
+                                                'bg-sky-50 text-sky-500'
+                                            }`}>
+                                                Stok: {produk.stok ?? 0}
+                                            </span>
+                                            {produk.stok > 0 && produk.stok <= (produk.min_stok || 5) && (
+                                                <span className="text-[9px] font-black text-amber-500 animate-pulse uppercase tracking-tighter">Terbatas!</span>
+                                            )}
+                                        </div>
+                                    </div>
 
                                     <div className="mt-4 w-full h-1 bg-slate-50 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity">
                                         <div className="h-full bg-sky-200 w-1/2 mx-auto rounded-full"></div>
@@ -379,16 +441,18 @@ export default function POSInput({ user, onLogout }) {
                                     className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900"
                                 />
                             </div>
-                            <div className="w-1/3">
-                                <label className="block text-[10px] font-black text-[#f472b6] uppercase tracking-widest mb-1 ml-1">Meja</label>
-                                <button
-                                    onClick={() => setShowTableModal(true)}
-                                    className={`w-full h-[42px] flex items-center justify-center gap-2 rounded-xl border border-pink-100 font-black text-sm transition-all shadow-sm ${selectedTable ? 'bg-[#f472b6] text-white border-transparent' : 'bg-white text-pink-500 hover:bg-pink-50'}`}
-                                >
-                                    <Monitor className="w-4 h-4" />
-                                    {selectedTable ? `#${selectedTable}` : 'Pilih'}
-                                </button>
-                            </div>
+                            {tipePesanan === 'Makan Ditempat' && (
+                                <div className="w-1/3">
+                                    <label className="block text-[10px] font-black text-[#f472b6] uppercase tracking-widest mb-1 ml-1">Meja</label>
+                                    <button
+                                        onClick={() => setShowTableModal(true)}
+                                        className={`w-full h-[42px] flex items-center justify-center gap-2 rounded-xl border border-pink-100 font-black text-sm transition-all shadow-sm ${selectedTable ? 'bg-[#f472b6] text-white border-transparent' : 'bg-white text-pink-500 hover:bg-pink-50'}`}
+                                    >
+                                        <Monitor className="w-4 h-4" />
+                                        {selectedTable ? `#${selectedTable}` : 'Pilih'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex gap-2">
@@ -414,6 +478,7 @@ export default function POSInput({ user, onLogout }) {
                                 >
                                     <option value="Makan Ditempat">Makan di Tempat</option>
                                     <option value="Bawa Pulang">Bawa Pulang</option>
+                                    <option value="Diantar">Diantar (Delivery)</option>
                                 </select>
                             </div>
                             <div className="flex-1">
@@ -423,8 +488,8 @@ export default function POSInput({ user, onLogout }) {
                                     onChange={(e) => setMetodePembayaran(e.target.value)}
                                     className="w-full bg-white px-4 py-2.5 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 font-bold text-sm text-sky-900 appearance-none"
                                 >
-                                    <option value="Tunai">Tunai (Bayar di Kasir)</option>
-                                    <option value="QRIS">QRIS (Bayar di Kasir)</option>
+                                    {tipePesanan === "Diantar" && <option value="Tunai">Tunai / COD</option>}
+                                    <option value="QRIS">QRIS</option>
                                     <option value="Transfer">Transfer Bank</option>
                                 </select>
                             </div>
@@ -484,7 +549,7 @@ export default function POSInput({ user, onLogout }) {
                             onClick={handleCheckout}
                             className="w-full bg-[#e2e8f0] disabled:bg-[#e2e8f0] disabled:text-[#94a3b8] hover:enabled:bg-[#ec4899] enabled:bg-[#f472b6] enabled:text-white enabled:shadow-lg font-black py-4 rounded-xl transition-all text-lg flex items-center justify-center tracking-wide"
                         >
-                            Pesan Sekarang (Bayar di Kasir)
+                            Pesan Sekarang
                         </button>
                     </div>
                 </aside>
@@ -569,8 +634,8 @@ export default function POSInput({ user, onLogout }) {
                             </div>
 
                             <div className="mt-6 text-center text-slate-400 text-[11px] font-medium leading-relaxed">
-                                <p>Silakan bawa struk pesanan ini ke Kasir</p>
-                                <p>untuk melakukan transaksi pembayaran.</p>
+                                <p>Pesanan Anda telah diterima dan masuk antrian.</p>
+                                <p>Silakan unduh atau cetak bukti pesanan Anda.</p>
                                 {kontak && kontak.includes('@') && (
                                     <p className="mt-2 text-[#0ea5e9] italic">
                                         *Salinan struk telah dikirim ke email Anda.
@@ -580,13 +645,22 @@ export default function POSInput({ user, onLogout }) {
                         </div>
 
                         {/* Tombol Aksi */}
-                        <div className="p-4 bg-white border-t border-slate-100 flex gap-2">
+                        <div className="p-4 bg-white border-t border-slate-100 grid grid-cols-2 gap-3">
                             <button
                                 onClick={handlePrint}
-                                className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl shadow-sm transition-colors flex items-center justify-center gap-2"
+                                className="flex items-center justify-center gap-2 py-3.5 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all border border-slate-200"
                             >
                                 <Printer className="w-5 h-5" />
                                 <span>Cetak</span>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setShowReceipt(false);
+                                    window.dispatchEvent(new CustomEvent('navToWaiting'));
+                                }}
+                                className="flex items-center justify-center gap-2 py-3.5 bg-sky-500 text-white rounded-2xl font-bold hover:bg-sky-600 shadow-lg shadow-sky-100 transition-all active:scale-95"
+                            >
+                                Antrian
                             </button>
                         </div>
                     </div>

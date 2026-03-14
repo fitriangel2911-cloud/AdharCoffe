@@ -1,6 +1,9 @@
 from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr
+from fastapi.responses import StreamingResponse
+import io
+import csv
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from backend.database import get_supabase
 from datetime import datetime
@@ -21,22 +24,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    start_time = time.time()
-    try:
-        response = await call_next(request)
-        process_time = (time.time() - start_time) * 1000
-        print(f"DEBUG: {request.method} {request.url.path} - Status: {response.status_code} - Time: {process_time:.2f}ms")
-        return response
-    except Exception as e:
-        print(f"DEBUG ERROR: Request failed: {str(e)}")
-        return await call_next(request) # Fallback to original behavior
+# Middleware removed to avoid proxy interference issues
 
 class UserRegister(BaseModel):
     nama: str
     email: EmailStr
     password: str
+    role: Optional[str] = "Pelanggan"
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -47,9 +41,11 @@ from typing import Optional
 class Menu(BaseModel):
     id: Optional[int] = None
     nama_menu: str
-    harga: str
+    harga: int
     hpp: Optional[int] = None
     kategori: str
+    stok: Optional[int] = 0
+    min_stok: Optional[int] = 5
 
 class Kategori(BaseModel):
     id: Optional[int] = None
@@ -70,14 +66,17 @@ class Pengeluaran(BaseModel):
 
 class Transaksi(BaseModel):
     id: Optional[int] = None
-    id_menu: int
+    kuantitas_menu: int
     hpp: int
     harga: int
     nama_pembeli: Optional[str] = "Umum"
     no_meja: Optional[int] = None
     metode_pembayaran: Optional[str] = "Tunai"
+    
+    # Config removed to keep it simple as we renamed the field directly
     tipe_pesanan: Optional[str] = "Makan Ditempat"
     kontak: Optional[str] = ""
+    status: Optional[str] = "waiting"
     created_at: Optional[str] = None
 
 @app.post("/api/auth/register")
@@ -95,12 +94,24 @@ async def register(user: UserRegister):
         res = sb.table("users").insert({
             "nama": user.nama,
             "email": user.email,
-            "password": user.password
+            "password": user.password,
+            "role": user.role
         }).execute()
         return {"message": "User registered successfully", "user": res.data[0]}
     except Exception as e:
-        print(f"INSERT ERROR: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e)
+        print(f"INSERT ERROR: {error_msg}")
+        if "column \"role\" of relation \"users\" does not exist" in error_msg.lower():
+            raise HTTPException(
+                status_code=500, 
+                detail="Kolom 'role' belum ada di tabel 'users' di Supabase. Silakan tambahkan kolom 'role' (text) terlebih dahulu di Dashboard Supabase."
+            )
+        if "invalid input value for enum" in error_msg.lower():
+            raise HTTPException(
+                status_code=500,
+                detail=f"Registrasi gagal: Role '{user.role}' belum ditambahkan di database. Silakan jalankan SQL di Supabase: ALTER TYPE role ADD VALUE '{user.role}';"
+            )
+        raise HTTPException(status_code=500, detail=error_msg)
 
 @app.post("/api/auth/login")
 async def login(credentials: UserLogin):
@@ -152,6 +163,16 @@ async def delete_menu(item_id: int):
     sb = get_supabase()
     sb.table("menu").delete().eq("id", item_id).execute()
     return {"message": "Menu deleted"}
+
+@app.put("/api/menu/{item_id}/stok")
+async def update_menu_stok(item_id: int, data: dict):
+    sb = get_supabase()
+    new_stok = data.get("stok")
+    if new_stok is None:
+        raise HTTPException(status_code=400, detail="Stok is required")
+        
+    res = sb.table("menu").update({"stok": new_stok}).eq("id", item_id).execute()
+    return res.data[0]
 
 # --- KATEGORI ENDPOINTS ---
 @app.get("/api/kategori")
@@ -264,10 +285,51 @@ def send_receipt_email_task(to_email: str, order_summary: dict, total_bayar: int
 
 @app.post("/api/checkout")
 async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
+    print(f"DEBUG: Received checkout request with {len(items)} items")
     sb = get_supabase()
     try:
-        data = [item.dict(exclude_none=True) for item in items]
-        res = sb.table("transaksi").insert(data).execute()
+        # 1. Cek Ketersediaan Stok
+        id_menus = [item.kuantitas_menu for item in items]
+        res_menu = sb.table("menu").select("id, nama_menu, stok").in_("id", id_menus).execute()
+        menu_lookup = {m['id']: m for m in (res_menu.data or [])}
+        
+        required_qty = {}
+        for item in items:
+            m_id = int(item.kuantitas_menu)
+            required_qty[m_id] = required_qty.get(m_id, 0) + 1
+            
+        # Validasi stok
+        for menu_id, qty in required_qty.items():
+            menu = menu_lookup.get(menu_id)
+            if not menu:
+                raise HTTPException(status_code=404, detail=f"Menu dengan ID {menu_id} tidak ditemukan")
+            
+            try:
+                current_stok = int(menu.get('stok', 0))
+            except (ValueError, TypeError):
+                current_stok = 0
+                
+            if int(current_stok) < int(qty):
+                raise HTTPException(status_code=400, detail=f"Stok tidak mencukupi untuk {menu['nama_menu']}. Sisa: {current_stok}")
+
+        # 2. Simpan Transaksi
+        try:
+            # We renamed the field to kuantitas_menu, so it matches DB by default
+            data = [item.dict(exclude_none=True) for item in items]
+            print(f"DEBUG: Inserting data to Supabase: {data}")
+            res = sb.table("transaksi").insert(data).execute()
+        except Exception as insert_err:
+            print(f"INSERT TRANSACTION ERROR: {insert_err}")
+            raise HTTPException(status_code=500, detail=f"Database insert failed: {str(insert_err)}")
+        
+        # 3. Kurangi Stok
+        for menu_id, qty in required_qty.items():
+            try:
+                current_stok = int(menu_lookup[menu_id].get('stok', 0))
+            except (ValueError, TypeError):
+                current_stok = 0
+            new_stok = current_stok - qty
+            sb.table("menu").update({"stok": max(0, new_stok)}).eq("id", menu_id).execute()
         
         # Format Data for Email Receipt
         to_email = None
@@ -283,13 +345,10 @@ async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
         if to_email and "@" in to_email:
             # Map item IDs to names
             try:
-                id_menus = list(set([i.id_menu for i in items]))
-                res_menu = sb.table("menu").select("id, nama_menu").in_("id", id_menus).execute()
-                menu_map = {m['id']: m['nama_menu'] for m in (res_menu.data or [])}
-                
+                # Re-use menu_lookup content but maybe we need names if we didn't fetch them all
                 order_summary = {}
                 for item in items:
-                    name = menu_map.get(item.id_menu, f"Item #{item.id_menu}")
+                    name = menu_lookup.get(item.kuantitas_menu, {}).get('nama_menu', f"Item #{item.kuantitas_menu}")
                     if name not in order_summary:
                         order_summary[name] = {"qty": 0, "price": item.harga, "subtotal": 0}
                     order_summary[name]["qty"] += 1
@@ -299,7 +358,9 @@ async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
             except Exception as email_prep_error:
                 print(f"EMAIL PREP ERROR: {email_prep_error}")
                 
-        return {"message": "Transaksi berhasil disimpan", "data": res.data}
+        return {"message": "Transaksi berhasil disimpan dan stok telah diperbarui", "data": res.data}
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"CHECKOUT ERROR: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -309,7 +370,7 @@ async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
 async def get_pengeluaran():
     try:
         sb = get_supabase()
-        res = sb.table("biaya_operasional").select("*").order("tanggal", desc=True).execute()
+        res = sb.table("pengeluaran_operasional").select("*").order("tanggal", desc=True).execute()
         return res.data or []
     except Exception as e:
         print(f"GET PENGELUARAN ERROR: {e}")
@@ -320,20 +381,26 @@ async def get_pengeluaran():
 async def add_pengeluaran(data: Pengeluaran):
     try:
         sb = get_supabase()
-        res = sb.table("biaya_operasional").insert({
+        res = sb.table("pengeluaran_operasional").insert({
             "akun": data.akun,
             "nominal": data.nominal,
             "tanggal": data.tanggal
         }).execute()
         return res.data[0]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e)
+        if "relation \"public.pengeluaran_operasional\" does not exist" in error_msg or "Could not find relation" in error_msg:
+            raise HTTPException(
+                status_code=500, 
+                detail="Tabel 'pengeluaran_operasional' belum ada di Supabase database Anda. Tolong buat tabelnya."
+            )
+        raise HTTPException(status_code=500, detail=error_msg)
 
 @app.delete("/api/pengeluaran/{id}")
 async def delete_pengeluaran(id: int):
     try:
         sb = get_supabase()
-        sb.table("pengeluaran").delete().eq("id", id).execute()
+        sb.table("pengeluaran_operasional").delete().eq("id", id).execute()
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -353,10 +420,10 @@ async def get_stats():
         # Fetch operational expenses (resilient)
         exp_data = []
         try:
-            res_exp = sb.table("biaya_operasional").select("*").execute()
+            res_exp = sb.table("pengeluaran_operasional").select("*").execute()
             exp_data = res_exp.data or []
         except Exception as e:
-            print(f"STATS: Table 'biaya_operasional' not found or inaccessible: {e}")
+            print(f"STATS: Table 'pengeluaran_operasional' not found or inaccessible: {e}")
 
         total_sales = sum(int(row.get('harga') or 0) for row in data)
         total_hpp = sum(int(row.get('hpp') or 0) for row in data)
@@ -366,7 +433,7 @@ async def get_stats():
         daily_stats = {}
         menu_counts = {} # {id_menu: count}
         for row in data:
-            id_menu = row.get("id_menu")
+            id_menu = row.get("kuantitas_menu")
             if id_menu:
                 menu_counts[id_menu] = menu_counts.get(id_menu, 0) + 1
 
@@ -439,4 +506,92 @@ async def get_stats():
         }
     except Exception as e:
         print(f"STATS ERROR: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/export/transactions")
+async def export_transactions():
+    sb = get_supabase()
+    try:
+        res = sb.table("transaksi").select("*").order("created_at", desc=True).execute()
+        data = res.data or []
+        
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Header
+        if data:
+            writer.writerow(data[0].keys())
+            for row in data:
+                writer.writerow(row.values())
+        
+        output.seek(0)
+        return StreamingResponse(
+            output,
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename=transaksi_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/export/financials")
+async def export_financials():
+    stats = await get_stats()
+    try:
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        writer.writerow(["Parameter", "Nilai"])
+        writer.writerow(["Total Penjualan", stats["total_sales"]])
+        writer.writerow(["Total HPP", stats["total_hpp"]])
+        writer.writerow(["Total Operasional", stats["total_operasional"]])
+        writer.writerow(["Total Laba Bersih", stats["total_profit"]])
+        writer.writerow(["Efisiensi", f"{stats['efficiency']}%"])
+        writer.writerow([])
+        writer.writerow(["Data Harian (7 Hari Terakhir)"])
+        writer.writerow(["Tanggal", "Penjualan", "Pengeluaran", "Laba"])
+        
+        for day in stats["chart_data"]:
+            writer.writerow([day["name"], day["sales"], day["expense"], day["profit"]])
+            
+        output.seek(0)
+        return StreamingResponse(
+            output,
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename=laporan_keuangan_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# --- ORDER MANAGEMENT ENDPOINTS ---
+@app.get("/api/orders/active")
+async def get_active_orders():
+    sb = get_supabase()
+    try:
+        # Get orders that are not completed
+        res = sb.table("transaksi").select("*").neq("status", "completed").order("created_at", desc=False).execute()
+        return res.data or []
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/orders/public")
+async def get_public_queue():
+    sb = get_supabase()
+    try:
+        # For public display, just name and status
+        res = sb.table("transaksi").select("id, nama_pembeli, no_meja, status, created_at").neq("status", "completed").order("created_at", desc=False).execute()
+        return res.data or []
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/orders/{order_id}/status")
+async def update_order_status(order_id: int, data: dict):
+    sb = get_supabase()
+    new_status = data.get("status")
+    if not new_status:
+        raise HTTPException(status_code=400, detail="Status is required")
+        
+    try:
+        res = sb.table("transaksi").update({"status": new_status}).eq("id", order_id).execute()
+        return res.data[0]
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

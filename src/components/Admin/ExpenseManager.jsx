@@ -64,7 +64,12 @@ export default function ExpenseManager() {
                 setFormData({ akun: '', nominal: '', tanggal: new Date().toISOString().split('T')[0] });
                 fetchExpenses();
             } else {
-                showStatus('error', 'Gagal menambahkan biaya');
+                const errData = await response.json();
+                if (errData.detail && errData.detail.includes("Tabel 'biaya_operasional' belum dibuat")) {
+                    alert(errData.detail);
+                } else {
+                    showStatus('error', errData.detail || 'Gagal menambahkan biaya');
+                }
             }
         } catch (error) {
             showStatus('error', 'Terjadi kesalahan sistem');

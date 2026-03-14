@@ -9,7 +9,8 @@ import {
     Calendar,
     ArrowUpRight,
     ArrowDownRight,
-    Calculator
+    Calculator,
+    Download
 } from 'lucide-react';
 import {
     AreaChart,
@@ -52,6 +53,26 @@ export default function FinancialReports() {
     );
 
     const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
+
+    const handleDownload = async (type) => {
+        try {
+            const endpoint = type === 'transactions' ? '/api/export/transactions' : '/api/export/financials';
+            const response = await fetch(endpoint);
+            if (!response.ok) throw new Error('Download failed');
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = type === 'transactions' ? `transaksi_${new Date().getTime()}.csv` : `laporan_keuangan_${new Date().getTime()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error downloading report:", error);
+            alert("Gagal mengunduh laporan");
+        }
+    };
 
     const chartData = statsData?.chart_data || [];
     
@@ -260,6 +281,22 @@ export default function FinancialReports() {
                     <div>
                         <h3 className="text-xl font-black text-slate-800">Tren Keuangan</h3>
                         <p className="text-sm font-bold text-slate-400">Arus Masuk vs Arus Keluar (HPP)</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4">
+                        <button 
+                            onClick={() => handleDownload('financials')}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-sky-50 text-sky-600 rounded-xl font-black text-xs hover:bg-sky-100 transition-all"
+                        >
+                            <Download size={14} />
+                            Unduh Laporan
+                        </button>
+                        <button 
+                            onClick={() => handleDownload('transactions')}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-pink-50 text-pink-600 rounded-xl font-black text-xs hover:bg-pink-100 transition-all"
+                        >
+                            <Download size={14} />
+                            Unduh Detail Transaksi
+                        </button>
                     </div>
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-2">

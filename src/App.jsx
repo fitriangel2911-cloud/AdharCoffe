@@ -3,6 +3,8 @@ import Login from './components/login';
 import Register from './components/Register';
 import POSInput from './components/POSInput';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import WaitingOrders from './components/WaitingOrders';
+import StaffDashboard from './components/StaffDashboard';
 
 function App() {
   const [currentView, setCurrentView] = useState('login'); // 'login', 'register', 'pos', 'admin'
@@ -31,7 +33,14 @@ function App() {
     checkConnection();
     // Re-check every 30 seconds
     const interval = setInterval(checkConnection, 30000);
-    return () => clearInterval(interval);
+    
+    const handleNavWaiting = () => setCurrentView('waiting');
+    window.addEventListener('navToWaiting', handleNavWaiting);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('navToWaiting', handleNavWaiting);
+    };
   }, []);
 
   const handleLogin = (userObj) => {
@@ -39,8 +48,18 @@ function App() {
     // If user has role admin, or for now just check if email is admin@gmail.com
     if (userObj?.role === 'Admin' || userObj?.email === 'admin@gmail.com') {
       setCurrentView('admin');
+    } else if (userObj?.role === 'Dapur' || userObj?.role === 'Kasir' || userObj?.role === 'Staff') {
+      setCurrentView('staff');
     } else {
-      setCurrentView('pos');
+      // Check if they have an active order saved in localStorage
+      const savedKey = localStorage.getItem('lastOrderKey');
+      if (savedKey) {
+          // You might want to optionally check against the API if it's still active, 
+          // but just routing to 'waiting' lets `WaitingOrders.jsx` handle it via its logic.
+          setCurrentView('waiting');
+      } else {
+          setCurrentView('pos');
+      }
     }
   };
 
@@ -92,6 +111,12 @@ function App() {
       )}
       {currentView === 'admin' && (
         <AdminDashboard user={user} onLogout={handleLogout} />
+      )}
+      {currentView === 'staff' && (
+        <StaffDashboard user={user} onLogout={handleLogout} />
+      )}
+      {currentView === 'waiting' && (
+        <WaitingOrders onBack={() => setCurrentView('pos')} />
       )}
     </>
   );
