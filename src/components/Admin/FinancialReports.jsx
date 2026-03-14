@@ -190,8 +190,8 @@ export default function FinancialReports() {
                                     <span className="font-black text-slate-800">{formatRp(totalProfit)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pb-4 border-b border-slate-50">
-                                    <span className="font-bold text-slate-600">Modal Awal / Inventory</span>
-                                    <span className="font-black text-slate-800">{formatRp(totalHPP + totalOperational)}</span>
+                                    <span className="font-bold text-slate-600">Modal HPP (Harga Pokok)</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalHPP)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pt-4 font-black text-pink-600 text-lg">
                                     <span>TOTAL PASIVA</span>
@@ -253,11 +253,11 @@ export default function FinancialReports() {
                              <h3 className="text-2xl font-black mb-8 italic">LAPORAN PERUBAHAN EKUITAS</h3>
                              <div className="space-y-6 relative z-10">
                                 <div className="flex justify-between border-b border-white/20 pb-4">
-                                    <span className="font-bold opacity-80">Modal Terserap (HPP + Ops)</span>
-                                    <span className="font-black text-xl">{formatRp(totalHPP + totalOperational)}</span>
+                                    <span className="font-bold opacity-80">Modal Terserap (HPP)</span>
+                                    <span className="font-black text-xl">{formatRp(totalHPP)}</span>
                                 </div>
                                 <div className="flex justify-between border-b border-white/20 pb-4">
-                                    <span className="font-bold opacity-80">Laba Bersih Periode Berjalan</span>
+                                    <span className="font-bold opacity-80">Laba Bersih Operasional</span>
                                     <span className="font-black text-xl">{formatRp(totalProfit)}</span>
                                 </div>
                                 <div className="flex justify-between pt-4">
@@ -304,8 +304,12 @@ export default function FinancialReports() {
                              <span className="font-black text-slate-500 text-[11px] uppercase tracking-wider">Pendapatan</span>
                         </div>
                         <div className="flex items-center gap-2">
-                             <div className="w-3 h-3 rounded-full bg-[#f472b6]"></div>
-                             <span className="font-black text-slate-500 text-[11px] uppercase tracking-wider">Pengeluaran (HPP)</span>
+                             <div className="w-3 h-3 rounded-full bg-[#f43f5e]"></div>
+                             <span className="font-black text-slate-500 text-[11px] uppercase tracking-wider">HPP</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                             <div className="w-3 h-3 rounded-full bg-[#f59e0b]"></div>
+                             <span className="font-black text-slate-500 text-[11px] uppercase tracking-wider">Biaya Ops</span>
                         </div>
                     </div>
                 </div>
@@ -336,8 +340,9 @@ export default function FinancialReports() {
                                 }} 
                                 formatter={(value) => formatRp(value)}
                             />
-                            <Bar dataKey="sales" name="Pendapatan" fill="#0ea5e9" radius={[6, 6, 0, 0]} barSize={24} />
-                            <Bar dataKey="expense" name="Pengeluaran (HPP)" fill="#f472b6" radius={[6, 6, 0, 0]} barSize={24} />
+                            <Bar dataKey="sales" name="Pendapatan" fill="#0ea5e9" radius={[6, 6, 0, 0]} barSize={16} />
+                            <Bar dataKey="expense" name="HPP" fill="#f43f5e" radius={[6, 6, 0, 0]} barSize={16} />
+                            <Bar dataKey="operasional" name="Biaya Operasional" fill="#f59e0b" radius={[6, 6, 0, 0]} barSize={16} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

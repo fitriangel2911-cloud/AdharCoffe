@@ -462,8 +462,9 @@ async def get_stats():
             chart_data.append({
                 "name": date[-5:], # MM-DD
                 "sales": daily_stats[date]["sales"],
-                "profit": daily_stats[date]["profit"] - daily_stats[date]["operational_expense"], # Daily profit adjusted for operational expenses
-                "expense": daily_stats[date]["expense"] + daily_stats[date]["operational_expense"] # Total expenses (HPP + Operational)
+                "profit": daily_stats[date]["profit"] - daily_stats[date]["operational_expense"], # Daily profit adjusted for COGS and OpEx
+                "expense": daily_stats[date]["expense"], # This is purely HPP/COGS
+                "operasional": daily_stats[date]["operational_expense"] # This is exclusively Operational Expenses
             })
 
         # Final Profit = (Sales - HPP) - Operational Expenses
