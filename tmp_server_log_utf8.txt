@@ -1,0 +1,100 @@
+﻿Checking database connection...
+INFO:     127.0.0.1:54976 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50526 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50527 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61704 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:52364 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54501 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56133 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65475 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:65476 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58579 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64059 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55135 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:55136 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55563 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62472 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62031 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49287 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63752 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53539 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63616 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56572 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64058 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63624 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65218 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:65219 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58421 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:58422 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52073 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57029 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60727 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56809 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51148 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63071 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53432 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50592 - "GET /api/tables/status HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:61808 - "GET /api/db-check HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:50888 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53894 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53895 - "GET /api/orders/active HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:53896 - "GET /api/db-check HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:60273 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60274 - "GET /api/orders/public HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:60275 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60276 - "GET /api/orders/public HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:60278 - "GET /api/db-check HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:60279 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51237 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52095 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52097 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55477 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50255 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55915 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50805 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55039 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63595 - "GET /api/tables/status HTTP/1.1" 200 OK
+DEBUG: Received checkout request with 3 items
+DEBUG: Inserting data to Supabase: [{'kuantitas_menu': 5, 'hpp': 4000, 'harga': 8000, 'nama_pembeli': 'Dhea', 'no_meja': 3, 'metode_pembayaran': 'QRIS', 'tipe_pesanan': 'Makan Ditempat', 'kontak': 'fitriangelina291103@gmail.com', 'infaq': 200, 'status': 'waiting'}, {'kuantitas_menu': 14, 'hpp': 5000, 'harga': 10000, 'nama_pembeli': 'Dhea', 'no_meja': 3, 'metode_pembayaran': 'QRIS', 'tipe_pesanan': 'Makan Ditempat', 'kontak': 'fitriangelina291103@gmail.com', 'infaq': 250, 'status': 'waiting'}, {'kuantitas_menu': 12, 'hpp': 5000, 'harga': 10000, 'nama_pembeli': 'Dhea', 'no_meja': 3, 'metode_pembayaran': 'QRIS', 'tipe_pesanan': 'Makan Ditempat', 'kontak': 'fitriangelina291103@gmail.com', 'infaq': 250, 'status': 'waiting'}]
+AUTOMATIC JOURNAL ERROR: 'charmap' codec can't encode character '\u2192' in position 16: character maps to <undefined>
+INFO:     127.0.0.1:49915 - "POST /api/checkout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57034 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63283 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55450 - "GET /api/orders/public HTTP/1.1" 200 OK
+EMAIL ERROR: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2aece7edd14sm93809285ad.50 - gsmtp')
+INFO:     127.0.0.1:56343 - "GET /api/orders/public HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:56344 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64256 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60720 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63297 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63169 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59244 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54507 - "GET /api/orders/public HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:57773 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52518 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50515 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56968 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57616 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56650 - "GET /api/orders/public HTTP/1.1" 200 OK
+Checking database connection...
+INFO:     127.0.0.1:56651 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60824 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57652 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51727 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49670 - "GET /api/orders/public HTTP/1.1" 200 OK

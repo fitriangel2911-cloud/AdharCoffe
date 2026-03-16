@@ -63,3 +63,9 @@ If you are developing a production application, we recommend using TypeScript wi
     style Selesai fill:#fff,stroke:#333
     style CekAkad stroke-dasharray: 5 5
     style CekMargin stroke-dasharray: 5 5```
+
+### Penjelasan Validasi AI Agent
+Sebagaimana diminta dalam Modul 2, sistem ini mengintegrasikan **AI Agent** pada tahap validasi transaksi sebelum data masuk ke database. Peran utama AI Agent di sini adalah:
+1. **Audit Akad Syariah**: Memastikan produk yang dijual (terutama barang konsinyasi/titipan) sesuai dengan akad *Mudharabah* atau *Musyarakah*.
+2. **Cek Margin & Kejujuran Harga**: AI secara otomatis menganalisis jika ada ketidakwajaran harga (terlalu tinggi/tanda kecurangan) untuk menjaga sifat *Shiddiq* dalam berniaga.
+3. **Verifikasi Stok Real-time**: Mencegah terjadinya *Gharar* (ketidakpastian) dengan memastikan pembeli hanya bisa memesan barang yang benar-benar tersedia di gudang (Supabase).

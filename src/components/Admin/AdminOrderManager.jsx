@@ -78,6 +78,14 @@ export default function AdminOrderManager() {
             // Local state update
             if (newStatus === 'completed') {
                 setOrders(orders.filter(o => !group.items.some(gi => gi.id === o.id)));
+                // Auto-update table to 'served' (waiting to be cleared)
+                if (group.no_meja) {
+                    fetch(`/api/tables/${group.no_meja}/status`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'served' })
+                    }).catch(err => console.error("Table status update failed:", err));
+                }
             } else {
                 setOrders(orders.map(o => 
                     group.items.some(gi => gi.id === o.id) ? { ...o, status: newStatus } : o
@@ -171,7 +179,7 @@ export default function AdminOrderManager() {
                          <div className="flex items-center justify-between px-2">
                             <h3 className="font-black text-pink-600 flex items-center gap-2 uppercase tracking-widest text-xs">
                                 <ChefHat className="w-4 h-4" />
-                                Dapur / Dibuat ({processingGroups.length})
+                                Sedang Disiapkan ({processingGroups.length})
                             </h3>
                         </div>
 
@@ -194,9 +202,9 @@ export default function AdminOrderManager() {
                                                 <p className="text-[10px] font-bold text-pink-400 uppercase tracking-tight">Diproses sejak {new Date(group.created_at).toLocaleTimeString()}</p>
                                             </div>
                                         </div>
-                                        <div className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[10px] font-black uppercase flex items-center gap-1">
+                                         <div className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[10px] font-black uppercase flex items-center gap-1">
                                             <div className="w-1 h-1 bg-pink-600 rounded-full animate-ping"></div>
-                                            Cook
+                                            Staf
                                         </div>
                                     </div>
                                     

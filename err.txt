@@ -1,0 +1,1 @@
+{"detail":[{"type":"missing","loc":["body","akun"],"msg":"Field required","input":{"akun_id_debit":6,"akun_id_kredit":1,"nominal":150000,"tanggal":"2026-03-15","keterangan":"bayar listrik bulan maret"}}]}

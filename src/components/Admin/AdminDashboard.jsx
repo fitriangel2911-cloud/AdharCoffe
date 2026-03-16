@@ -12,7 +12,10 @@ import {
     Wallet,
     Coffee,
     Package,
-    ClipboardList
+    ClipboardList,
+    Heart,
+    BookOpen,
+    Users
 } from 'lucide-react';
 import MenuManager from './MenuManager';
 import CategoryManager from './CategoryManager';
@@ -21,8 +24,11 @@ import FinancialReports from './FinancialReports';
 import ExpenseManager from './ExpenseManager';
 import InventoryManager from '../InventoryManager';
 import AdminOrderManager from './AdminOrderManager';
+import InfaqManager from './InfaqManager';
+import AccountingJournal from './AccountingJournal';
+import UserManager from './UserManager';
 
-export default function AdminDashboard({ user, onLogout }) {
+export default function AdminDashboard({ user, onLogout, dbStatus }) {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [isSidebarOpen, setSidebarOpen] = useState(true);
 
@@ -30,16 +36,21 @@ export default function AdminDashboard({ user, onLogout }) {
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { id: 'orders', label: 'Antrian Pesanan', icon: ClipboardList },
         { id: 'reports', label: 'Laporan Keuangan', icon: LineChart },
+        { id: 'infaq', label: 'Laporan Infaq', icon: Heart },
         { id: 'operasional', label: 'Biaya Operasional', icon: Wallet },
         { id: 'menu', label: 'Kelola Menu', icon: Coffee },
         { id: 'inventory', label: 'Stok & Inventaris', icon: Package },
         { id: 'kategori', label: 'Kelola Kategori', icon: Tags },
+        { id: 'users', label: 'Kelola User & Role', icon: Users },
+        { id: 'akuntansi', label: 'Jurnal Akuntansi', icon: BookOpen },
     ];
 
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
                 return <DashboardStats />;
+            case 'infaq':
+                return <InfaqManager />;
             case 'orders':
                 return <AdminOrderManager />;
             case 'reports':
@@ -52,6 +63,10 @@ export default function AdminDashboard({ user, onLogout }) {
                 return <InventoryManager />;
             case 'kategori':
                 return <CategoryManager />;
+            case 'users':
+                return <UserManager />;
+            case 'akuntansi':
+                return <AccountingJournal />;
             default:
                 return <DashboardStats />;
         }
@@ -87,7 +102,7 @@ export default function AdminDashboard({ user, onLogout }) {
                     </button>
                 </div>
 
-                <nav className="flex-1 p-4 space-y-2 mt-4">
+                <nav className="flex-1 p-4 space-y-2 mt-4 overflow-y-auto">
                     {menuItems.map((item) => (
                         <button
                             key={item.id}
@@ -135,7 +150,9 @@ export default function AdminDashboard({ user, onLogout }) {
                     <div className="flex items-center gap-4">
                         <div className="text-right hidden sm:block">
                             <p className="text-sm font-black text-slate-800">{user?.nama || 'Administrator'}</p>
-                            <p className="text-[11px] font-bold text-green-500 uppercase tracking-widest">Sistem Online</p>
+                            <p className={`text-[11px] font-bold uppercase tracking-widest ${dbStatus === 'online' ? 'text-emerald-500' : 'text-rose-500 animate-pulse'}`}>
+                                Sistem {dbStatus === 'online' ? 'Online' : 'Offline'}
+                            </p>
                         </div>
                         <div className="w-10 h-10 bg-slate-100 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
                             <span className="font-black text-slate-500">

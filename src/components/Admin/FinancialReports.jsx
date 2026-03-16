@@ -10,7 +10,8 @@ import {
     ArrowUpRight,
     ArrowDownRight,
     Calculator,
-    Download
+    Download,
+    HeartHandshake
 } from 'lucide-react';
 import {
     AreaChart,
@@ -80,7 +81,14 @@ export default function FinancialReports() {
     const totalRevenue = statsData?.total_sales || 0;
     const totalHPP = statsData?.total_hpp || 0;
     const totalOperational = statsData?.total_operasional || 0;
+    const totalInfaq = statsData?.total_infaq || 0;
     const totalProfit = statsData?.total_profit || 0;
+    const totalAset = statsData?.total_aset || 0;
+    const totalKewajiban = statsData?.total_kewajiban || 0;
+    const totalEkuitasAwal = statsData?.total_ekuitas_awal || 0;
+    const totalPersediaan = statsData?.total_persediaan || 0;
+    const totalPembelian = statsData?.total_pembelian_persediaan || 0;
+    const netCashFlow = totalRevenue - totalPembelian - totalOperational;
 
     const reportTabs = [
         { id: 'pnl', label: 'Laba Rugi', icon: TrendingUp },
@@ -166,36 +174,40 @@ export default function FinancialReports() {
                             </div>
                             <div className="p-8 space-y-4">
                                 <div className="flex justify-between items-center pb-4 border-b border-slate-50">
-                                    <span className="font-bold text-slate-600">Kas & Bank</span>
-                                    <span className="font-black text-slate-800">{formatRp(totalRevenue)}</span>
+                                    <span className="font-bold text-slate-600">Persediaan (Inventory)</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalPersediaan)}</span>
                                 </div>
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-50 text-slate-400">
-                                    <span className="font-bold">Persediaan Barang</span>
-                                    <span className="font-black tracking-widest italic text-[10px]">TBA</span>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-50">
+                                    <span className="font-bold text-slate-600">Aset Lainnya (Kas, Bangunan, dll)</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalAset - totalPersediaan)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pt-4 font-black text-sky-600 text-lg">
                                     <span>TOTAL AKTIVA</span>
-                                    <span>{formatRp(totalRevenue)}</span>
+                                    <span>{formatRp(totalAset)}</span>
                                 </div>
                             </div>
                         </div>
                         {/* Pasiva (Liabilities & Equity) */}
                         <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-sm">
                             <div className="p-6 border-b border-slate-100 bg-pink-50 text-pink-600">
-                                <h3 className="font-black flex items-center gap-2">PASIVA (EQUITY)</h3>
+                                <h3 className="font-black flex items-center gap-2">PASIVA (LIABILITIES & EQUITY)</h3>
                             </div>
                             <div className="p-8 space-y-4">
                                 <div className="flex justify-between items-center pb-4 border-b border-slate-50">
-                                    <span className="font-bold text-slate-600">Laba Berjalan</span>
-                                    <span className="font-black text-slate-800">{formatRp(totalProfit)}</span>
+                                    <span className="font-bold text-slate-600">Kewajiban / Hutang</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalKewajiban)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pb-4 border-b border-slate-50">
-                                    <span className="font-bold text-slate-600">Modal HPP (Harga Pokok)</span>
-                                    <span className="font-black text-slate-800">{formatRp(totalHPP)}</span>
+                                    <span className="font-bold text-slate-600">Modal Pemilik (Opening)</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalEkuitasAwal)}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-50">
+                                    <span className="font-bold text-slate-600">Laba Tahun Berjalan</span>
+                                    <span className="font-black text-slate-800">{formatRp(totalProfit)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pt-4 font-black text-pink-600 text-lg">
                                     <span>TOTAL PASIVA</span>
-                                    <span>{formatRp(totalRevenue)}</span>
+                                    <span>{formatRp(totalKewajiban + totalEkuitasAwal + totalProfit)}</span>
                                 </div>
                             </div>
                         </div>
@@ -226,19 +238,25 @@ export default function FinancialReports() {
                                     <h4 className="font-black text-pink-600 text-sm mb-2 uppercase tracking-tight">Pengeluaran Kas</h4>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
-                                            <span className="font-bold text-slate-600">Terbayar ke Suplier (HPP)</span>
-                                            <span className="text-md font-black text-rose-500">({formatRp(totalHPP)})</span>
+                                            <span className="font-bold text-slate-600">Pembelian Persediaan (Tunai)</span>
+                                            <span className="text-md font-black text-rose-500">({formatRp(totalPembelian)})</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="font-bold text-slate-600">Beban Operasional (Gaji/Listrik/dll)</span>
                                             <span className="text-md font-black text-rose-500">({formatRp(totalOperational)})</span>
                                         </div>
+                                        <div className="flex justify-between items-center pt-2 opacity-50 text-[10px]">
+                                            <span className="font-bold italic">Info: HPP Penjualan (Beban Non-Kas)</span>
+                                            <span className="font-black">({formatRp(totalHPP)})</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="pt-6 border-t-2 border-slate-50">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xl font-black text-slate-800 italic">Net Cash Increased</span>
-                                        <span className="text-3xl font-black text-[#1ca3f4]">{formatRp(totalProfit)}</span>
+                                        <span className="text-xl font-black text-slate-800 italic">Net Cash Flow</span>
+                                        <span className={`text-3xl font-black ${netCashFlow >= 0 ? 'text-[#1ca3f4]' : 'text-rose-500'}`}>
+                                           {formatRp(netCashFlow)}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -250,19 +268,19 @@ export default function FinancialReports() {
                     <div className="max-w-3xl mx-auto space-y-6 animate-in slide-in-from-right-4 duration-500">
                         <div className="bg-gradient-to-br from-[#1ca3f4] to-[#0ea5e9] p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
                              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-                             <h3 className="text-2xl font-black mb-8 italic">LAPORAN PERUBAHAN EKUITAS</h3>
+                             <h3 className="text-2xl font-black mb-8 italic uppercase">Laporan Perubahan Ekuitas</h3>
                              <div className="space-y-6 relative z-10">
                                 <div className="flex justify-between border-b border-white/20 pb-4">
-                                    <span className="font-bold opacity-80">Modal Terserap (HPP)</span>
-                                    <span className="font-black text-xl">{formatRp(totalHPP)}</span>
+                                    <span className="font-bold opacity-80">Modal Awal Pemilik</span>
+                                    <span className="font-black text-xl">{formatRp(totalEkuitasAwal)}</span>
                                 </div>
                                 <div className="flex justify-between border-b border-white/20 pb-4">
-                                    <span className="font-bold opacity-80">Laba Bersih Operasional</span>
+                                    <span className="font-bold opacity-80">Laba Bersih Berjalan</span>
                                     <span className="font-black text-xl">{formatRp(totalProfit)}</span>
                                 </div>
                                 <div className="flex justify-between pt-4">
-                                    <span className="text-xl font-black uppercase tracking-widest">Modal Akhir</span>
-                                    <span className="text-4xl font-black">{formatRp(totalRevenue)}</span>
+                                    <span className="text-xl font-black uppercase tracking-widest">Ekuitas Akhir</span>
+                                    <span className="text-4xl font-black">{formatRp(totalEkuitasAwal + totalProfit)}</span>
                                 </div>
                              </div>
                         </div>
@@ -313,7 +331,7 @@ export default function FinancialReports() {
                         </div>
                     </div>
                 </div>
-                <div className="h-[350px] w-full">
+                <div className="h-[350px] w-full" style={{ minWidth: 0, minHeight: 0 }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 4" vertical={false} stroke="#f1f5f9" />

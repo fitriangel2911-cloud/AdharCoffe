@@ -19,8 +19,8 @@ export default function Register({ onRegister, onGoLogin }) {
             return;
         }
 
-        if (formData.role === 'Dapur' && formData.accessCode !== STAFF_ACCESS_CODE) {
-            setError('Kode Akses Staff tidak valid.');
+        if (formData.role === 'Staff' && formData.accessCode !== STAFF_ACCESS_CODE) {
+            setError('Kode Akses Staf tidak valid.');
             return;
         }
 
@@ -33,7 +33,7 @@ export default function Register({ onRegister, onGoLogin }) {
                     nama: formData.nama,
                     email: formData.email,
                     password: formData.password,
-                    role: formData.role // Will be 'Pelanggan' or 'Dapur'
+                    role: formData.role // Will be 'Pelanggan' or 'Staff'
                 }),
             });
 
@@ -75,6 +75,9 @@ export default function Register({ onRegister, onGoLogin }) {
                         <p className="text-[#0284c7] font-arabic italic text-[1.2rem] mb-2 font-bold tracking-wider">
                             بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                         </p>
+                        <p className="text-[11px] font-bold text-slate-400 italic">
+                            "Dan janganlah kamu mendekati harta anak yatim, kecuali dengan cara yang lebih bermanfaat... dan sempurnakanlah janji; sesungguhnya janji itu pasti diminta pertanggungjawabannya." (QS. Al-Isra: 34)
+                        </p>
                     </div>
 
                     {error && (
@@ -102,21 +105,21 @@ export default function Register({ onRegister, onGoLogin }) {
 
                                 <button
                                     type="button"
-                                    onClick={() => setFormData({ ...formData, role: 'Dapur' })}
-                                    className={`p-4 rounded-3xl border-2 transition-all flex flex-col items-center gap-2 group ${formData.role === 'Dapur' ? 'border-[#f472b6] bg-pink-50 shadow-lg shadow-pink-100/50' : 'border-slate-100 hover:border-pink-200 bg-white'}`}
+                                    onClick={() => setFormData({ ...formData, role: 'Staff' })}
+                                    className={`p-4 rounded-3xl border-2 transition-all flex flex-col items-center gap-2 group ${formData.role === 'Staff' ? 'border-[#f472b6] bg-pink-50 shadow-lg shadow-pink-100/50' : 'border-slate-100 hover:border-pink-200 bg-white'}`}
                                 >
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${formData.role === 'Dapur' ? 'bg-[#f472b6] text-white' : 'bg-slate-100 text-slate-400 group-hover:bg-pink-100'}`}>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${formData.role === 'Staff' ? 'bg-[#f472b6] text-white' : 'bg-slate-100 text-slate-400 group-hover:bg-pink-100'}`}>
                                         <ChefHat className="w-5 h-5" />
                                     </div>
-                                    <span className={`text-[13px] font-black ${formData.role === 'Dapur' ? 'text-pink-700' : 'text-slate-500'}`}>Staff Dapur</span>
+                                    <span className={`text-[13px] font-black ${formData.role === 'Staff' ? 'text-pink-700' : 'text-slate-500'}`}>Staf</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Conditional Access Code Field */}
-                        {formData.role === 'Dapur' && (
+                        {formData.role === 'Staff' && (
                             <div className="animate-in fade-in slide-in-from-top-4 duration-300">
-                                <label className="block text-[11px] font-black text-[#f472b6] uppercase tracking-widest mb-2 ml-1">Staff Access Code</label>
+                                <label className="block text-[11px] font-black text-[#f472b6] uppercase tracking-widest mb-2 ml-1">Kode Akses Staf</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                         <KeyRound className="h-[18px] w-[18px] text-[#f472b6]" strokeWidth={2.5} />

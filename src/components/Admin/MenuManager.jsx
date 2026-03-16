@@ -12,7 +12,9 @@ export default function MenuManager() {
         nama_menu: '',
         harga: '',
         hpp: '',
-        kategori: ''
+        kategori: '',
+        stok: '',
+        min_stok: ''
     });
 
     useEffect(() => {
@@ -52,7 +54,7 @@ export default function MenuManager() {
             if (response.ok) {
                 setShowModal(false);
                 setEditingItem(null);
-                setFormData({ nama_menu: '', harga: '', hpp: '', kategori: '' });
+                setFormData({ nama_menu: '', harga: '', hpp: '', kategori: '', stok: '', min_stok: '' });
                 fetchData();
             } else {
                 const errData = await response.json();
@@ -95,7 +97,7 @@ export default function MenuManager() {
                     />
                 </div>
                 <button
-                    onClick={() => { setEditingItem(null); setFormData({ nama_menu: '', harga: '', kategori: '' }); setShowModal(true); }}
+                    onClick={() => { setEditingItem(null); setFormData({ nama_menu: '', harga: '', hpp: '', kategori: '', stok: '', min_stok: '' }); setShowModal(true); }}
                     className="w-full sm:w-auto bg-[#1ca3f4] hover:bg-[#1589d1] text-white px-5 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-sky-100 transition-all active:scale-95"
                 >
                     <Plus size={18} />
@@ -141,7 +143,18 @@ export default function MenuManager() {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
-                                                    onClick={() => { setEditingItem(item); setFormData({ nama_menu: item.nama_menu, harga: item.harga, hpp: item.hpp || '', kategori: item.kategori }); setShowModal(true); }}
+                                                    onClick={() => { 
+                                                        setEditingItem(item); 
+                                                        setFormData({ 
+                                                            nama_menu: item.nama_menu, 
+                                                            harga: item.harga, 
+                                                            hpp: item.hpp || '', 
+                                                            kategori: item.kategori,
+                                                            stok: item.stok || 0,
+                                                            min_stok: item.min_stok || 5
+                                                        }); 
+                                                        setShowModal(true); 
+                                                    }}
                                                     className="p-2 text-sky-500 hover:bg-sky-50 rounded-lg transition-colors"
                                                 >
                                                     <Pencil size={18} />
@@ -217,6 +230,30 @@ export default function MenuManager() {
                                         onChange={(e) => setFormData({ ...formData, harga: e.target.value })}
                                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 font-bold"
                                         placeholder="15000"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-black text-[#f472b6] uppercase tracking-widest mb-1.5 ml-1">Stok Awal</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={formData.stok}
+                                        onChange={(e) => setFormData({ ...formData, stok: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-400 font-bold"
+                                        placeholder="100"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-amber-500 uppercase tracking-widest mb-1.5 ml-1">Min Stok</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={formData.min_stok}
+                                        onChange={(e) => setFormData({ ...formData, min_stok: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-400 font-bold"
+                                        placeholder="10"
                                     />
                                 </div>
                             </div>

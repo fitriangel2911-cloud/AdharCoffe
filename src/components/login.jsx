@@ -19,16 +19,20 @@ export default function Login({ onLogin, onGoRegister }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
+        const data = await response.json();
         onLogin(data.user);
       } else {
-        setError(data.detail || 'Login gagal. Periksa email dan password Anda.');
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.detail || `Server merespon dengan status ${response.status}`);
       }
     } catch (err) {
       console.error("Login Fetch Error:", err);
-      setError('Gagal menghubungkan ke server. (' + err.message + ')');
+      if (err.name === 'AbortError' || err.message.includes('fetch')) {
+        setError('Gagal menghubungkan ke server. Pastikan backend aktif.');
+      } else {
+        setError('Terjadi kesalahan koneksi: ' + err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -59,6 +63,14 @@ export default function Login({ onLogin, onGoRegister }) {
               بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
             </p>
             <h2 className="text-[#0c4a6e] text-[1.7rem] font-black tracking-tight mt-1">Masuk Akun</h2>
+            <div className="mt-4 p-4 bg-sky-50 rounded-2xl border-l-4 border-sky-400 text-left">
+              <p className="text-[11px] font-bold text-sky-800 leading-relaxed italic">
+                "Sempurnakanlah takaran dan timbangan dengan adil. Kami tidak membebani seseorang melainkan menurut kesanggupannya." (QS. Al-An'am: 152)
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-[9px] font-black text-white bg-sky-500 px-2 py-0.5 rounded-full uppercase tracking-widest">Amanah & Shiddiq</span>
+              </div>
+            </div>
           </div>
 
           {error && (

@@ -1,0 +1,6 @@
+'Staff' is INVALID
+'staf' is INVALID
+'Dapur' is VALID
+'dapur' is INVALID
+'Kasir' is INVALID
+'kasir' is VALID

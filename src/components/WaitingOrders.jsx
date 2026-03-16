@@ -16,6 +16,8 @@ import DeliveryGPS from './DeliveryGPS';
 export default function WaitingOrders({ onBack }) {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showNotification, setShowNotification] = useState(false);
+    const [hasNotified, setHasNotified] = useState(false);
 
     useEffect(() => {
         fetchOrders();
@@ -70,16 +72,25 @@ export default function WaitingOrders({ onBack }) {
 
     const waitingOrders = groupedOrders.filter(o => o.status === 'waiting');
     const processingOrders = groupedOrders.filter(o => o.status === 'processing');
+    const completedOrders = groupedOrders.filter(o => o.status === 'completed');
     
     // Detection for user's own order from localStorage
     const myOrder = useMemo(() => {
-        const savedKey = localStorage.getItem('lastOrderKey');
+        const savedKey = sessionStorage.getItem('lastOrderKey');
         if (!savedKey) return null;
         return groupedOrders.find(g => {
             const currentKey = `${g.nama_pembeli}_${g.created_at}`;
             return currentKey === savedKey;
         });
     }, [groupedOrders]);
+
+    useEffect(() => {
+        if (myOrder && myOrder.status === 'completed' && !hasNotified) {
+            setShowNotification(true);
+            setHasNotified(true);
+            // Play a subtle notification sound if possible, but let's stick to visual for now
+        }
+    }, [myOrder, hasNotified]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f0f9ff] via-white to-[#fdf2f8] p-6 md:p-10">
@@ -146,7 +157,7 @@ export default function WaitingOrders({ onBack }) {
                                     <button
                                         onClick={() => {
                                             if (window.confirm("Apakah Anda yakin ingin menyelesaikan sesi pesanan ini? Antrean tidak akan tampil lagi di perangkat Anda.")) {
-                                                localStorage.removeItem('lastOrderKey');
+                                                sessionStorage.removeItem('lastOrderKey');
                                                 onBack();
                                             }
                                         }}
@@ -165,7 +176,47 @@ export default function WaitingOrders({ onBack }) {
 
                         {/* Section 2: Global Queue (Privacy Focused) */}
                         <div className="lg:col-span-2 space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {/* Siap Diambil */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="font-black text-emerald-600 flex items-center gap-2 uppercase tracking-widest text-xs">
+                                            <CheckCircle2 className="w-4 h-4" />
+                                            Siap Diambil
+                                        </h3>
+                                        <span className="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-black">
+                                            {completedOrders.length}
+                                        </span>
+                                    </div>
+                                    
+                                    <div className="space-y-4">
+                                        {completedOrders.length === 0 ? (
+                                            <div className="p-8 bg-slate-50 rounded-[2rem] text-center text-slate-300 font-bold italic text-sm">Kosong</div>
+                                        ) : completedOrders.map(order => (
+                                            <div 
+                                                key={order.id} 
+                                                className={`p-5 rounded-3xl border shadow-sm flex items-center justify-between animate-pulse ${
+                                                    myOrder && order.id === myOrder.id 
+                                                    ? 'bg-emerald-500 border-emerald-400 text-white' 
+                                                    : 'bg-white border-emerald-50 text-slate-700'
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-lg ${
+                                                        myOrder && order.id === myOrder.id ? 'bg-white text-emerald-500' : 'bg-emerald-500 text-white'
+                                                    }`}>
+                                                        {getQueueNumber(order).slice(-2)}
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="font-black">#{getQueueNumber(order)}</h4>
+                                                        <p className={`text-[10px] font-bold uppercase ${myOrder && order.id === myOrder.id ? 'text-emerald-100' : 'text-emerald-500'}`}>Siap!</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 {/* Sedang Diproses */}
                                 <div className="space-y-6">
                                     <div className="flex items-center justify-between">
@@ -248,6 +299,36 @@ export default function WaitingOrders({ onBack }) {
                     </div>
                 </footer>
             </div>
+            {/* Notification Modal for Client's own order */}
+            {showNotification && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-white w-full max-w-sm rounded-[3rem] shadow-2xl overflow-hidden border-4 border-emerald-400 animate-in zoom-in-95 duration-500">
+                        <div className="bg-emerald-500 p-8 text-center text-white relative">
+                            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none overflow-hidden">
+                                <CheckCircle2 className="w-64 h-64 -ml-20 -mt-20" />
+                            </div>
+                            <div className="relative z-10">
+                                <div className="w-20 h-20 bg-white rounded-[2rem] mx-auto flex items-center justify-center mb-6 shadow-xl rotate-3">
+                                    <BellRing className="w-10 h-10 text-emerald-500 animate-bounce" />
+                                </div>
+                                <h2 className="text-3xl font-black italic mb-2 tracking-tight">ALHAMDULILLAH!</h2>
+                                <p className="text-emerald-100 font-bold uppercase tracking-[0.2em] text-[10px]">Pesanan Anda Sudah Siap</p>
+                            </div>
+                        </div>
+                        <div className="p-8 text-center bg-slate-50">
+                            <p className="text-slate-600 font-bold mb-8 leading-relaxed">
+                                Silakan ambil pesanan Anda di meja <span className="text-emerald-500 font-black">#{myOrder?.no_meja || '-'}</span> atau counter pengambilan. Selamat menikmati!
+                            </p>
+                            <button 
+                                onClick={() => setShowNotification(false)}
+                                className="w-full py-4 bg-[#0c4a6e] hover:bg-sky-900 text-white rounded-2xl font-black tracking-widest text-xs shadow-xl shadow-sky-100 transition-all active:scale-95"
+                            >
+                                SAYA AMBIL SEKARANG
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

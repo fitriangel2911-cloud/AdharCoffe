@@ -18,17 +18,21 @@ export default function ExpenseManager() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState('Semua');
     const [status, setStatus] = useState({ type: '', message: '' });
+    const [accounts, setAccounts] = useState([]);
 
     const [formData, setFormData] = useState({
-        akun: '',
+        akun_id_debit: '',
+        akun_id_kredit: '',
         nominal: '',
-        tanggal: new Date().toISOString().split('T')[0]
+        tanggal: new Date().toISOString().split('T')[0],
+        keterangan: ''
     });
 
     const categories = ['Semua', 'Gaji', 'Listrik', 'Sewa', 'Internet', 'Marketing', 'Lain-lain'];
 
     useEffect(() => {
         fetchExpenses();
+        fetchAccounts();
     }, []);
 
     const fetchExpenses = async () => {
@@ -44,32 +48,62 @@ export default function ExpenseManager() {
             setLoading(false);
         }
     };
+    
+    const fetchAccounts = async () => {
+        try {
+            const response = await fetch('/api/akun');
+            const data = await response.json();
+            setAccounts(data);
+        } catch (error) {
+            console.error('Error fetching accounts:', error);
+        }
+    };
 
     const handleAddExpense = async (e) => {
         e.preventDefault();
+        const payload = {
+            akun_id_debit: parseInt(formData.akun_id_debit),
+            akun_id_kredit: parseInt(formData.akun_id_kredit),
+            nominal: parseInt(formData.nominal),
+            tanggal: formData.tanggal,
+            keterangan: formData.keterangan
+        };
+
+        if (isNaN(payload.akun_id_debit) || isNaN(payload.akun_id_kredit) || isNaN(payload.nominal)) {
+            showStatus('error', 'Harap isi semua akun dan nominal dengan angka yang valid.');
+            return;
+        }
+
         try {
             const response = await fetch('/api/pengeluaran', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    akun: formData.akun,
-                    nominal: parseInt(formData.nominal),
-                    tanggal: formData.tanggal
-                })
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
-                showStatus('success', 'Biaya operasional berhasil ditambahkan');
+                showStatus('success', 'Biaya operasional & Jurnal berhasil disimpan');
                 setShowModal(false);
-                setFormData({ akun: '', nominal: '', tanggal: new Date().toISOString().split('T')[0] });
+                setFormData({ 
+                    akun_id_debit: '', 
+                    akun_id_kredit: '', 
+                    nominal: '', 
+                    tanggal: new Date().toISOString().split('T')[0],
+                    keterangan: '' 
+                });
                 fetchExpenses();
             } else {
                 const errData = await response.json();
-                if (errData.detail && errData.detail.includes("Tabel 'biaya_operasional' belum dibuat")) {
-                    alert(errData.detail);
-                } else {
-                    showStatus('error', errData.detail || 'Gagal menambahkan biaya');
+                let errMsg = 'Gagal menambahkan biaya.';
+                if (errData.detail) {
+                    if (typeof errData.detail === 'string') {
+                        errMsg = errData.detail;
+                    } else if (Array.isArray(errData.detail)) {
+                        // Format Pydantic validation errors
+                        errMsg = errData.detail.map(e => `${e.loc.join('.')}: ${e.msg}`).join(' | ');
+                    }
                 }
+                showStatus('error', errMsg);
             }
         } catch (error) {
             showStatus('error', 'Terjadi kesalahan sistem');
@@ -92,8 +126,10 @@ export default function ExpenseManager() {
     };
 
     const showStatus = (type, message) => {
-        setStatus({ type, message });
-        setTimeout(() => setStatus({ type: '', message: '' }), 3000);
+        // Pastikan message adalah string untuk menghindari error "Objects are not valid as a React child"
+        const msg = typeof message === 'object' ? JSON.stringify(message) : String(message);
+        setStatus({ type, message: msg });
+        setTimeout(() => setStatus({ type: '', message: '' }), 5000);
     };
 
     const filteredExpenses = Array.isArray(expenses) ? expenses.filter(exp => {
@@ -108,8 +144,8 @@ export default function ExpenseManager() {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-black text-slate-800">Manajemen Biaya Operasional</h2>
-                    <p className="text-slate-500 font-medium">Rekam dan pantau pengeluaran bisnis Anda</p>
+                    <h2 className="text-2xl font-black text-slate-800">Manajemen Biaya & Penyesuaian</h2>
+                    <p className="text-slate-500 font-medium">Rekam biaya harian atau pengakuan beban bulanan (Amortisasi/Depresiasi)</p>
                 </div>
                 <button 
                     onClick={() => setShowModal(true)}
@@ -235,54 +271,81 @@ export default function ExpenseManager() {
                     <div className="relative bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-8 border-b border-slate-100 flex items-center justify-between">
                             <div>
-                                <h3 className="text-xl font-black text-slate-800">Catat Biaya</h3>
-                                <p className="text-sm font-bold text-slate-400">Input pengeluaran operasional baru</p>
+                                <h3 className="text-xl font-black text-slate-800">Catat Biaya / Penyesuaian</h3>
+                                <p className="text-sm font-bold text-slate-400">Input pengeluaran baru atau pengakuan beban</p>
                             </div>
                             <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600">
                                 <X size={24} />
                             </button>
                         </div>
-                        <form onSubmit={handleAddExpense} className="p-8 space-y-6">
+                        <form onSubmit={handleAddExpense} className="p-8 space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Akun Pengeluaran</label>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Akun Biaya (Debit)</label>
                                 <select 
                                     className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-sky-500 font-bold text-slate-700 appearance-none"
-                                    value={formData.akun}
-                                    onChange={(e) => setFormData({...formData, akun: e.target.value})}
+                                    value={formData.akun_id_debit}
+                                    onChange={(e) => setFormData({...formData, akun_id_debit: e.target.value})}
                                     required
                                 >
-                                    <option value="">Pilih Kategori...</option>
-                                    {categories.slice(1).map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
+                                    <option value="">Pilih Akun Biaya...</option>
+                                    {accounts.filter(a => a.kategori === 'Beban').map(acc => (
+                                        <option key={acc.id} value={acc.id}>{acc.kode_akun} - {acc.nama_akun}</option>
                                     ))}
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Nominal (Rp)</label>
-                                <input 
-                                    type="number" 
-                                    placeholder="0"
-                                    className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-sky-500 font-bold text-slate-700"
-                                    value={formData.nominal}
-                                    onChange={(e) => setFormData({...formData, nominal: e.target.value})}
+                                <label className="text-[10px] font-black text-pink-400 uppercase tracking-widest pl-1">Sumber Dana / Akun Penyesuaian (Kredit)</label>
+                                <select 
+                                    className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-pink-500 font-bold text-slate-700 appearance-none border-l-4 border-pink-400"
+                                    value={formData.akun_id_kredit}
+                                    onChange={(e) => setFormData({...formData, akun_id_kredit: e.target.value})}
                                     required
-                                />
+                                >
+                                    <option value="">Pilih Sumber Dana...</option>
+                                    {accounts.filter(a => a.kategori === 'Aset' || a.kategori === 'Kewajiban').map(acc => (
+                                        <option key={acc.id} value={acc.id}>{acc.kode_akun} - {acc.nama_akun}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Nominal (Rp)</label>
+                                    <input 
+                                        type="number" required placeholder="0"
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-sky-500 font-bold text-slate-700"
+                                        value={formData.nominal}
+                                        onChange={(e) => setFormData({...formData, nominal: e.target.value})}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Tanggal</label>
+                                    <input 
+                                        type="date" required
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-sky-500 font-bold text-slate-700"
+                                        value={formData.tanggal}
+                                        onChange={(e) => setFormData({...formData, tanggal: e.target.value})}
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Tanggal</label>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Keterangan Tambahan</label>
                                 <input 
-                                    type="date" 
+                                    type="text" placeholder="Contoh: Pembayaran Gaji Feb..."
                                     className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-sky-500 font-bold text-slate-700"
-                                    value={formData.tanggal}
-                                    onChange={(e) => setFormData({...formData, tanggal: e.target.value})}
-                                    required
+                                    value={formData.keterangan}
+                                    onChange={(e) => setFormData({...formData, keterangan: e.target.value})}
                                 />
+                            </div>
+                            <div className="p-4 bg-amber-50 rounded-2xl text-[10px] font-bold text-amber-700 border border-amber-100 italic">
+                                * TIPS: Untuk Amortisasi Sewa, pilih "Beban Sewa" (Debit) & "Sewa Dibayar Dimuka" (Kredit).
+                                <br />
+                                * Untuk Depresiasi, pilih "Beban Penyusutan" (Debit) & "Akumulasi Penyusutan" (Kredit).
                             </div>
                             <button 
                                 type="submit"
-                                className="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-2xl font-black transition-all shadow-xl shadow-slate-200 active:scale-95 mt-4"
+                                className="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-2xl font-black transition-all shadow-xl shadow-slate-200 active:scale-95 mt-2"
                             >
-                                Simpan Data
+                                Simpan Entri Akuntansi
                             </button>
                         </form>
                     </div>

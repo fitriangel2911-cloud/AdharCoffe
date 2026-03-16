@@ -9,7 +9,9 @@ import {
     Search,
     Loader2,
     CheckCircle2,
-    XCircle
+    XCircle,
+    ShoppingCart,
+    X
 } from 'lucide-react';
 
 export default function InventoryManager() {
@@ -18,6 +20,16 @@ export default function InventoryManager() {
     const [searchTerm, setSearchTerm] = useState('');
     const [updatingId, setUpdatingId] = useState(null);
     const [message, setMessage] = useState({ text: '', type: '' });
+    
+    // Purchase Modal State
+    const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [purchaseLoading, setPurchaseLoading] = useState(false);
+    const [purchaseForm, setPurchaseForm] = useState({
+        qty: '',
+        total_nominal: '',
+        metode_pembayaran: 'Tunai'
+    });
 
     useEffect(() => {
         fetchInventory();
@@ -40,6 +52,40 @@ export default function InventoryManager() {
     const showFeedback = (text, type) => {
         setMessage({ text, type });
         setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+    };
+
+    const handlePurchaseSubmit = async (e) => {
+        e.preventDefault();
+        setPurchaseLoading(true);
+        try {
+            const response = await fetch('/api/inventory/purchase', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    item_id: selectedItem.id,
+                    qty: parseInt(purchaseForm.qty),
+                    total_nominal: parseInt(purchaseForm.total_nominal),
+                    metode_pembayaran: purchaseForm.metode_pembayaran
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setInventory(inventory.map(item => 
+                    item.id === selectedItem.id ? { ...item, stok: data.new_stok } : item
+                ));
+                showFeedback("Pembelian berhasil dicatat dan stok diperbarui!", "success");
+                setShowPurchaseModal(false);
+                setPurchaseForm({ qty: '', total_nominal: '', metode_pembayaran: 'Tunai' });
+            } else {
+                showFeedback("Gagal mencatat pembelian", "error");
+            }
+        } catch (error) {
+            console.error("Purchase error:", error);
+            showFeedback("Kesalahan koneksi", "error");
+        } finally {
+            setPurchaseLoading(false);
+        }
     };
 
     const handleUpdateStock = async (id, newStock) => {
@@ -106,20 +152,27 @@ export default function InventoryManager() {
                 </header>
 
                 {/* Summary Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-50">
-                        <span className="text-slate-400 text-xs font-black uppercase tracking-widest block mb-1">Total Produk</span>
+                        <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest block mb-1">Total Produk</span>
                         <div className="text-3xl font-black text-[#0c4a6e]">{inventory.length}</div>
                     </div>
-                    <div className="bg-amber-50 p-6 rounded-3xl shadow-sm border border-amber-100">
-                        <span className="text-amber-600 text-xs font-black uppercase tracking-widest block mb-1">Stok Menipis</span>
-                        <div className="text-3xl font-black text-amber-600 flex items-center gap-2">
+                    <div className="bg-emerald-50 p-6 rounded-3xl shadow-sm border border-emerald-100">
+                        <span className="text-emerald-600 text-[10px] font-black uppercase tracking-widest block mb-1">Stok Aman</span>
+                        <div className="text-3xl font-black text-emerald-600">
+                            {inventory.filter(item => item.stok > (item.min_stok || 5)).length}
+                        </div>
+                    </div>
+                    <div className="bg-amber-50 p-6 rounded-3xl shadow-sm border border-amber-100 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-amber-200/20 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+                        <span className="text-amber-600 text-[10px] font-black uppercase tracking-widest block mb-1">Stok Menipis</span>
+                        <div className="text-3xl font-black text-amber-600 flex items-center gap-2 relative z-10">
                             {lowStockItems.length}
-                            {lowStockItems.length > 0 && <AlertTriangle className="w-6 h-6 animate-bounce" />}
+                            {lowStockItems.length > 0 && <AlertTriangle className="w-6 h-6 animate-pulse" />}
                         </div>
                     </div>
                     <div className="bg-rose-50 p-6 rounded-3xl shadow-sm border border-rose-100">
-                        <span className="text-rose-600 text-xs font-black uppercase tracking-widest block mb-1">Habis</span>
+                        <span className="text-rose-600 text-[10px] font-black uppercase tracking-widest block mb-1">Habis / Kosong</span>
                         <div className="text-3xl font-black text-rose-600">
                             {inventory.filter(item => item.stok <= 0).length}
                         </div>
@@ -186,6 +239,17 @@ export default function InventoryManager() {
                                     </td>
                                     <td className="px-8 py-4">
                                         <div className="flex items-center justify-end gap-2">
+                                             <button 
+                                                onClick={() => {
+                                                    setSelectedItem(item);
+                                                    setShowPurchaseModal(true);
+                                                }}
+                                                className="px-4 py-2 bg-emerald-500 text-white rounded-xl font-bold text-xs hover:bg-emerald-600 transition-all shadow-sm active:scale-95 flex items-center gap-2"
+                                            >
+                                                <ShoppingCart className="w-3 h-3" />
+                                                Catat Pembelian
+                                            </button>
+                                            <div className="h-4 w-px bg-slate-100 mx-1"></div>
                                             <button 
                                                 onClick={() => handleUpdateStock(item.id, (item.stok || 0) + 10)}
                                                 disabled={updatingId === item.id}
@@ -223,9 +287,89 @@ export default function InventoryManager() {
                     </table>
                 </div>
 
-                <div className="mt-8 text-center text-slate-400 text-xs font-medium">
-                    * Stok otomatis berkurang setiap kali ada penjualan di halaman POS.
+                 <div className="mt-8 text-center text-slate-400 text-xs font-medium">
+                    * Stok otomatis berkurang setiap kali ada penjualan di halaman POS. Gunakan "Catat Pembelian" untuk menambah stok secara formal.
                 </div>
+
+                {/* Purchase Modal */}
+                {showPurchaseModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+                        <div className="bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-8 duration-300">
+                            <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-gradient-to-r from-emerald-50 to-white">
+                                <div>
+                                    <h2 className="text-2xl font-black text-[#0c4a6e]">Catat Pembelian</h2>
+                                    <p className="text-sm font-bold text-emerald-600 uppercase tracking-widest">{selectedItem?.nama_menu}</p>
+                                </div>
+                                <button onClick={() => setShowPurchaseModal(false)} className="p-2 hover:bg-white rounded-full transition-colors text-slate-400">
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+                            
+                            <form onSubmit={handlePurchaseSubmit} className="p-8 space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block ml-1">Jumlah (Qty)</label>
+                                    <div className="relative">
+                                        <Plus className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
+                                        <input 
+                                            type="number" 
+                                            required
+                                            value={purchaseForm.qty}
+                                            onChange={e => setPurchaseForm({...purchaseForm, qty: e.target.value})}
+                                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-emerald-500/20 font-black text-lg"
+                                            placeholder="0"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block ml-1">Total Harga Beli (Rp)</label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-emerald-500">Rp</span>
+                                        <input 
+                                            type="number" 
+                                            required
+                                            value={purchaseForm.total_nominal}
+                                            onChange={e => setPurchaseForm({...purchaseForm, total_nominal: e.target.value})}
+                                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-emerald-500/20 font-black text-lg"
+                                            placeholder="0"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block ml-1">Metode Pembayaran</label>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {['Tunai', 'Transfer'].map(method => (
+                                            <button
+                                                key={method}
+                                                type="button"
+                                                onClick={() => setPurchaseForm({...purchaseForm, metode_pembayaran: method})}
+                                                className={`py-3 rounded-2xl font-black text-sm transition-all border-2 ${
+                                                    purchaseForm.metode_pembayaran === method 
+                                                    ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/30' 
+                                                    : 'bg-white border-slate-100 text-slate-400 hover:border-emerald-100'
+                                                }`}
+                                            >
+                                                {method}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="pt-4">
+                                    <button 
+                                        type="submit"
+                                        disabled={purchaseLoading}
+                                        className="w-full py-5 bg-emerald-500 text-white rounded-[2rem] font-black text-lg hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
+                                    >
+                                        {purchaseLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+                                        Simpan Pembelian
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

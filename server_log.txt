@@ -1,0 +1,464 @@
+ DEBUG: Received checkout request with 1 items
+Connecting to Supabase at https://yzqywbgzhvnj...
+Supabase client created successfully.
+DEBUG: Inserting data to Supabase: [{'kuantitas_menu': 5, 'hpp': 5000, 'harga': 15000, 'nama_pembeli': 'Test Bug', 'no_meja': 1, 'metode_pembayaran': 'Tunai', 'tipe_pesanan': 'Makan Ditempat', 'kontak': '', 'infaq': 0, 'status': 'waiting'}]
+JURNAL AKUN IDs -> kas/bank:1, pendapatan:6, hpp:28, persediaan:10, infaq:26
+CONSOLIDATED JURNAL CREATED: id=23 with 4 details
+INFO:     127.0.0.1:51024 - "POST /api/checkout HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 230.43ms
+INFO:     127.0.0.1:55290 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55292 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56528 - "GET /api/stats HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 123.20ms
+INFO:     127.0.0.1:56529 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56530 - "GET /api/stats HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 149.10ms
+INFO:     127.0.0.1:56531 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56532 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56533 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62323 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56476 - "GET /api/jurnal HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 483.92ms
+INFO:     127.0.0.1:51539 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 293.64ms
+INFO:     127.0.0.1:56648 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 224.13ms
+INFO:     127.0.0.1:52882 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 216.85ms
+INFO:     127.0.0.1:50575 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 342.51ms
+INFO:     127.0.0.1:53614 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 314.27ms
+INFO:     127.0.0.1:49399 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 191.95ms
+INFO:     127.0.0.1:54713 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 409.24ms
+INFO:     127.0.0.1:60888 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 409.57ms
+INFO:     127.0.0.1:57296 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50534 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 144.73ms
+INFO:     127.0.0.1:50535 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 143.98ms
+INFO:     127.0.0.1:57863 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65379 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50838 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65136 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59420 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 143.49ms
+INFO:     127.0.0.1:51038 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54203 - "PUT /api/menu/12/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61154 - "PUT /api/menu/9/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49673 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 149.89ms
+INFO:     127.0.0.1:50084 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52613 - "PUT /api/menu/11/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54663 - "PUT /api/menu/5/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60937 - "PUT /api/menu/5/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49936 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51789 - "PUT /api/menu/5/stok HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63778 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 136.50ms
+INFO:     127.0.0.1:51691 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52843 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 134.22ms
+INFO:     127.0.0.1:55281 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51144 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63226 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 142.37ms
+INFO:     127.0.0.1:57783 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56257 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 147.13ms
+INFO:     127.0.0.1:53540 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59245 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 170.69ms
+INFO:     127.0.0.1:51009 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61819 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 141.40ms
+INFO:     127.0.0.1:62840 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56413 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 185.87ms
+INFO:     127.0.0.1:51054 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58070 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 147.29ms
+INFO:     127.0.0.1:58071 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60428 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 130.45ms
+INFO:     127.0.0.1:60429 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58332 - "GET /api/stats HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 157.82ms
+INFO:     127.0.0.1:58333 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58335 - "GET /api/stats HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 156.93ms
+INFO:     127.0.0.1:58336 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61026 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52339 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52340 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52341 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53149 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54009 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50696 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 111.65ms
+INFO:     127.0.0.1:58370 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 168.77ms
+INFO:     127.0.0.1:60672 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59748 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53880 - "GET /api/tables/status HTTP/1.1" 200 OK
+DEBUG: Received checkout request with 2 items
+DEBUG: Inserting data to Supabase: [{'kuantitas_menu': 4, 'hpp': 6000, 'harga': 14000, 'nama_pembeli': 'Tala', 'no_meja': 5, 'metode_pembayaran': 'QRIS', 'tipe_pesanan': 'Makan Ditempat', 'kontak': 'fitriangelina291103@gmail.com', 'infaq': 350, 'status': 'waiting'}, {'kuantitas_menu': 1, 'hpp': 5000, 'harga': 17000, 'nama_pembeli': 'Tala', 'no_meja': 5, 'metode_pembayaran': 'QRIS', 'tipe_pesanan': 'Makan Ditempat', 'kontak': 'fitriangelina291103@gmail.com', 'infaq': 425, 'status': 'waiting'}]
+JURNAL AKUN IDs -> kas/bank:1, pendapatan:6, hpp:28, persediaan:10, infaq:26
+CONSOLIDATED JURNAL CREATED: id=24 with 5 details
+INFO:     127.0.0.1:56722 - "POST /api/checkout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50542 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60344 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49728 - "GET /api/orders/public HTTP/1.1" 200 OK
+DEBUG: Email receipt sent to fitriangelina291103@gmail.com
+HEALTH CHECK: DB Connected. Latency: 115.70ms
+INFO:     127.0.0.1:62603 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65398 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50057 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65179 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 121.84ms
+INFO:     127.0.0.1:57918 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60314 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60315 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61029 - "PUT /api/orders/231/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61030 - "PUT /api/orders/232/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63806 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64837 - "PUT /api/orders/232/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64836 - "PUT /api/orders/231/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60844 - "PUT /api/tables/5/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64335 - "PUT /api/tables/1/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61672 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52748 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52749 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 104.37ms
+INFO:     127.0.0.1:52750 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65043 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64756 - "PUT /api/tables/5/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64903 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55418 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55419 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57552 - "PUT /api/tables/1/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52583 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 107.72ms
+INFO:     127.0.0.1:56401 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60601 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65291 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65292 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 108.04ms
+INFO:     127.0.0.1:53481 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51681 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56748 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56749 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63954 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62986 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51422 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51423 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 111.23ms
+INFO:     127.0.0.1:51424 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53212 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 106.14ms
+INFO:     127.0.0.1:62757 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 106.71ms
+INFO:     127.0.0.1:54621 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49703 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49702 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61094 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63334 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63335 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49673 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60444 - "GET /api/infaq/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60445 - "GET /api/infaq/logs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58850 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61321 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 110.33ms
+INFO:     127.0.0.1:61322 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64774 - "GET /api/infaq/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56174 - "GET /api/infaq/logs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58445 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 119.94ms
+INFO:     127.0.0.1:53973 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59454 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 118.03ms
+INFO:     127.0.0.1:58646 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58647 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57349 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54012 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54011 - "GET /api/pengeluaran HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50536 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64484 - "GET /api/pengeluaran HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59778 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59779 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49986 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54907 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 112.59ms
+INFO:     127.0.0.1:65529 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65530 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65290 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 118.94ms
+INFO:     127.0.0.1:64449 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 115.73ms
+INFO:     127.0.0.1:63762 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52917 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52916 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55704 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52235 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52236 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55478 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55479 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 110.80ms
+INFO:     127.0.0.1:55480 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 111.42ms
+INFO:     127.0.0.1:53519 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61554 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61555 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61720 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61721 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57157 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57158 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 118.70ms
+INFO:     127.0.0.1:57159 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 113.74ms
+INFO:     127.0.0.1:64257 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62459 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62460 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57796 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57797 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54552 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54553 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 111.45ms
+INFO:     127.0.0.1:54554 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 109.61ms
+INFO:     127.0.0.1:60948 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51145 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51146 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56067 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56068 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61757 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 110.50ms
+INFO:     127.0.0.1:59818 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59819 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59817 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 106.94ms
+INFO:     127.0.0.1:52759 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56390 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56391 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50680 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50681 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50742 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 118.07ms
+INFO:     127.0.0.1:64750 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64751 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60709 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60710 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64203 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64204 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49673 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59154 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 107.91ms
+INFO:     127.0.0.1:59155 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53113 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53114 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55447 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55448 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63063 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 111.19ms
+INFO:     127.0.0.1:54234 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54233 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 214.58ms
+INFO:     127.0.0.1:60403 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52531 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64508 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59333 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59334 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61925 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53884 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49673 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 121.11ms
+INFO:     127.0.0.1:53885 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 107.69ms
+INFO:     127.0.0.1:61265 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56700 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56701 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62218 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62219 - "GET /api/tables/status HTTP/1.1" 200 OK
+  Connecting to Supabase at https://yzqywbgzhvnj...
+Supabase client created successfully.
+INFO:     127.0.0.1:51422 - "GET /api/infaq/saldo HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 247.89ms
+INFO:     127.0.0.1:63301 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63302 - "GET /api/orders/public HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65147 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65148 - "GET /api/kategori HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 132.07ms
+INFO:     127.0.0.1:65150 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65149 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65153 - "GET /api/kategori HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 129.11ms
+INFO:     127.0.0.1:52471 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65152 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53605 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58372 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58373 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 136.40ms
+INFO:     127.0.0.1:60735 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51345 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 129.28ms
+INFO:     127.0.0.1:54466 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54465 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51346 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63386 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57674 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 132.16ms
+INFO:     127.0.0.1:58476 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58813 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56152 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56153 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63965 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51974 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58285 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 126.66ms
+INFO:     127.0.0.1:58286 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58061 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57832 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60698 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 133.45ms
+INFO:     127.0.0.1:60699 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60700 - "GET /api/orders/public HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 133.99ms
+INFO:     127.0.0.1:60701 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61194 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55340 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 124.19ms
+INFO:     127.0.0.1:56780 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56779 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61672 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61673 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61674 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56698 - "GET /api/menu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58037 - "GET /api/kategori HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54374 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55904 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65021 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65022 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54461 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49722 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.71ms
+INFO:     127.0.0.1:49723 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59168 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53581 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50324 - "GET /api/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65111 - "GET /api/stats HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 138.62ms
+INFO:     127.0.0.1:53768 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51075 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60722 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60723 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52430 - "GET /api/akun HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63017 - "GET /api/jurnal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54305 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.89ms
+INFO:     127.0.0.1:49746 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49745 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64818 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62936 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62937 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55711 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 135.24ms
+INFO:     127.0.0.1:55712 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64615 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64616 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 130.73ms
+INFO:     127.0.0.1:62135 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57271 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64038 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64039 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.57ms
+INFO:     127.0.0.1:64040 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51818 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62288 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59288 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52897 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 129.02ms
+INFO:     127.0.0.1:52898 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56200 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56201 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 230.17ms
+INFO:     127.0.0.1:58667 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57329 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57330 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 126.04ms
+INFO:     127.0.0.1:57331 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52844 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52845 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 214.45ms
+INFO:     127.0.0.1:62942 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61190 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61191 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 159.12ms
+INFO:     127.0.0.1:60427 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53729 - "GET /api/orders/active HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.70ms
+INFO:     127.0.0.1:60499 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60498 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59804 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59197 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59198 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.99ms
+INFO:     127.0.0.1:63637 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64604 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64605 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.63ms
+INFO:     127.0.0.1:54339 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50466 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50467 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 128.47ms
+INFO:     127.0.0.1:50468 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55901 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55902 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62271 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62272 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 127.18ms
+INFO:     127.0.0.1:62709 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58016 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60594 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 127.63ms
+INFO:     127.0.0.1:60595 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50660 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50661 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62172 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62173 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 145.93ms
+INFO:     127.0.0.1:62695 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59782 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59783 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 123.91ms
+INFO:     127.0.0.1:59784 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60423 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62250 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64930 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64931 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54033 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50726 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 126.91ms
+INFO:     127.0.0.1:50725 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60155 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 131.33ms
+INFO:     127.0.0.1:60195 - "GET /api/db-check HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 123.15ms
+INFO:     127.0.0.1:51077 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53373 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53374 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50505 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50506 - "GET /api/tables/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60625 - "GET /api/orders/active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60626 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 135.40ms
+INFO:     127.0.0.1:60627 - "GET /api/db-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54943 - "GET /api/tables/status HTTP/1.1" 200 OK
+HEALTH CHECK: DB Connected. Latency: 130.32ms
+INFO:     127.0.0.1:54944 - "GET /api/db-check HTTP/1.1" 200 OK

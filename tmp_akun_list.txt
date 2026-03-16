@@ -1,0 +1,43 @@
+{'id': 1, 'nama_akun': 'Kas', 'kode_akun': '1-1000'}
+{'id': 3, 'nama_akun': 'Peralatan', 'kode_akun': '1-3100'}
+{'id': 4, 'nama_akun': 'Modal Pemilik', 'kode_akun': '3-1000'}
+{'id': 5, 'nama_akun': 'Laba Ditahan', 'kode_akun': '3-2000'}
+{'id': 6, 'nama_akun': 'Pendapatan Usaha', 'kode_akun': '4-1000'}
+{'id': 7, 'nama_akun': 'Beban Gaji', 'kode_akun': '6-1000'}
+{'id': 8, 'nama_akun': 'Beban Listrik & Air', 'kode_akun': '6-2000'}
+{'id': 2, 'nama_akun': 'Piutang', 'kode_akun': '1-1200'}
+{'id': 9, 'nama_akun': 'Kas di Bank', 'kode_akun': '1-1100'}
+{'id': 12, 'nama_akun': 'Sewa Dibayar Dimuka', 'kode_akun': '1-1400'}
+{'id': 13, 'nama_akun': 'Asuransi Dibayar Dimuka', 'kode_akun': '1-1500'}
+{'id': 14, 'nama_akun': 'Perlengkapan (Supplies)', 'kode_akun': '1-1600'}
+{'id': 15, 'nama_akun': 'Akum. Penyusutan Peralatan', 'kode_akun': '1-3200'}
+{'id': 16, 'nama_akun': 'Kendaraan', 'kode_akun': '1-3300'}
+{'id': 17, 'nama_akun': 'Akum. Penyusutan Kendaraan', 'kode_akun': '1-3400'}
+{'id': 18, 'nama_akun': 'Bangunan / Gedung', 'kode_akun': '1-3500'}
+{'id': 19, 'nama_akun': 'Akum. Penyusutan Bangunan', 'kode_akun': '1-3600'}
+{'id': 20, 'nama_akun': 'Utang Usaha', 'kode_akun': '2-1000'}
+{'id': 21, 'nama_akun': 'Utang Bank', 'kode_akun': '2-1100'}
+{'id': 22, 'nama_akun': 'Utang Gaji', 'kode_akun': '2-1200'}
+{'id': 23, 'nama_akun': 'Utang Pajak', 'kode_akun': '2-1300'}
+{'id': 24, 'nama_akun': 'Pendapatan Diterima Dimuka', 'kode_akun': '2-1400'}
+{'id': 25, 'nama_akun': 'Prive Pemilik (Pengambilan)', 'kode_akun': '3-3000'}
+{'id': 26, 'nama_akun': 'Pendapatan Lain-lain', 'kode_akun': '4-2000'}
+{'id': 27, 'nama_akun': 'Pendapatan Bunga (Bank)', 'kode_akun': '4-3000'}
+{'id': 28, 'nama_akun': 'Harga Pokok Penjualan (HPP)', 'kode_akun': '5-1000'}
+{'id': 29, 'nama_akun': 'Beban Tunjangan & Bonus', 'kode_akun': '6-1100'}
+{'id': 30, 'nama_akun': 'Beban Telepon & Internet', 'kode_akun': '6-2100'}
+{'id': 31, 'nama_akun': 'Beban Air Minum / Galon', 'kode_akun': '6-2200'}
+{'id': 32, 'nama_akun': 'Beban Sewa', 'kode_akun': '6-2300'}
+{'id': 33, 'nama_akun': 'Beban Asuransi', 'kode_akun': '6-2400'}
+{'id': 34, 'nama_akun': 'Beban Pemeliharaan (Maintenance)', 'kode_akun': '6-2500'}
+{'id': 35, 'nama_akun': 'Beban Perlengkapan (Supplies)', 'kode_akun': '6-3000'}
+{'id': 36, 'nama_akun': 'Beban Transportasi / Bensin', 'kode_akun': '6-4000'}
+{'id': 37, 'nama_akun': 'Beban Penyusutan Aset Tetap', 'kode_akun': '6-4100'}
+{'id': 38, 'nama_akun': 'Beban Promosi / Pemasaran', 'kode_akun': '6-5000'}
+{'id': 39, 'nama_akun': 'Beban Konsumsi & Rapat', 'kode_akun': '6-6000'}
+{'id': 40, 'nama_akun': 'Beban Pajak & Retribusi', 'kode_akun': '6-7000'}
+{'id': 41, 'nama_akun': 'Beban Kebersihan & Keamanan', 'kode_akun': '6-8000'}
+{'id': 42, 'nama_akun': 'Beban Lain-lain', 'kode_akun': '6-9000'}
+{'id': 43, 'nama_akun': 'Beban Administrasi Bank', 'kode_akun': '7-1000'}
+{'id': 44, 'nama_akun': 'Beban Bunga Pinjaman', 'kode_akun': '7-2000'}
+{'id': 10, 'nama_akun': 'Persediaan', 'kode_akun': '1-1300'}

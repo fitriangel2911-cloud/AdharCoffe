@@ -1,0 +1,43 @@
+{'id': 1, 'kode_akun': '1-1000', 'nama_akun': 'Kas', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 3, 'kode_akun': '1-3100', 'nama_akun': 'Peralatan', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 4, 'kode_akun': '3-1000', 'nama_akun': 'Modal Pemilik', 'kategori': 'Ekuitas', 'saldo_normal': 'Kredit'}
+{'id': 5, 'kode_akun': '3-2000', 'nama_akun': 'Laba Ditahan', 'kategori': 'Ekuitas', 'saldo_normal': 'Kredit'}
+{'id': 6, 'kode_akun': '4-1000', 'nama_akun': 'Pendapatan Usaha', 'kategori': 'Pendapatan', 'saldo_normal': 'Kredit'}
+{'id': 7, 'kode_akun': '6-1000', 'nama_akun': 'Beban Gaji', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 8, 'kode_akun': '6-2000', 'nama_akun': 'Beban Listrik & Air', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 2, 'kode_akun': '1-1200', 'nama_akun': 'Piutang', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 9, 'kode_akun': '1-1100', 'nama_akun': 'Kas di Bank', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 12, 'kode_akun': '1-1400', 'nama_akun': 'Sewa Dibayar Dimuka', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 13, 'kode_akun': '1-1500', 'nama_akun': 'Asuransi Dibayar Dimuka', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 14, 'kode_akun': '1-1600', 'nama_akun': 'Perlengkapan (Supplies)', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 15, 'kode_akun': '1-3200', 'nama_akun': 'Akum. Penyusutan Peralatan', 'kategori': 'Aset', 'saldo_normal': 'Kredit'}
+{'id': 16, 'kode_akun': '1-3300', 'nama_akun': 'Kendaraan', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 17, 'kode_akun': '1-3400', 'nama_akun': 'Akum. Penyusutan Kendaraan', 'kategori': 'Aset', 'saldo_normal': 'Kredit'}
+{'id': 18, 'kode_akun': '1-3500', 'nama_akun': 'Bangunan / Gedung', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
+{'id': 19, 'kode_akun': '1-3600', 'nama_akun': 'Akum. Penyusutan Bangunan', 'kategori': 'Aset', 'saldo_normal': 'Kredit'}
+{'id': 20, 'kode_akun': '2-1000', 'nama_akun': 'Utang Usaha', 'kategori': 'Kewajiban', 'saldo_normal': 'Kredit'}
+{'id': 21, 'kode_akun': '2-1100', 'nama_akun': 'Utang Bank', 'kategori': 'Kewajiban', 'saldo_normal': 'Kredit'}
+{'id': 22, 'kode_akun': '2-1200', 'nama_akun': 'Utang Gaji', 'kategori': 'Kewajiban', 'saldo_normal': 'Kredit'}
+{'id': 23, 'kode_akun': '2-1300', 'nama_akun': 'Utang Pajak', 'kategori': 'Kewajiban', 'saldo_normal': 'Kredit'}
+{'id': 24, 'kode_akun': '2-1400', 'nama_akun': 'Pendapatan Diterima Dimuka', 'kategori': 'Kewajiban', 'saldo_normal': 'Kredit'}
+{'id': 25, 'kode_akun': '3-3000', 'nama_akun': 'Prive Pemilik (Pengambilan)', 'kategori': 'Ekuitas', 'saldo_normal': 'Debit'}
+{'id': 26, 'kode_akun': '4-2000', 'nama_akun': 'Pendapatan Lain-lain', 'kategori': 'Pendapatan', 'saldo_normal': 'Kredit'}
+{'id': 27, 'kode_akun': '4-3000', 'nama_akun': 'Pendapatan Bunga (Bank)', 'kategori': 'Pendapatan', 'saldo_normal': 'Kredit'}
+{'id': 28, 'kode_akun': '5-1000', 'nama_akun': 'Harga Pokok Penjualan (HPP)', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 29, 'kode_akun': '6-1100', 'nama_akun': 'Beban Tunjangan & Bonus', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 30, 'kode_akun': '6-2100', 'nama_akun': 'Beban Telepon & Internet', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 31, 'kode_akun': '6-2200', 'nama_akun': 'Beban Air Minum / Galon', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 32, 'kode_akun': '6-2300', 'nama_akun': 'Beban Sewa', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 33, 'kode_akun': '6-2400', 'nama_akun': 'Beban Asuransi', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 34, 'kode_akun': '6-2500', 'nama_akun': 'Beban Pemeliharaan (Maintenance)', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 35, 'kode_akun': '6-3000', 'nama_akun': 'Beban Perlengkapan (Supplies)', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 36, 'kode_akun': '6-4000', 'nama_akun': 'Beban Transportasi / Bensin', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 37, 'kode_akun': '6-4100', 'nama_akun': 'Beban Penyusutan Aset Tetap', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 38, 'kode_akun': '6-5000', 'nama_akun': 'Beban Promosi / Pemasaran', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 39, 'kode_akun': '6-6000', 'nama_akun': 'Beban Konsumsi & Rapat', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 40, 'kode_akun': '6-7000', 'nama_akun': 'Beban Pajak & Retribusi', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 41, 'kode_akun': '6-8000', 'nama_akun': 'Beban Kebersihan & Keamanan', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 42, 'kode_akun': '6-9000', 'nama_akun': 'Beban Lain-lain', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 43, 'kode_akun': '7-1000', 'nama_akun': 'Beban Administrasi Bank', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 44, 'kode_akun': '7-2000', 'nama_akun': 'Beban Bunga Pinjaman', 'kategori': 'Beban', 'saldo_normal': 'Debit'}
+{'id': 10, 'kode_akun': '1-1300', 'nama_akun': 'Persediaan', 'kategori': 'Aset', 'saldo_normal': 'Debit'}
