@@ -7,8 +7,28 @@ import WaitingOrders from './components/WaitingOrders';
 import StaffDashboard from './components/StaffDashboard';
 
 function App() {
-  const [currentView, setCurrentView] = useState('login'); // 'login', 'register', 'pos', 'admin'
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('authUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const [currentView, setCurrentView] = useState(() => {
+    const savedUserStr = localStorage.getItem('authUser');
+    if (savedUserStr) {
+      try {
+        const savedUser = JSON.parse(savedUserStr);
+        if (savedUser?.role === 'Admin' || savedUser?.email === 'admin@gmail.com') return 'admin';
+        if (savedUser?.role === 'Dapur' || savedUser?.role === 'Kasir' || savedUser?.role === 'Staff') return 'staff';
+        const savedKey = localStorage.getItem('lastOrderKey');
+        if (savedKey) return 'waiting';
+        return 'pos';
+      } catch (e) {
+        return 'login';
+      }
+    }
+    return 'login';
+  });
+
   const [dbStatus, setDbStatus] = useState('checking'); // 'checking', 'online', 'offline'
 
   useEffect(() => {
@@ -45,6 +65,7 @@ function App() {
 
   const handleLogin = (userObj) => {
     setUser(userObj);
+    localStorage.setItem('authUser', JSON.stringify(userObj));
     // If user has role admin, or for now just check if email is admin@gmail.com
     if (userObj?.role === 'Admin' || userObj?.email === 'admin@gmail.com') {
       setCurrentView('admin');
@@ -70,6 +91,7 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('authUser');
     setCurrentView('login');
   };
 
