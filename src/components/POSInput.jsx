@@ -312,7 +312,14 @@ export default function POSInput({ user, onLogout }) {
     const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
 
     return (
-        <div className="h-screen bg-[#f8fafc] flex flex-col font-sans text-sky-900 overflow-hidden">
+        <div 
+            className="h-[100dvh] w-full bg-[#f8fafc] flex flex-col font-sans text-sky-900 overflow-hidden"
+            style={{ 
+                paddingLeft: 'env(safe-area-inset-left)', 
+                paddingRight: 'env(safe-area-inset-right)',
+                paddingBottom: 'env(safe-area-inset-bottom)'
+            }}
+        >
 
             {/* Solid Top Header */}
             <header className="bg-[#24a9f9] px-4 md:px-6 py-3 flex flex-wrap gap-4 justify-between items-center text-white z-20 shrink-0">
@@ -428,30 +435,30 @@ export default function POSInput({ user, onLogout }) {
                             <p className="font-bold">Menu tidak ditemukan</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pr-2 pb-8">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-6 pr-2 pb-8">
                             {filteredMenu.map((produk, idx) => (
                                 <button
                                     key={produk.id}
                                     onClick={() => addToCart(produk)}
-                                    className="bg-white p-6 rounded-[2.5rem] shadow-[0_2px_15px_-4px_rgba(0,0,0,0.06)] border-2 border-transparent hover:border-[#bae6fd] hover:shadow-xl hover:-translate-y-1.5 transition-all flex flex-col items-center text-center relative group"
+                                    className="bg-white p-3 md:p-6 rounded-[1.5rem] md:rounded-[2.5rem] shadow-[0_2px_15px_-4px_rgba(0,0,0,0.06)] border-2 border-transparent hover:border-[#bae6fd] hover:shadow-xl hover:-translate-y-1.5 transition-all flex flex-col items-center text-center relative group"
                                 >
-                                    <div className="absolute top-5 right-5 bg-green-50 text-green-600 text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest uppercase border border-green-100 shadow-sm">
+                                    <div className="absolute top-3 right-3 md:top-5 md:right-5 bg-green-50 text-green-600 text-[8px] md:text-[9px] font-black px-2 md:px-2.5 py-1 rounded-full tracking-widest uppercase border border-green-100 shadow-sm">
                                         HALAL
                                     </div>
 
-                                    <div className="w-20 h-20 bg-sky-500 rounded-full mb-5 flex items-center justify-center shadow-md mt-2 opacity-90 group-hover:opacity-100 transition-all group-hover:scale-110">
+                                    <div className="w-14 h-14 md:w-20 md:h-20 bg-sky-500 rounded-full mb-3 md:mb-5 flex items-center justify-center shadow-md mt-4 md:mt-2 opacity-90 group-hover:opacity-100 transition-all group-hover:scale-110">
                                         {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), {
-                                            className: "w-8 h-8 text-white"
+                                            className: "w-6 h-6 md:w-8 md:h-8 text-white"
                                         })}
                                     </div>
 
-                                    <h3 className="font-black text-[15px] mb-1 text-[#0c4a6e] group-hover:text-[#0284c7] line-clamp-2 min-h-[40px] leading-tight px-1">
+                                    <h3 className="font-black text-[13px] md:text-[15px] mb-1 text-[#0c4a6e] group-hover:text-[#0284c7] line-clamp-2 min-h-[35px] md:min-h-[40px] leading-tight px-1">
                                         {produk.nama_menu}
                                     </h3>
-                                    <div className="flex flex-col items-center gap-1 mb-2">
-                                        <p className="text-[#f472b6] font-black text-[17px] leading-none">{formatRp(produk.harga)}</p>
-                                        <div className="flex items-center gap-1.5">
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                    <div className="flex flex-col items-center gap-1 mb-1 md:mb-2">
+                                        <p className="text-[#f472b6] font-black text-[14px] md:text-[17px] leading-none">{formatRp(produk.harga)}</p>
+                                        <div className="flex items-center gap-1.5 mt-1">
+                                            <span className={`text-[8px] md:text-[10px] font-bold px-2 py-0.5 rounded-full ${
                                                 produk.stok <= 0 ? 'bg-rose-100 text-rose-600' :
                                                 produk.stok <= (produk.min_stok || 5) ? 'bg-amber-100 text-amber-600' :
                                                 'bg-sky-50 text-sky-500'
