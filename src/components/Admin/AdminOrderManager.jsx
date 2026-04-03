@@ -9,13 +9,16 @@ import {
     CheckCircle,
     ArrowRightCircle,
     ShoppingBag,
-    Bike
+    Bike,
+    Mail,
+    Send
 } from 'lucide-react';
 
 export default function AdminOrderManager() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updatingGroupKey, setUpdatingGroupKey] = useState(null);
+    const [sendingEmail, setSendingEmail] = useState(null);
 
     useEffect(() => {
         fetchOrders();
@@ -98,6 +101,27 @@ export default function AdminOrderManager() {
         }
     };
 
+    const handleResendEmail = async (group) => {
+        const orderId = group.items[0].id; // Any item from the group works for the backend to find all related ones
+        setSendingEmail(group.groupKey);
+        try {
+            const res = await fetch(`/api/orders/${orderId}/resend-email`, {
+                method: 'POST'
+            });
+            if (res.ok) {
+                alert("Email konfirmasi telah dikirim ulang!");
+            } else {
+                const err = await res.json();
+                alert(err.detail || "Gagal mengirim email");
+            }
+        } catch (error) {
+            console.error("Error sending email:", error);
+            alert("Terjadi kesalahan teknis saat mengirim email.");
+        } finally {
+            setSendingEmail(null);
+        }
+    };
+
     const waitingGroups = groupedOrders.filter(g => g.status === 'waiting');
     const processingGroups = groupedOrders.filter(g => g.status === 'processing');
 
@@ -146,7 +170,18 @@ export default function AdminOrderManager() {
                                                 {group.no_meja || '??'}
                                             </div>
                                             <div>
-                                                <h4 className="font-black text-slate-800">{group.nama_pembeli}</h4>
+                                                <div className="flex items-center gap-2">
+                                                    <h4 className="font-black text-slate-800">{group.nama_pembeli}</h4>
+                                                    {group.kontak && group.kontak.includes('@') && (
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); handleResendEmail(group); }}
+                                                            disabled={sendingEmail === group.groupKey}
+                                                            className="p-1.5 text-sky-500 hover:bg-sky-50 rounded-lg transition-all title='Kirim ulang email konfirmasi'"
+                                                        >
+                                                            {sendingEmail === group.groupKey ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                                                        </button>
+                                                    )}
+                                                </div>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{new Date(group.created_at).toLocaleTimeString()}</p>
                                             </div>
                                         </div>
@@ -198,7 +233,19 @@ export default function AdminOrderManager() {
                                                 {group.no_meja || '??'}
                                             </div>
                                             <div>
-                                                <h4 className="font-black text-slate-800">{group.nama_pembeli}</h4>
+                                                <div className="flex items-center gap-2">
+                                                    <h4 className="font-black text-slate-800">{group.nama_pembeli}</h4>
+                                                    {group.kontak && group.kontak.includes('@') && (
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); handleResendEmail(group); }}
+                                                            disabled={sendingEmail === group.groupKey}
+                                                            className="p-1.5 text-pink-500 hover:bg-pink-50 rounded-lg transition-all"
+                                                            title="Kirim ulang email konfirmasi"
+                                                        >
+                                                            {sendingEmail === group.groupKey ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                                                        </button>
+                                                    )}
+                                                </div>
                                                 <p className="text-[10px] font-bold text-pink-400 uppercase tracking-tight">Diproses sejak {new Date(group.created_at).toLocaleTimeString()}</p>
                                             </div>
                                         </div>

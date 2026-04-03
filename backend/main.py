@@ -1220,6 +1220,57 @@ async def update_order_status(order_id: int, data: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/orders/{order_id}/resend-email")
+async def resend_order_email(order_id: int, background_tasks: BackgroundTasks):
+    sb = get_supabase()
+    try:
+        # Get all related transactions for this checkout
+        # We need to find other items in the same "session" (same created_at and nama_pembeli)
+        base_res = sb.table("transaksi").select("*").eq("id", order_id).execute()
+        if not base_res.data:
+            raise HTTPException(status_code=404, detail="Order not found")
+        
+        base_order = base_res.data[0]
+        to_email = base_order.get("kontak")
+        
+        if not to_email or "@" not in to_email:
+            raise HTTPException(status_code=400, detail="No valid email associated with this order")
+            
+        # Fetch all items in the same group
+        all_items_res = sb.table("transaksi").select("*").eq("created_at", base_order["created_at"]).eq("nama_pembeli", base_order["nama_pembeli"]).execute()
+        items = all_items_res.data or []
+        
+        # Prepare data for email task
+        # 1. Fetch menu names
+        res_menu = sb.table("menu").select("id, nama_menu").execute()
+        menu_lookup = {m['id']: m['nama_menu'] for m in (res_menu.data or [])}
+        
+        order_summary = {}
+        total_bayar = 0
+        total_infaq = 0
+        
+        for item in items:
+            name = menu_lookup.get(item["kuantitas_menu"], f"Item #{item['kuantitas_menu']}")
+            price = item["harga"]
+            total_bayar += price
+            total_infaq += int(item.get("infaq") or 0)
+            
+            if name not in order_summary:
+                order_summary[name] = {"qty": 0, "price": price, "subtotal": 0}
+            order_summary[name]["qty"] += 1
+            order_summary[name]["subtotal"] += price
+            
+        total_bayar_final = total_bayar + total_infaq
+        nama_pembeli = base_order["nama_pembeli"]
+        
+        background_tasks.add_task(send_receipt_email_task, to_email, order_summary, total_bayar, total_infaq, total_bayar_final, nama_pembeli)
+        
+        return {"message": f"Email confirmation resent to {to_email}"}
+    except Exception as e:
+        print(f"RESEND EMAIL ERROR: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 # --- INFAQ ENDPOINTS ---
 
