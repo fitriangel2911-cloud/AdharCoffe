@@ -337,11 +337,11 @@ export default function POSInput({ user, onLogout }) {
                                         HALAL
                                     </div>
 
-                                    {/* Large Icon in Circle */}
-                                    <div className="w-24 h-24 bg-[#1ca3f4] rounded-full mt-4 mb-6 flex items-center justify-center shadow-[0_10px_30px_rgba(28,163,244,0.3)] group-hover:scale-110 transition-transform relative">
+                                    {/* Small Icon in Circle */}
+                                    <div className="w-16 h-16 bg-[#1ca3f4] rounded-full mt-4 mb-5 flex items-center justify-center shadow-[0_8px_20px_rgba(28,163,244,0.3)] group-hover:scale-110 transition-transform relative">
                                         <div className="absolute inset-0 bg-white/20 rounded-full blur-md animate-pulse"></div>
                                         {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), { 
-                                            className: "w-10 h-10 text-white relative z-10",
+                                            className: "w-8 h-8 text-white relative z-10",
                                             strokeWidth: 2.5
                                         })}
                                     </div>
@@ -381,9 +381,9 @@ export default function POSInput({ user, onLogout }) {
 
                             {/* Customer Info Form - RESTORED & REDESIGNED */}
                             <div className="space-y-5 bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm mt-2">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Nama Pembeli</label>
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="col-span-2 space-y-2">
+                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Nama Pembeli</label>
                                         <input 
                                             type="text" 
                                             placeholder="Nama..." 
@@ -392,25 +392,25 @@ export default function POSInput({ user, onLogout }) {
                                             className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-[#f472b6] uppercase tracking-widest ml-1">Meja</label>
+                                    <div className="col-span-1 space-y-2">
+                                        <label className="text-xs font-black text-[#f472b6] uppercase tracking-widest ml-1">Meja</label>
                                         <button 
                                             onClick={() => setShowTableModal(true)}
-                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] flex items-center justify-center gap-3 group hover:border-[#f472b6]/30 transition-all"
+                                            className="w-full px-2 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] flex items-center justify-center gap-2 group hover:border-[#f472b6]/30 transition-all"
                                         >
-                                            <Monitor className={`w-5 h-5 ${selectedTable ? 'text-[#f472b6]' : 'text-slate-300'}`} />
-                                            <span className={`text-sm font-black ${selectedTable ? 'text-[#f472b6]' : 'text-slate-400'}`}>
-                                                {selectedTable ? `Meja ${selectedTable}` : 'Pilih'}
+                                            <Monitor className={`w-4 h-4 ${selectedTable ? 'text-[#f472b6]' : 'text-[#f472b6] opacity-80'}`} />
+                                            <span className={`text-sm font-black ${selectedTable ? 'text-[#f472b6]' : 'text-[#f472b6] opacity-80'}`}>
+                                                {selectedTable ? `${selectedTable}` : 'Pilih'}
                                             </span>
                                         </button>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">No. WA / Email</label>
+                                    <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Email</label>
                                     <input 
-                                        type="text" 
-                                        placeholder="0812... / email@..." 
+                                        type="email" 
+                                        placeholder="email@domain.com" 
                                         value={kontak}
                                         onChange={(e) => setKontak(e.target.value)}
                                         className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
@@ -419,7 +419,7 @@ export default function POSInput({ user, onLogout }) {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Tipe Pesanan</label>
+                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Tipe Pesanan</label>
                                         <select 
                                             value={tipePesanan}
                                             onChange={(e) => setTipePesanan(e.target.value)}
@@ -431,7 +431,7 @@ export default function POSInput({ user, onLogout }) {
                                         </select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Pembayaran</label>
+                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Pembayaran</label>
                                         <select 
                                             value={metodePembayaran}
                                             onChange={(e) => setMetodePembayaran(e.target.value)}
