@@ -929,6 +929,21 @@ export default function POSInput({ user, onLogout }) {
                     </div>
                 </div>
             )}
+
+            {/* Mobile Cart Floating Button */}
+            {!showCartMobile && (
+                <button
+                    onClick={() => setShowCartMobile(true)}
+                    className="lg:hidden fixed bottom-6 right-6 bg-[#f472b6] hover:bg-[#ec4899] text-white p-4 rounded-full shadow-2xl z-30 transition-all flex items-center justify-center border-4 border-white"
+                >
+                    <ShoppingBag className="w-6 h-6" />
+                    {cart.length > 0 && (
+                        <div className="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] w-6 h-6 flex items-center justify-center rounded-full font-black border-2 border-white shadow-sm animate-pulse">
+                            {cart.length}
+                        </div>
+                    )}
+                </button>
+            )}
         </div>
     );
 }
