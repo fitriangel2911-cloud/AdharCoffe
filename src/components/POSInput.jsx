@@ -560,21 +560,13 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                             
                             <button 
-                                disabled={cart.length === 0 || !isAgreed || (tipePesanan === 'Makan Ditempat' && !selectedTable)} 
+                                disabled={cart.length === 0 || !isAgreed || (tipePesanan === 'Makan Ditempat' && !selectedTable) || !kontak || !kontak.includes('@')} 
                                 onClick={handleCheckout} 
                                 className="flex-1 h-16 bg-[#1ca3f4] disabled:bg-[#1e293b] disabled:text-slate-500 text-white rounded-3xl font-black text-[15px] uppercase tracking-widest transition-all hover:bg-sky-400 active:scale-95 shadow-xl shadow-sky-900/20 flex items-center justify-center gap-3 border-b-4 border-sky-600 disabled:border-transparent"
                             >
                                 <ShoppingCart className="w-5 h-5" />
                                 Bayar Sekarang
                             </button>
-                        </div>
-                        
-                        {/* System Status and Credit */}
-                        <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                            <div className="flex items-center gap-2 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                                <span className="text-[9px] font-black text-emerald-500 uppercase">System Online</span>
-                            </div>
                         </div>
                     </div>
                 </aside>
