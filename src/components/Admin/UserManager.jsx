@@ -8,7 +8,7 @@ export default function UserManager() {
     const [error, setError] = useState(null);
     const [successMsg, setSuccessMsg] = useState(null);
 
-    const availableRoles = ['Pelanggan', 'Staff', 'Admin', 'Dapur', 'Kasir'];
+    const availableRoles = ['Admin', 'Pelanggan', 'Staff'];
 
     useEffect(() => {
         fetchUsers();
@@ -61,8 +61,6 @@ export default function UserManager() {
             case 'Admin':
                 return 'bg-rose-100 text-rose-600 border-rose-200';
             case 'Staff':
-            case 'Dapur':
-            case 'Kasir':
                 return 'bg-sky-100 text-sky-600 border-sky-200';
             default:
                 return 'bg-slate-100 text-slate-600 border-slate-200';
@@ -178,7 +176,7 @@ export default function UserManager() {
                 <p className="text-sm font-bold opacity-90 leading-relaxed max-w-2xl">
                     Perubahan role pengguna akan langsung berdampak pada akses antarmuka (UI). Pastikan Anda memberikan role yang sesuai: 
                     <span className="bg-white/20 px-1 rounded ml-1">Admin</span> untuk akses penuh, 
-                    <span className="bg-white/20 px-1 rounded ml-1">Staff/Dapur/Kasir</span> untuk akses operasional, dan 
+                    <span className="bg-white/20 px-1 rounded ml-1">Staff</span> untuk akses operasional, dan 
                     <span className="bg-white/20 px-1 rounded ml-1">Pelanggan</span> untuk akses POS publik.
                 </p>
             </section>
