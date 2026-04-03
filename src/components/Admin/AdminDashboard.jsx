@@ -78,7 +78,7 @@ export default function AdminDashboard({ user, onLogout, dbStatus }) {
             {!isSidebarOpen && (
                 <button
                     onClick={() => setSidebarOpen(true)}
-                    className="lg:hidden fixed bottom-6 right-6 z-50 bg-[#1ca3f4] text-white p-4 rounded-full shadow-lg"
+                    className="lg:hidden fixed bottom-6 right-6 z-50 bg-[#f472b6] text-white p-4 rounded-full shadow-lg shadow-pink-100"
                 >
                     <MenuIcon />
                 </button>
@@ -89,7 +89,7 @@ export default function AdminDashboard({ user, onLogout, dbStatus }) {
                 <div className="w-72 h-full flex flex-col">
                 <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#1ca3f4] rounded-xl flex items-center justify-center shadow-lg shadow-sky-100">
+                        <div className="w-10 h-10 bg-[#f472b6] rounded-xl flex items-center justify-center shadow-lg shadow-pink-100">
                             <CoffeeIcon className="text-white w-5 h-5" />
                         </div>
                         <div>

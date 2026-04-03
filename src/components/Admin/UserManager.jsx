@@ -76,7 +76,7 @@ export default function UserManager() {
                 </div>
                 <button 
                     onClick={fetchUsers}
-                    className="p-3 bg-white border border-slate-100 rounded-2xl text-sky-500 hover:bg-sky-50 shadow-sm transition-all"
+                    className="p-3 bg-white border border-slate-100 rounded-2xl text-[#f472b6] hover:bg-pink-50 shadow-sm transition-all"
                 >
                     <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
                 </button>
@@ -125,7 +125,7 @@ export default function UserManager() {
                                 <tr key={u.id} className="hover:bg-slate-50/30 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 font-black">
+                                            <div className="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 font-black">
                                                 {u.nama ? u.nama.substring(0, 2).toUpperCase() : '??'}
                                             </div>
                                             <div>
@@ -168,7 +168,7 @@ export default function UserManager() {
                 </div>
             </div>
 
-            <section className="bg-amber-600 p-8 rounded-[2.5rem] text-white shadow-xl shadow-amber-200">
+            <section className="bg-gradient-to-r from-[#f472b6] to-[#1ca3f4] p-8 rounded-[2.5rem] text-white shadow-xl shadow-pink-100">
                 <h3 className="font-black italic mb-4 flex items-center gap-2 text-lg">
                     PERINGATAN SISTEM
                     <Shield className="w-5 h-5" />

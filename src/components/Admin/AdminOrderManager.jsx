@@ -134,7 +134,7 @@ export default function AdminOrderManager() {
                 </div>
                 <button 
                     onClick={fetchOrders}
-                    className="p-3 bg-white border border-slate-100 rounded-2xl text-sky-500 hover:bg-sky-50 shadow-sm transition-all"
+                    className="p-3 bg-white border border-slate-100 rounded-2xl text-[#f472b6] hover:bg-pink-50 shadow-sm transition-all"
                 >
                     <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
                 </button>
@@ -142,8 +142,8 @@ export default function AdminOrderManager() {
 
             {loading && orders.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[2.5rem] border border-slate-50">
-                    <Loader2 className="w-10 h-10 animate-spin text-sky-200 mb-4" />
-                    <p className="font-bold text-slate-300">Memuat antrian...</p>
+                    <Loader2 className="w-10 h-10 animate-spin text-pink-200 mb-4" />
+                    <p className="font-black text-slate-300">Memuat antrian...</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -166,7 +166,7 @@ export default function AdminOrderManager() {
                                 <div key={group.groupKey} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center font-black text-lg">
+                                            <div className="w-12 h-12 bg-sky-500 text-white rounded-2xl flex items-center justify-center font-black text-lg shadow-lg shadow-sky-100">
                                                 {group.no_meja || '??'}
                                             </div>
                                             <div>
@@ -176,7 +176,8 @@ export default function AdminOrderManager() {
                                                         <button 
                                                             onClick={(e) => { e.stopPropagation(); handleResendEmail(group); }}
                                                             disabled={sendingEmail === group.groupKey}
-                                                            className="p-1.5 text-sky-500 hover:bg-sky-50 rounded-lg transition-all title='Kirim ulang email konfirmasi'"
+                                                            className="p-1.5 text-[#f472b6] hover:bg-pink-50 rounded-lg transition-all"
+                                                            title="Kirim ulang email konfirmasi"
                                                         >
                                                             {sendingEmail === group.groupKey ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
                                                         </button>
@@ -198,7 +199,7 @@ export default function AdminOrderManager() {
                                         <button 
                                             onClick={() => handleUpdateGroupStatus(group, 'processing')}
                                             disabled={updatingGroupKey === group.groupKey}
-                                            className="flex items-center gap-2 px-6 py-3 bg-[#0ea5e9] text-white rounded-xl font-black text-sm hover:bg-sky-600 transition-all shadow-lg shadow-sky-100 active:scale-95 disabled:opacity-50"
+                                            className="flex items-center gap-2 px-6 py-3 bg-[#1ca3f4] text-white rounded-xl font-black text-sm hover:bg-sky-600 transition-all shadow-lg shadow-sky-100 active:scale-95 disabled:opacity-50"
                                         >
                                             {updatingGroupKey === group.groupKey ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRightCircle className="w-4 h-4" />}
                                             Proses Antrian

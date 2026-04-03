@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Coffee, Mail, Lock } from 'lucide-react';
+import { Coffee, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 export default function Login({ onLogin, onGoRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -39,13 +40,12 @@ export default function Login({ onLogin, onGoRegister }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e2e8f0] to-[#fce7f3] flex items-center justify-center p-4">
-
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f9ff] via-white to-[#fdf2f8] flex items-center justify-center p-4 antialiased">
       {/* Main Card */}
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-[400px] overflow-hidden border border-white/40">
-
-        {/* Top Header Section (Sky Blue) extending deeper */}
-        <div className="bg-[#1ca3f4] pt-14 pb-12 rounded-b-[2rem] flex flex-col items-center justify-center text-white relative z-10">
+      <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl w-full max-w-[420px] overflow-hidden border border-white/60">
+        
+        {/* Top Header Section (Sky Blue) */}
+        <div className="bg-gradient-to-b from-[#1ca3f4] to-[#38bdf8] pt-16 pb-12 rounded-b-[2.5rem] flex flex-col items-center justify-center text-white relative z-10 shadow-lg">
           {/* Logo Icon */}
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-5 backdrop-blur-sm">
             <Coffee className="w-8 h-8 text-white" strokeWidth={2.5} />
@@ -106,14 +106,21 @@ export default function Login({ onLogin, onGoRegister }) {
                   <Lock className="h-[18px] w-[18px] text-[#f472b6]" strokeWidth={2.5} />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
+                  className="w-full pl-11 pr-12 py-3.5 rounded-xl border border-[#bae6fd] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7dd3fc] focus:border-transparent transition-all text-sm font-medium shadow-sm hover:border-[#7dd3fc]"
                   placeholder="••••••••"
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#f472b6] hover:text-[#ec4899] transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
               </div>
             </div>
 

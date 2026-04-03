@@ -4,6 +4,7 @@ import {
     Flower2,
     ShieldCheck,
     HeartHandshake,
+    Heart,
     Coffee,
     Plus,
     Minus,
@@ -246,57 +247,58 @@ export default function POSInput({ user, onLogout }) {
     const infaqSedekah = isInfaqEnabled ? totalDebit * 0.025 : 0;
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col font-outfit text-slate-800 antialiased">
-            {/* Top Navigation */}
-            <nav className="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-50 transition-all">
+        <div className="min-h-screen bg-[#f3f9ff] flex flex-col font-outfit text-slate-800 antialiased">
+            {/* Solid Sky Blue Header */}
+            <nav className="h-24 bg-[#1ca3f4] flex items-center justify-between px-10 sticky top-0 z-[80] shadow-lg shadow-[#1ca3f4]/10">
                 <div className="flex items-center gap-6">
-                    <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-slate-200">
-                        <Coffee className="w-6 h-6" strokeWidth={2.5} />
+                    <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-white backdrop-blur-md border border-white/30">
+                        <Coffee className="w-8 h-8" strokeWidth={2.5} />
                     </div>
                     <div>
-                        <h1 className="text-xl font-black tracking-tight text-slate-900 leading-none">ADHAR COFFE</h1>
-                        <p className="text-[10px] font-bold text-sky-500 uppercase tracking-[0.3em] mt-1.5">Premium Experience</p>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-2xl font-black tracking-tight text-white leading-none">Adhar Coffe</h1>
+                            <span className="text-xl">🍵</span>
+                        </div>
+                        <p className="text-[11px] font-bold text-white/80 uppercase tracking-[0.2em] mt-1.5">Realtime Self Order</p>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="bg-slate-50 px-4 py-2 rounded-2xl border border-slate-100 flex items-center gap-3">
-                        <div className="w-8 h-8 bg-white rounded-xl shadow-sm flex items-center justify-center">
-                            <UserCircle className="w-5 h-5 text-slate-400" />
+                <div className="flex items-center gap-5">
+                    <div className="bg-[#0c4a6e]/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 flex items-center gap-3">
+                        <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
+                            <UserCircle className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[11px] font-black leading-none">{user?.nama || 'Admin'}</span>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{user?.role || 'Staff'}</span>
+                            <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest leading-none mb-1">Selamat Datang</span>
+                            <span className="text-[13px] font-black text-white leading-none">{user?.nama || 'Admin'}</span>
                         </div>
                     </div>
-                    <button onClick={onLogout} className="w-11 h-11 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-sm">
-                        <LogOut className="w-5 h-5" />
+                    <button onClick={onLogout} className="bg-[#f472b6] hover:bg-pink-500 text-white px-8 py-3.5 rounded-full font-black text-[13px] uppercase tracking-widest flex items-center gap-2 transition-all shadow-lg shadow-pink-500/20 active:scale-95">
+                        <LogOut className="w-4 h-4" /> Keluar
                     </button>
                 </div>
             </nav>
 
             <main className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
-                {/* Menu Section */}
-                <section className="flex-1 overflow-y-auto px-8 py-8 custom-scrollbar scroll-smooth">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+
+                {/* Main Content Area */}
+                <section className="flex-1 overflow-y-auto px-10 py-10 custom-scrollbar scroll-smooth">
+                    <div className="flex items-center justify-between gap-6 mb-12">
                         <div className="flex items-center gap-4">
-                            <div className="w-1.5 h-10 bg-sky-500 rounded-full"></div>
-                            <div>
-                                <h2 className="text-2xl font-black text-slate-800">Menu Utama</h2>
-                                <p className="text-sm font-bold text-slate-400">Pilih menu favorit untuk pesanan baru.</p>
-                            </div>
+                            <Cloud className="w-10 h-10 text-[#1ca3f4]" />
+                            <h2 className="text-3xl font-black text-[#0c4a6e] tracking-tight">Pilih Menu</h2>
                         </div>
 
-                        <div className="relative w-full md:w-[350px] group">
-                            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                                <Search className="w-5 h-5 text-slate-300 group-focus-within:text-sky-500 transition-colors" />
+                        <div className="relative w-[450px]">
+                            <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                                <Search className="w-5 h-5 text-slate-300" />
                             </div>
                             <input
                                 type="text"
-                                placeholder="Cari menu terbaik..."
+                                placeholder="Cari menu kopi..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3.5 rounded-[1.5rem] border border-slate-100 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-300 bg-white shadow-sm font-bold text-sm transition-all text-slate-800"
+                                className="w-full pl-14 pr-6 py-4 rounded-full border border-slate-100 focus:outline-none focus:ring-4 focus:ring-[#1ca3f4]/10 focus:border-[#1ca3f4]/30 bg-white shadow-sm font-bold text-sm transition-all text-slate-800"
                             />
                         </div>
                     </div>
@@ -323,17 +325,36 @@ export default function POSInput({ user, onLogout }) {
                             <p className="font-bold">Menu tidak ditemukan</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-8 gap-y-12">
                             {filteredMenu.map((produk) => (
-                                <button key={produk.id} onClick={() => addToCart(produk)} className="bg-white p-5 rounded-[2rem] border border-slate-100 hover:border-sky-200 hover:shadow-2xl hover:shadow-sky-100/50 hover:-translate-y-2 transition-all group relative overflow-hidden flex flex-col items-center text-center">
-                                    <div className="w-24 h-24 md:w-32 md:h-32 bg-slate-50 rounded-3xl mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform overflow-hidden">
-                                        <div className="relative z-10 w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center">
-                                            {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), { className: "w-8 h-8 md:w-10 md:h-10 text-sky-500" })}
-                                        </div>
+                                <button
+                                    key={produk.id}
+                                    onClick={() => addToCart(produk)}
+                                    className="bg-white px-4 py-8 rounded-[4rem] border border-slate-100 hover:border-[#1ca3f4]/30 hover:shadow-2xl hover:shadow-sky-100/50 hover:-translate-y-2 transition-all group relative flex flex-col items-center text-center w-full max-w-[160px] mx-auto shadow-sm"
+                                >
+                                    {/* HALAL Tag */}
+                                    <div className="absolute top-6 bg-[#ecfdf5] text-[#059669] text-[8px] font-black px-2.5 py-1 rounded-full border border-[#059669]/20 tracking-widest uppercase z-10 shadow-sm">
+                                        HALAL
                                     </div>
-                                    <h3 className="font-black text-[15px] md:text-[17px] text-slate-800 line-clamp-2 min-h-[44px] leading-tight mb-2">{produk.nama_menu}</h3>
-                                    <p className="text-sky-600 font-black text-lg mb-3">{formatRp(produk.harga)}</p>
-                                    <div className={`px-2.5 py-1 rounded-full border text-[9px] font-black uppercase tracking-wider ${produk.stok <= 0 ? 'bg-rose-50 text-rose-500 border-rose-100' : 'bg-slate-50 text-slate-400 border-slate-100'}`}>
+
+                                    {/* Large Icon in Circle */}
+                                    <div className="w-24 h-24 bg-[#1ca3f4] rounded-full mt-4 mb-6 flex items-center justify-center shadow-[0_10px_30px_rgba(28,163,244,0.3)] group-hover:scale-110 transition-transform relative">
+                                        <div className="absolute inset-0 bg-white/20 rounded-full blur-md animate-pulse"></div>
+                                        {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), { 
+                                            className: "w-10 h-10 text-white relative z-10",
+                                            strokeWidth: 2.5
+                                        })}
+                                    </div>
+
+                                    <h3 className="font-black text-[15px] text-[#0c4a6e] leading-tight mb-2 px-2 line-clamp-2 min-h-[40px]">
+                                        {produk.nama_menu}
+                                    </h3>
+                                    
+                                    <p className="text-[#f472b6] font-black text-lg mb-4">
+                                        {formatRp(produk.harga).replace('Rp', 'Rp ')}
+                                    </p>
+
+                                    <div className="mt-auto px-4 py-1.5 bg-slate-50 text-slate-400 text-[9px] font-black rounded-full border border-slate-100 tracking-tighter shadow-inner">
                                         Stok: {produk.stok ?? 0}
                                     </div>
                                 </button>
@@ -343,135 +364,218 @@ export default function POSInput({ user, onLogout }) {
                 </section>
 
                 {/* Cart Sidebar */}
-                <aside className={`fixed inset-0 z-[60] lg:relative lg:inset-auto lg:flex ${showCartMobile ? 'flex' : 'hidden'} lg:w-[420px] bg-white flex flex-col shrink-0 border-l border-slate-100 shadow-2xl lg:shadow-none transition-all`}>
-                    <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between sticky top-0 bg-white z-20">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                                <ShoppingBag className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-black text-slate-800 leading-none">Keranjang</h2>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Pesanan Aktif</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            {cart.length > 0 && <button onClick={clearCart} className="w-10 h-10 flex items-center justify-center text-rose-400 hover:bg-rose-50 rounded-xl transition-all"><Trash2 className="w-5 h-5" /></button>}
-                            <div className="bg-sky-500 text-white text-xs font-black min-w-[32px] h-8 flex items-center justify-center rounded-xl px-2">{cart.reduce((a, b) => a + b.qty, 0)}</div>
-                            <button onClick={() => setShowCartMobile(false)} className="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-500 rounded-xl"><X className="w-6 h-6" /></button>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        <div className="m-4 p-6 bg-slate-50 rounded-[2rem] border border-slate-100 space-y-5">
-                            <div className="flex gap-4">
-                                <div className="flex-1 space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Nama Pembeli</label>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-4 flex items-center"><UserCircle className="w-4 h-4 text-slate-300" /></div>
-                                        <input type="text" placeholder="Nama Pelanggan..." value={namaPembeli} onChange={(e) => setNamaPembeli(e.target.value)} className="w-full bg-white pl-11 pr-4 py-3 rounded-2xl border border-slate-200 focus:border-sky-400 font-bold text-sm shadow-sm outline-none" />
+                <aside className={`fixed top-24 inset-x-0 bottom-0 z-[60] lg:relative lg:top-0 lg:inset-auto lg:flex ${showCartMobile ? 'flex' : 'hidden'} lg:w-[420px] bg-white flex flex-col shrink-0 border-l border-slate-100 shadow-2xl lg:shadow-none transition-all`}>
+                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30">
+                        {/* Sharia & AI Banners */}
+                        <div className="p-6 space-y-4">
+                            {/* Sharia Compliance */}
+                            <div className="bg-[#ecfdf5] border border-[#10b981]/20 p-4 rounded-2xl flex items-center justify-between shadow-sm">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white shadow-lg shadow-green-100">
+                                        <Check className="w-5 h-5" strokeWidth={3} />
                                     </div>
+                                    <span className="text-[11px] font-black text-[#065f46] uppercase tracking-wider">SHARIA COMPLIANCE VERIFIED</span>
                                 </div>
-                                {tipePesanan === 'Makan Ditempat' && (
-                                    <div className="w-[85px] space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase text-center block">Meja</label>
-                                        <button onClick={() => setShowTableModal(true)} className={`w-full h-[46px] flex items-center justify-center gap-2 rounded-2xl border font-black text-sm transition-all ${selectedTable ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-400 border-slate-200 hover:border-sky-300'}`}>
-                                            <Monitor className="w-4 h-4" />
-                                            {selectedTable ? `#${selectedTable}` : '?'}
+                                <span className="bg-white/60 text-[9px] font-black text-[#059669] px-2 py-1 rounded-lg border border-green-100 uppercase tracking-tighter">AUDIT AKTIF</span>
+                            </div>
+
+                            {/* Customer Info Form - RESTORED & REDESIGNED */}
+                            <div className="space-y-5 bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm mt-2">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Nama Pembeli</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nama..." 
+                                            value={namaPembeli}
+                                            onChange={(e) => setNamaPembeli(e.target.value)}
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-[#f472b6] uppercase tracking-widest ml-1">Meja</label>
+                                        <button 
+                                            onClick={() => setShowTableModal(true)}
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] flex items-center justify-center gap-3 group hover:border-[#f472b6]/30 transition-all"
+                                        >
+                                            <Monitor className={`w-5 h-5 ${selectedTable ? 'text-[#f472b6]' : 'text-slate-300'}`} />
+                                            <span className={`text-sm font-black ${selectedTable ? 'text-[#f472b6]' : 'text-slate-400'}`}>
+                                                {selectedTable ? `Meja ${selectedTable}` : 'Pilih'}
+                                            </span>
                                         </button>
                                     </div>
-                                )}
-                            </div>
+                                </div>
 
-                            <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Kontak Konfirmasi (Email/WA)</label>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-4 flex items-center"><Mail className="w-4 h-4 text-slate-300" /></div>
-                                        <input type="text" placeholder="email@... / 08..." value={kontak} onChange={(e) => setKontak(e.target.value)} className="w-full bg-white pl-11 pr-4 py-3 rounded-2xl border border-slate-200 focus:border-sky-400 font-bold text-sm shadow-sm outline-none" />
+                                    <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">No. WA / Email</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="0812... / email@..." 
+                                        value={kontak}
+                                        onChange={(e) => setKontak(e.target.value)}
+                                        className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Tipe Pesanan</label>
+                                        <select 
+                                            value={tipePesanan}
+                                            onChange={(e) => setTipePesanan(e.target.value)}
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="Makan Ditempat">Makan di Tempat</option>
+                                            <option value="Bawa Pulang">Bawa Pulang</option>
+                                            <option value="Diantar">Diantar</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Pembayaran</label>
+                                        <select 
+                                            value={metodePembayaran}
+                                            onChange={(e) => setMetodePembayaran(e.target.value)}
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="QRIS">QRIS</option>
+                                            <option value="Tunai">Tunai</option>
+                                            <option value="Transfer">Transfer</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Tipe</label>
-                                        <select value={tipePesanan} onChange={(e) => setTipePesanan(e.target.value)} className="w-full bg-white px-4 py-3 rounded-2xl border border-slate-200 font-bold text-sm outline-none shadow-sm cursor-pointer">
-                                            <option value="Makan Ditempat">Ditempat</option>
-                                            <option value="Bawa Pulang">Bungkus</option>
-                                            <option value="Diantar">Delivery</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Bayar</label>
-                                        <select value={metodePembayaran} onChange={(e) => setMetodePembayaran(e.target.value)} className="w-full bg-white px-4 py-3 rounded-2xl border border-slate-200 font-bold text-sm outline-none shadow-sm cursor-pointer">
-                                            {tipePesanan === "Diantar" && <option value="Tunai">Tunai / COD</option>}
-                                            <option value="QRIS">QRIS / Digital</option>
-                                            <option value="Transfer">Bank Transfer</option>
-                                        </select>
+                            </div>
+
+                            {/* AI Audit Box */}
+                            <div className="border-2 border-dashed border-[#1ca3f4]/20 bg-[#f0f9ff]/50 p-5 rounded-3xl relative overflow-hidden group">
+                                <div className="flex items-start gap-3 relative z-10">
+                                    <div className="w-1.5 h-1.5 bg-[#1ca3f4] rounded-full mt-1.5 animate-pulse"></div>
+                                    <div className="space-y-1">
+                                        <p className="text-[10px] font-black text-[#1ca3f4] uppercase tracking-[0.15em]">AI Audit System Analytics</p>
+                                        <p className="text-[11px] font-bold text-slate-500 leading-relaxed italic">
+                                            Menganalisis kejujuran harga dan ketersediaan stok produk secara realtime untuk transparansi transaksi.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="px-8 pb-8">
-                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Detail Pesanan</h3>
+                        {/* Order Sticky Header Section */}
+                        <div className="px-8 py-8 border-y border-slate-50 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-30 shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-[#f472b6] shadow-sm border border-pink-100">
+                                    <ShoppingBag className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black text-[#0c4a6e] leading-none">Pesanan Anda</h2>
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Ringkasan Belanja</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <button onClick={clearCart} className="bg-rose-50 text-rose-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all border border-rose-100">
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                                <div className="bg-[#f472b6] text-white text-xs font-black w-8 h-8 flex items-center justify-center rounded-full shadow-lg shadow-pink-200">
+                                    {cart.reduce((a, b) => a + b.qty, 0)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="px-6 py-8 space-y-6">
                             {cart.length === 0 ? (
-                                <div className="text-center py-20"><p className="text-sm font-bold text-slate-400">Belum ada menu pilihan</p></div>
+                                <div className="text-center py-24 text-slate-300">
+                                    <ShoppingBag className="w-16 h-16 mx-auto mb-4 opacity-20" />
+                                    <p className="font-bold text-sm">Keranjang masih kosong</p>
+                                </div>
                             ) : (
-                                <div className="space-y-5">
+                                <div className="space-y-4">
                                     {cart.map((item) => (
-                                        <div key={item.id} className="flex items-center gap-4 group/item">
-                                            <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center relative p-2">
-                                                <div className="absolute -top-1 -left-1 w-6 h-6 bg-slate-900 text-white rounded-lg flex items-center justify-center text-[10px] font-black shadow-lg">{item.qty}</div>
-                                                {React.createElement(getMenuIcon(item.nama_menu, item.kategori), { className: "w-7 h-7 text-slate-400 group-hover/item:text-sky-500 transition-colors" })}
+                                        <div key={item.id} className="bg-white p-4 rounded-3xl border border-slate-100 flex items-center gap-4 group/item shadow-sm hover:shadow-md transition-all">
+                                            <div className="w-16 h-16 bg-[#f0f9ff] rounded-2xl flex items-center justify-center relative p-2">
+                                                <div className="absolute -top-1.5 -left-1.5 w-7 h-7 bg-[#f472b6] text-white rounded-xl flex items-center justify-center text-[11px] font-black shadow-lg shadow-pink-100">{item.qty}</div>
+                                                {React.createElement(getMenuIcon(item.nama_menu, item.kategori), { className: "w-8 h-8 text-[#1ca3f4] transition-colors" })}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="font-bold text-sm text-slate-800 truncate mb-1">{item.nama_menu}</h4>
-                                                <div className="flex items-center justify-between">
-                                                    <p className="text-sky-600 font-black text-xs">{formatRp(item.harga * item.qty)}</p>
-                                                    <div className="flex items-center gap-2 bg-slate-50 rounded-xl p-1 border border-slate-100">
+                                                <h4 className="font-black text-[18px] text-[#0c4a6e] truncate mb-0.5">{item.nama_menu}</h4>
+                                                <div className="flex items-center justify-between mt-1">
+                                                    <p className="text-[#f472b6] font-black text-[16px]">{formatRp(item.harga * item.qty)}</p>
+                                                    <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-1.5 border border-slate-100">
                                                         <button onClick={() => updateQty(item.id, -1)} className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-white rounded-lg transition-all"><Minus className="w-3 h-3" strokeWidth={4} /></button>
-                                                        <span className="text-xs font-black text-slate-600 w-4 text-center">{item.qty}</span>
-                                                        <button onClick={() => updateQty(item.id, 1)} className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-sky-500 hover:bg-white rounded-lg transition-all"><Plus className="w-3 h-3" strokeWidth={4} /></button>
+                                                        <span className="text-[13px] font-black text-slate-600 w-5 text-center">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.id, 1)} className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-[#1ca3f4] hover:bg-white rounded-lg transition-all"><Plus className="w-3 h-3" strokeWidth={4} /></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button onClick={() => removeFromCart(item.id)} className="w-9 h-9 flex items-center justify-center text-rose-200 hover:text-rose-500 hover:bg-rose-50 rounded-xl opacity-0 group-hover/item:opacity-100 transition-all"><Trash2 className="w-4 h-4" /></button>
+                                            <button onClick={() => removeFromCart(item.id)} className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
                                         </div>
                                     ))}
                                 </div>
                             )}
                         </div>
 
-                        <div className="px-8 pb-10 space-y-4">
-                            <div className="p-5 bg-sky-50 rounded-[2rem] border border-sky-100/50">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-sky-500 shadow-sm border border-sky-100"><HeartHandshake className="w-5 h-5" /></div>
-                                        <p className="text-sm font-black text-sky-900">Infaq 2.5%</p>
+                        {/* Infaq Toggle section */}
+                        <div className="px-6 py-6 bg-white border-t border-slate-50 space-y-4">
+                            <div className="flex items-center justify-between p-5 bg-sky-50/50 border border-sky-100 rounded-[2rem] shadow-sm">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-pink-500 shadow-sm border border-pink-50">
+                                        <Heart className="w-5 h-5 fill-current" />
                                     </div>
-                                    <button onClick={() => setIsInfaqEnabled(!isInfaqEnabled)} className={`w-12 h-6 rounded-full transition-all relative flex items-center px-1 ${isInfaqEnabled ? 'bg-sky-500 shadow-lg shadow-sky-100' : 'bg-slate-300'}`}>
-                                        <div className={`w-4 h-4 bg-white rounded-full transition-transform ${isInfaqEnabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
-                                    </button>
+                                    <p className="text-[14px] font-black text-[#0c4a6e] uppercase tracking-wider">Berinfaq 2.5%</p>
+                                </div>
+                                <button onClick={() => setIsInfaqEnabled(!isInfaqEnabled)} className={`w-14 h-7 rounded-full transition-all relative flex items-center px-1.5 ${isInfaqEnabled ? 'bg-[#f472b6] shadow-lg shadow-pink-100' : 'bg-slate-300'}`}>
+                                    <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform ${isInfaqEnabled ? 'translate-x-7' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+
+                            <div className="space-y-4 px-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-bold text-sky-500 text-[15px]">Subtotal</span>
+                                    <span className="font-black text-sky-600 text-[18px]">{formatRp(totalDebit)}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="font-bold text-pink-400 text-[15px]">Infaq (2.5%)</span>
+                                    <span className="font-black text-pink-500 text-[18px]">{formatRp(infaqSedekah)}</span>
                                 </div>
                             </div>
-                            <button onClick={() => setIsAgreed(!isAgreed)} className={`w-full p-5 rounded-[2rem] border-2 flex items-center gap-4 transition-all ${isAgreed ? 'bg-slate-900 border-slate-900 shadow-2xl shadow-slate-100' : 'bg-white border-slate-100 border-dashed hover:border-sky-300'}`}>
-                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${isAgreed ? 'bg-sky-500 text-white' : 'bg-slate-50 text-slate-300'}`}><Check className="w-5 h-5" strokeWidth={3} /></div>
-                                <div className="text-left">
-                                    <p className={`text-[11px] font-black uppercase ${isAgreed ? 'text-white' : 'text-slate-400'}`}>Konfirmasi Data</p>
-                                    <p className={`text-[9px] font-bold ${isAgreed ? 'text-sky-300' : 'text-slate-300 italic'}`}>Pesanan sudah benar & amanah</p>
+                        </div>
+
+                        {/* Confirmation Checkbox */}
+                        <div className="px-6 pb-6 bg-white">
+                            <button onClick={() => setIsAgreed(!isAgreed)} className={`w-full p-4 rounded-3xl border-2 flex items-center gap-4 transition-all ${isAgreed ? 'bg-pink-50 border-pink-200' : 'bg-white border-slate-100 hover:border-pink-200 shadow-sm'}`}>
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center border-2 transition-all ${isAgreed ? 'bg-[#f472b6] border-[#f472b6] text-white shadow-lg shadow-pink-200' : 'bg-white border-pink-200 text-transparent'}`}>
+                                    <Check className="w-5 h-5" strokeWidth={4} />
                                 </div>
+                                <span className={`text-[13px] font-black uppercase tracking-tighter text-left ${isAgreed ? 'text-[#f472b6]' : 'text-pink-900/60'}`}>
+                                    SAYA KONFIRMASI PESANAN SUDAH BENAR & AMANAH
+                                </span>
                             </button>
                         </div>
                     </div>
 
-                    <div className="p-8 bg-white border-t border-slate-50 sticky bottom-0 z-30">
-                        <div className="flex justify-between items-center px-1 mb-6">
-                            <span className="text-[13px] font-bold text-slate-400">Total Tagihan</span>
-                            <span className="text-xl font-black text-slate-800">{formatRp(totalDebit + infaqSedekah)}</span>
+                    {/* Footer Block */}
+                    <div className="p-8 bg-[#0c4a6e] border-t border-white/5 sticky bottom-0 z-[70] shadow-[0_-15px_40px_rgba(12,74,110,0.3)]">
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col">
+                                <span className="text-[12px] font-black text-sky-300 uppercase tracking-[0.2em] mb-1">Total Bayar</span>
+                                <span className="text-3xl font-black text-white tracking-tighter">{formatRp(totalDebit + infaqSedekah)}</span>
+                            </div>
+                            
+                            <button 
+                                disabled={cart.length === 0 || !isAgreed || (tipePesanan === 'Makan Ditempat' && !selectedTable)} 
+                                onClick={handleCheckout} 
+                                className="flex-1 h-16 bg-[#1ca3f4] disabled:bg-[#1e293b] disabled:text-slate-500 text-white rounded-3xl font-black text-[15px] uppercase tracking-widest transition-all hover:bg-sky-400 active:scale-95 shadow-xl shadow-sky-900/20 flex items-center justify-center gap-3 border-b-4 border-sky-600 disabled:border-transparent"
+                            >
+                                <ShoppingCart className="w-5 h-5" />
+                                Bayar Sekarang
+                            </button>
                         </div>
-                        <button disabled={cart.length === 0 || !isAgreed} onClick={handleCheckout} className="w-full h-16 bg-sky-500 disabled:bg-slate-100 disabled:text-slate-300 text-white rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all hover:bg-sky-400 active:scale-95 shadow-xl shadow-sky-500/20 flex items-center justify-center gap-3">
-                            <ShoppingCart className="w-5 h-5" />
-                            Selesaikan Pesanan
-                        </button>
+                        
+                        {/* System Status and Credit */}
+                        <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                            <div className="flex items-center gap-2 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+                                <span className="text-[9px] font-black text-emerald-500 uppercase">System Online</span>
+                            </div>
+                        </div>
                     </div>
                 </aside>
             </main>
@@ -480,7 +584,7 @@ export default function POSInput({ user, onLogout }) {
             {showReceipt && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-[400px] overflow-hidden flex flex-col max-h-[90vh]">
-                        <div className="bg-slate-900 p-8 text-center text-white relative shrink-0">
+                        <div className="bg-[#f472b6] p-8 text-center text-white relative shrink-0">
                             <button onClick={() => setShowReceipt(false)} className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 rounded-xl p-2 transition-all"><X className="w-5 h-5" /></button>
                             <div className="w-16 h-16 bg-sky-500 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-xl shadow-sky-500/20"><Coffee className="w-8 h-8 text-white" strokeWidth={2.5} /></div>
                             <h3 className="font-black text-2xl tracking-tight mb-1 uppercase">Transaksi Berhasil</h3>
@@ -493,9 +597,9 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                             <div className="border-y border-dashed border-slate-300 py-4 mb-4 space-y-3">
                                 {cart.map(item => (
-                                    <div key={item.id} className="flex justify-between text-sm">
-                                        <div className="flex-1"><p className="font-bold text-slate-700">{item.nama_menu}</p><p className="text-slate-400 text-xs">{item.qty} x {formatRp(item.harga)}</p></div>
-                                        <p className="font-bold text-slate-800">{formatRp(item.harga * item.qty)}</p>
+                                    <div key={item.id} className="flex justify-between text-[15px] py-1">
+                                        <div className="flex-1"><p className="font-black text-slate-700">{item.nama_menu}</p><p className="text-slate-400 text-sm font-bold">{item.qty} x {formatRp(item.harga)}</p></div>
+                                        <p className="font-black text-slate-800">{formatRp(item.harga * item.qty)}</p>
                                     </div>
                                 ))}
                             </div>
@@ -503,9 +607,17 @@ export default function POSInput({ user, onLogout }) {
                                 <div className="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span>{formatRp(totalDebit)}</span></div>
                                 <div className="flex justify-between text-sm text-sky-600"><span>Infaq (2.5%)</span><span>{formatRp(infaqSedekah)}</span></div>
                             </div>
-                            <div className="bg-slate-900 p-5 rounded-2xl flex justify-between items-center shadow-lg">
-                                <span className="font-black text-sky-300 text-xs uppercase tracking-widest">Total</span>
+                            <div className="bg-[#f472b6] p-5 rounded-2xl flex justify-between items-center shadow-lg shadow-pink-100">
+                                <span className="font-black text-white text-xs uppercase tracking-widest">Total</span>
                                 <span className="font-black text-white text-2xl">{formatRp(totalDebit + infaqSedekah)}</span>
+                            </div>
+                            <div className="mt-6 text-center text-slate-400 text-[10px] font-medium leading-relaxed">
+                                <p>Pesanan telah diterima & masuk antrian.</p>
+                                {kontak && kontak.includes('@') && (
+                                    <p className="mt-2 text-sky-500 font-bold italic">
+                                        *Salinan struk telah dikirim ke email Anda.
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className="p-4 bg-white border-t border-slate-50 grid grid-cols-2 gap-3 shrink-0">
@@ -524,12 +636,12 @@ export default function POSInput({ user, onLogout }) {
             {showTableModal && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-[600px] overflow-hidden flex flex-col max-h-[90vh]">
-                        <div className="bg-slate-900 p-8 text-white flex justify-between items-center">
+                        <div className="bg-[#f472b6] p-8 text-white flex justify-between items-center">
                             <div className="flex items-center gap-4">
-                                <Layout className="w-8 h-8 text-sky-400" />
+                                <Layout className="w-8 h-8 text-white" />
                                 <h3 className="font-black text-2xl uppercase tracking-tight">Manajemen Meja</h3>
                             </div>
-                            <button onClick={() => setShowTableModal(false)} className="bg-white/10 p-2 rounded-xl hover:bg-white/20 transition-all"><X className="w-6 h-6" /></button>
+                            <button onClick={() => setShowTableModal(false)} className="bg-white/20 p-2 rounded-xl hover:bg-white/30 transition-all"><X className="w-6 h-6" /></button>
                         </div>
                         <div className="p-3 bg-slate-50 border-b border-slate-100 flex gap-2">
                             {[1, 2].map(f => (
@@ -545,7 +657,7 @@ export default function POSInput({ user, onLogout }) {
                         </div>
                         <div className="p-6 bg-white border-t border-slate-100 flex items-center justify-between">
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Pilih meja yang tersedia</p>
-                            <button onClick={() => setShowTableModal(false)} className="bg-slate-900 text-white font-black px-10 py-4 rounded-2xl transition-all shadow-xl hover:bg-slate-800">Selesai</button>
+                            <button onClick={() => setShowTableModal(false)} className="bg-sky-500 text-white font-black px-10 py-4 rounded-2xl transition-all shadow-xl shadow-sky-100 hover:bg-sky-600">Selesai</button>
                         </div>
                     </div>
                 </div>

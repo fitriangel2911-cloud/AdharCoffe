@@ -396,9 +396,9 @@ def send_receipt_email_task(to_email: str, order_summary: dict, subtotal: int, i
                   <div style="max-width: 500px; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
                     
                     <!-- Header -->
-                    <div style="background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); padding: 32px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #1ca3f4 0%, #7dd3fc 100%); padding: 32px; text-align: center;">
                       <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 800; letter-spacing: -0.025em; text-transform: uppercase;">ADHAR COFFE</h1>
-                      <p style="margin: 8px 0 0; color: #e0f2fe; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Digital Receipt</p>
+                      <p style="margin: 8px 0 0; color: #e0f2fe; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Digital Receipt (Terima Kasih)</p>
                     </div>
 
                     <div style="padding: 32px;">
@@ -445,7 +445,7 @@ def send_receipt_email_task(to_email: str, order_summary: dict, subtotal: int, i
                         </div>
                         <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; display: table; width: 100%;">
                           <div style="display: table-cell; color: #0f172a; font-size: 16px; font-weight: 800; text-transform: uppercase;">Total Pembayaran</div>
-                           <div style="display: table-cell; text-align: right; color: #0ea5e9; font-size: 20px; font-weight: 800;">Rp{total_bayar:,}</div>
+                           <div style="display: table-cell; text-align: right; color: #1ca3f4; font-size: 20px; font-weight: 800;">Rp{total_bayar:,}</div>
                         </div>
                       </div>
 

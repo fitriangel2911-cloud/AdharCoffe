@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, Store, ChefHat, Users, KeyRound, ChevronRight } from 'lucide-react';
+import { User, Mail, Lock, Store, ChefHat, Users, KeyRound, ChevronRight, Eye, EyeOff } from 'lucide-react';
 
 export default function Register({ onRegister, onGoLogin }) {
     const [formData, setFormData] = useState({
         nama: '', email: '', password: '', confirm: '', role: 'Pelanggan', accessCode: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -52,11 +53,11 @@ export default function Register({ onRegister, onGoLogin }) {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#e2e8f0] via-[#f8fafc] to-[#fce7f3] flex items-center justify-center p-4">
-            <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-[480px] overflow-hidden border border-white/40 my-4 flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-[#f0f9ff] via-white to-[#fdf2f8] flex items-center justify-center p-4 antialiased">
+            <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl w-full max-w-[480px] overflow-hidden border border-white/60 my-4 flex flex-col">
                 
                 {/* Header Section */}
-                <div className="bg-[#1ca3f4] pt-12 pb-10 px-8 rounded-b-[2.5rem] text-white relative overflow-hidden">
+                <div className="bg-gradient-to-b from-[#1ca3f4] to-[#38bdf8] pt-12 pb-10 px-8 rounded-b-[2.5rem] text-white relative overflow-hidden shadow-lg">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
                     <div className="relative z-10 flex items-center justify-between">
                         <div>
@@ -162,21 +163,28 @@ export default function Register({ onRegister, onGoLogin }) {
                                 <div className="relative group">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#1ca3f4] transition-colors" />
                                     <input
-                                        type="password" required
+                                        type={showPassword ? "text" : "password"} required
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-[#1ca3f4] transition-all text-sm font-bold"
+                                        className="w-full pl-11 pr-11 py-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-[#1ca3f4] transition-all text-sm font-bold"
                                         placeholder="Kata Sandi Baru"
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-[#1ca3f4] transition-colors"
+                                    >
+                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
                                 </div>
 
                                 <div className="relative group">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#1ca3f4] transition-colors" />
                                     <input
-                                        type="password" required
+                                        type={showPassword ? "text" : "password"} required
                                         value={formData.confirm}
                                         onChange={(e) => setFormData({ ...formData, confirm: e.target.value })}
-                                        className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-[#1ca3f4] transition-all text-sm font-bold"
+                                        className="w-full pl-11 pr-11 py-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-[#1ca3f4] transition-all text-sm font-bold"
                                         placeholder="Konfirmasi Sandi"
                                     />
                                 </div>
