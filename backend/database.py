@@ -12,14 +12,15 @@ def get_supabase():
         key = os.environ.get("SUPABASE_KEY")
         
         if not url or not key:
-            print("ERROR: SUPABASE_URL or SUPABASE_KEY missing in .env")
-            raise ValueError("Supabase credentials missing")
+            print("CRITICAL ERROR: SUPABASE_URL or SUPABASE_KEY missing in environment!")
+            print("To fix this on Vercel: Go to Settings > Environment Variables and add these keys.")
+            raise ValueError("Supabase credentials missing in environment variables")
             
         try:
-            print(f"Connecting to Supabase at {url[:20]}...")
+            print(f"DEBUG: Connecting to Supabase at {url[:15]}...")
             supabase = create_client(url, key)
-            print("Supabase client created successfully.")
+            print("DEBUG: Supabase client created successfully.")
         except Exception as e:
-            print(f"CRITICAL: Failed to create Supabase client: {str(e)}")
+            print(f"CRITICAL ERROR: Failed to create Supabase client: {str(e)}")
             raise
     return supabase

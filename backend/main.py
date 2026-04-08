@@ -215,19 +215,31 @@ async def login(credentials: UserLogin, request: Request):
 @app.get("/api/db-check")
 async def db_check():
     try:
-        # Diagnostic ping to supabase
-        sb = get_supabase()
-        # Just check if we can reach the table definition (very fast)
         start_time = time.time()
-        sb.table("users").select("count", count="exact").limit(1).execute()
+        print("DEBUG: Running health check...")
+        sb = get_supabase()
+        
+        # We try a simple query to verify connection
+        res = sb.table("menu").select("count", count="exact").limit(1).execute()
+        
         latency = (time.time() - start_time) * 1000
         print(f"HEALTH CHECK: DB Connected. Latency: {latency:.2f}ms")
-        return {"status": "connected", "latency_ms": round(latency, 2)}
+        
+        return {
+            "status": "connected", 
+            "latency_ms": round(latency, 2),
+            "environment": "production" if os.environ.get("VERCEL") else "development"
+        }
     except Exception as e:
-        print(f"HEALTH CHECK FAILED: {str(e)}")
+        error_msg = str(e)
+        print(f"HEALTH CHECK FAILED: {error_msg}")
         return JSONResponse(
             status_code=503,
-            content={"status": "error", "message": "Database unreachable"}
+            content={
+                "status": "error", 
+                "message": f"Database unreachable: {error_msg}",
+                "tip": "Check Vercel Environment Variables if in production"
+            }
         )
 
 @app.get("/")

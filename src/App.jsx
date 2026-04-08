@@ -42,7 +42,7 @@ function App() {
             try {
                 // Gunakan signal timeout agar tidak menunggu selamanya
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
 
                 const response = await fetch('/api/db-check', { signal: controller.signal });
                 clearTimeout(timeoutId);
