@@ -32,6 +32,7 @@ export default function POSInput({ user, onLogout }) {
     const [fetchError, setFetchError] = useState(null);
     const [cart, setCart] = useState([]);
     const [showReceipt, setShowReceipt] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
     const [currentOrder, setCurrentOrder] = useState(null);
     const [activeCategory, setActiveCategory] = useState('Semua');
     const [searchTerm, setSearchTerm] = useState('');
@@ -181,11 +182,13 @@ export default function POSInput({ user, onLogout }) {
 
     const handleCheckout = async () => {
         if (cart.length === 0) return;
+        if (isProcessing) return;
         if (tipePesanan === 'Makan Ditempat' && !selectedTable) {
             setShowTableModal(true);
             return;
         }
 
+        setIsProcessing(true);
         const transaksiData = [];
         cart.forEach(item => {
             for (let i = 0; i < item.qty; i++) {
@@ -236,7 +239,9 @@ export default function POSInput({ user, onLogout }) {
                 alert("Gagal menyimpan transaksi: " + (err.detail || "Error"));
             }
         } catch (error) {
-            alert("Gagal menghubungi server");
+            alert("Gagal menghubungi server. Silakan cek koneksi Anda.");
+        } finally {
+            setIsProcessing(false);
         }
     };
 
@@ -620,12 +625,21 @@ export default function POSInput({ user, onLogout }) {
                             </div>
                             
                             <button 
-                                disabled={cart.length === 0 || !isAgreed || !namaPembeli.trim() || (tipePesanan === 'Makan Ditempat' && !selectedTable) || !kontak || !kontak.includes('@')} 
+                                disabled={isProcessing || cart.length === 0 || !isAgreed || !namaPembeli.trim() || (tipePesanan === 'Makan Ditempat' && !selectedTable) || !kontak || !kontak.includes('@')} 
                                 onClick={handleCheckout} 
-                                className="flex-1 h-16 bg-[#1ca3f4] disabled:bg-[#1e293b] disabled:text-slate-500 text-white rounded-3xl font-black text-[15px] uppercase tracking-widest transition-all hover:bg-sky-400 active:scale-95 shadow-xl shadow-sky-900/20 flex items-center justify-center gap-3 border-b-4 border-sky-600 disabled:border-transparent"
+                                className={`flex-1 h-16 rounded-3xl font-black text-[15px] uppercase tracking-widest transition-all active:scale-95 shadow-xl flex items-center justify-center gap-3 border-b-4 ${isProcessing ? 'bg-slate-600 border-slate-700 text-slate-400' : 'bg-[#1ca3f4] border-sky-600 text-white hover:bg-sky-400 shadow-sky-900/20'}`}
                             >
-                                <ShoppingCart className="w-5 h-5" />
-                                Bayar Sekarang
+                                {isProcessing ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        Memproses...
+                                    </>
+                                ) : (
+                                    <>
+                                        <ShoppingCart className="w-5 h-5" />
+                                        Bayar Sekarang
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
