@@ -565,7 +565,9 @@ async def checkout(items: List[Transaksi], background_tasks: BackgroundTasks):
                 
                 total_infaq = sum(int(item.infaq or 0) for item in items)
                 total_bayar_final = total_bayar + total_infaq
-                background_tasks.add_task(send_receipt_email_task, to_email, order_summary, total_bayar, total_infaq, total_bayar_final, nama_pembeli)
+                
+                print(f"DEBUG: Attempting to send email to {to_email} synchronously...")
+                send_receipt_email_task(to_email, order_summary, total_bayar, total_infaq, total_bayar_final, nama_pembeli)
             except Exception as email_prep_error:
                 print(f"EMAIL PREP ERROR: {email_prep_error}")
         
@@ -1265,7 +1267,8 @@ async def resend_order_email(order_id: int, background_tasks: BackgroundTasks):
         total_bayar_final = total_bayar + total_infaq
         nama_pembeli = base_order["nama_pembeli"]
         
-        background_tasks.add_task(send_receipt_email_task, to_email, order_summary, total_bayar, total_infaq, total_bayar_final, nama_pembeli)
+        print(f"DEBUG: Resending email to {to_email} synchronously...")
+        send_receipt_email_task(to_email, order_summary, total_bayar, total_infaq, total_bayar_final, nama_pembeli)
         
         return {"message": f"Email confirmation resent to {to_email}"}
     except Exception as e:
