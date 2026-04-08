@@ -32,6 +32,7 @@ export default function POSInput({ user, onLogout }) {
     const [fetchError, setFetchError] = useState(null);
     const [cart, setCart] = useState([]);
     const [showReceipt, setShowReceipt] = useState(false);
+    const [currentOrder, setCurrentOrder] = useState(null);
     const [activeCategory, setActiveCategory] = useState('Semua');
     const [searchTerm, setSearchTerm] = useState('');
     const [namaPembeli, setNamaPembeli] = useState('');
@@ -216,6 +217,16 @@ export default function POSInput({ user, onLogout }) {
                     const firstItem = result.data[0];
                     sessionStorage.setItem('lastOrderKey', `${firstItem.nama_pembeli}_${firstItem.created_at}`);
                 }
+                
+                // Simpan snapshot pesanan untuk struk sebelum keranjang dihapus
+                setCurrentOrder({
+                    items: [...cart],
+                    total: totalDebit,
+                    infaq: infaqSedekah,
+                    pembeli: namaPembeli || 'Umum',
+                    kontak: kontak
+                });
+                
                 setShowReceipt(true);
                 setCart([]); // Reset keranjang setelah bayar
                 fetchData();
@@ -230,6 +241,10 @@ export default function POSInput({ user, onLogout }) {
     };
 
     const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
+
+    const handlePrint = () => {
+        window.print();
+    };
 
     const TableComponent = ({ table, selectedTable, tableStatuses, onSelect }) => {
         const status = tableStatuses[String(table.id)] || 'available';
@@ -638,7 +653,7 @@ export default function POSInput({ user, onLogout }) {
                                 <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">Struk Pembayaran</p>
                             </div>
                             <div className="border-y border-dashed border-slate-300 py-4 mb-4 space-y-3">
-                                {cart.map(item => (
+                                {currentOrder?.items.map(item => (
                                     <div key={item.id} className="flex justify-between text-[15px] py-1">
                                         <div className="flex-1"><p className="font-black text-slate-700">{item.nama_menu}</p><p className="text-slate-400 text-sm font-bold">{item.qty} x {formatRp(item.harga)}</p></div>
                                         <p className="font-black text-slate-800">{formatRp(item.harga * item.qty)}</p>
@@ -646,16 +661,16 @@ export default function POSInput({ user, onLogout }) {
                                 ))}
                             </div>
                             <div className="space-y-2 mb-6">
-                                <div className="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span>{formatRp(totalDebit)}</span></div>
-                                <div className="flex justify-between text-sm text-sky-600"><span>Infaq (2.5%)</span><span>{formatRp(infaqSedekah)}</span></div>
+                                <div className="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span>{formatRp(currentOrder?.total || 0)}</span></div>
+                                <div className="flex justify-between text-sm text-sky-600"><span>Infaq (2.5%)</span><span>{formatRp(currentOrder?.infaq || 0)}</span></div>
                             </div>
                             <div className="bg-[#f472b6] p-5 rounded-2xl flex justify-between items-center shadow-lg shadow-pink-100">
                                 <span className="font-black text-white text-xs uppercase tracking-widest">Total</span>
-                                <span className="font-black text-white text-2xl">{formatRp(totalDebit + infaqSedekah)}</span>
+                                <span className="font-black text-white text-2xl">{formatRp((currentOrder?.total || 0) + (currentOrder?.infaq || 0))}</span>
                             </div>
                             <div className="mt-6 text-center text-slate-400 text-[10px] font-medium leading-relaxed">
                                 <p>Pesanan telah diterima & masuk antrian.</p>
-                                {kontak && kontak.includes('@') && (
+                                {currentOrder?.kontak && currentOrder?.kontak.includes('@') && (
                                     <p className="mt-2 text-sky-500 font-bold italic">
                                         *Salinan struk telah dikirim ke email Anda.
                                     </p>
