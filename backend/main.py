@@ -128,6 +128,7 @@ class Transaksi(BaseModel):
     kontak: Optional[str] = ""
     infaq: Optional[int] = 0
     status: Optional[str] = "waiting"
+    catatan: Optional[str] = None
     created_at: Optional[str] = None
 
 @app.post("/api/auth/register")
@@ -476,7 +477,8 @@ def send_receipt_email_task(to_email: str, order_summary: dict, subtotal: int, i
         msg.attach(part)
         
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(str(sender_email), str(sender_password))
+        clean_password = str(sender_password).replace(" ", "")
+        server.login(str(sender_email), clean_password)
         server.sendmail(str(sender_email), to_email, msg.as_string())
         server.quit()
         print(f"DEBUG: Email receipt sent to {to_email}")

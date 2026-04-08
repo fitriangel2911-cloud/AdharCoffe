@@ -105,7 +105,7 @@ export default function POSInput({ user, onLogout }) {
         if (existing) {
             setCart(cart.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item));
         } else {
-            setCart([...cart, { ...product, qty: 1 }]);
+            setCart([...cart, { ...product, qty: 1, catatan: "" }]);
         }
     };
 
@@ -122,6 +122,38 @@ export default function POSInput({ user, onLogout }) {
         return Coffee;
     };
 
+    const getMenuImage = (name, category) => {
+        const lowerName = name.toLowerCase();
+        
+        // --- Minuman ---
+        if (lowerName.includes('kopi susu aren')) return 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=400&q=80'; 
+        if (lowerName.includes('kopi susu')) return 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=400&q=80'; 
+        if (lowerName.includes('kopi hitam')) return 'https://images.unsplash.com/photo-1610889556528-9a770e32642f?auto=format&fit=crop&w=400&q=80'; 
+        
+        if (lowerName.includes('teh lemon') || lowerName.includes('lemon')) return 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('teh hijau')) return '/teh-hijau-final.png';
+        if (lowerName.includes('matcha')) return 'https://images.unsplash.com/photo-1582793988951-9aed5509eb97?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('teh jasmine') || lowerName.includes('jasmine')) return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('teh tubruk')) return '/teh-tubruk-final.png';
+        if (lowerName.includes('teh')) return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=400&q=80';
+        
+        if (lowerName.includes('air kosongan') || lowerName.includes('air')) return 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=400&q=80';
+        
+        // --- Makanan ---
+        if (lowerName.includes('mie lurus')) return 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('mie godog') || lowerName.includes('mie')) return 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80';
+        
+        if (lowerName.includes('kentang') || lowerName.includes('krispy')) return 'https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('roti bakar') || lowerName.includes('roti')) return '/roti-bakar-new.png';
+        if (lowerName.includes('tahu') || lowerName.includes('krispi')) return 'https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?auto=format&fit=crop&w=400&q=80';
+        if (lowerName.includes('bola') || lowerName.includes('ubi')) return '/bola-ubi-new.png'; 
+        
+        // Defaults by category
+        if (category === 'Makanan') return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80';
+        if (category === 'Minuman') return 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=400&q=80';
+        return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80';
+    };
+
     const updateQty = (id, delta) => {
         setCart(cart.map(item => {
             if (item.id === id) {
@@ -134,6 +166,10 @@ export default function POSInput({ user, onLogout }) {
     };
 
     const removeFromCart = (id) => setCart(cart.filter(item => item.id !== id));
+    
+    const updateCatatan = (id, text) => {
+        setCart(cart.map(item => item.id === id ? { ...item, catatan: text } : item));
+    };
     const clearCart = () => {
         if (window.confirm("Hapus semua pesanan?")) {
             setCart([]);
@@ -161,7 +197,8 @@ export default function POSInput({ user, onLogout }) {
                     metode_pembayaran: metodePembayaran,
                     kontak: kontak,
                     tipe_pesanan: tipePesanan,
-                    infaq: isInfaqEnabled ? Math.round(Number(item.harga) * 0.025) : 0
+                    infaq: isInfaqEnabled ? Math.round(Number(item.harga) * 0.025) : 0,
+                    catatan: item.catatan || null
                 });
             }
         });
@@ -180,6 +217,7 @@ export default function POSInput({ user, onLogout }) {
                     sessionStorage.setItem('lastOrderKey', `${firstItem.nama_pembeli}_${firstItem.created_at}`);
                 }
                 setShowReceipt(true);
+                setCart([]); // Reset keranjang setelah bayar
                 fetchData();
                 setSelectedTable(null);
             } else {
@@ -337,24 +375,19 @@ export default function POSInput({ user, onLogout }) {
                                         HALAL
                                     </div>
 
-                                    {/* Small Icon in Circle */}
-                                    <div className="w-16 h-16 bg-[#1ca3f4] rounded-full mt-4 mb-5 flex items-center justify-center shadow-[0_8px_20px_rgba(28,163,244,0.3)] group-hover:scale-110 transition-transform relative">
-                                        <div className="absolute inset-0 bg-white/20 rounded-full blur-md animate-pulse"></div>
-                                        {React.createElement(getMenuIcon(produk.nama_menu, produk.kategori), { 
-                                            className: "w-8 h-8 text-white relative z-10",
-                                            strokeWidth: 2.5
-                                        })}
+                                    <div className="w-24 h-24 rounded-full mt-2 mb-4 shadow-xl overflow-hidden group-hover:scale-110 transition-transform relative ring-4 ring-slate-50 group-hover:ring-[#1ca3f4]/30 bg-slate-100 flex items-center justify-center">
+                                        <img src={getMenuImage(produk.nama_menu, produk.kategori)} alt={produk.nama_menu} className="w-full h-full object-cover" loading="lazy" />
                                     </div>
 
-                                    <h3 className="font-black text-[15px] text-[#0c4a6e] leading-tight mb-2 px-2 line-clamp-2 min-h-[40px]">
+                                    <h3 className="font-black text-[17px] text-[#0c4a6e] leading-tight mb-2 px-2 line-clamp-2 min-h-[40px]">
                                         {produk.nama_menu}
                                     </h3>
                                     
-                                    <p className="text-[#f472b6] font-black text-lg mb-4">
+                                    <p className="text-[#f472b6] font-black text-xl mb-4">
                                         {formatRp(produk.harga).replace('Rp', 'Rp ')}
                                     </p>
 
-                                    <div className="mt-auto px-4 py-1.5 bg-slate-50 text-slate-400 text-[9px] font-black rounded-full border border-slate-100 tracking-tighter shadow-inner">
+                                    <div className="mt-auto px-4 py-1.5 bg-slate-50 text-slate-400 text-[11px] font-black rounded-full border border-slate-100 tracking-tighter shadow-inner">
                                         Stok: {produk.stok ?? 0}
                                     </div>
                                 </button>
@@ -383,23 +416,23 @@ export default function POSInput({ user, onLogout }) {
                             <div className="space-y-5 bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm mt-2">
                                 <div className="grid grid-cols-3 gap-4">
                                     <div className="col-span-2 space-y-2">
-                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Nama Pembeli</label>
+                                        <label className="text-sm font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Nama Pembeli <span className="text-rose-500">*</span></label>
                                         <input 
                                             type="text" 
                                             placeholder="Nama..." 
                                             value={namaPembeli}
                                             onChange={(e) => setNamaPembeli(e.target.value)}
-                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-[16px] font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
                                         />
                                     </div>
                                     <div className="col-span-1 space-y-2">
-                                        <label className="text-xs font-black text-[#f472b6] uppercase tracking-widest ml-1">Meja</label>
+                                        <label className="text-sm font-black text-[#f472b6] uppercase tracking-widest ml-1">Meja {tipePesanan === 'Makan Ditempat' && <span className="text-rose-500">*</span>}</label>
                                         <button 
                                             onClick={() => setShowTableModal(true)}
                                             className="w-full px-2 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] flex items-center justify-center gap-2 group hover:border-[#f472b6]/30 transition-all"
                                         >
                                             <Monitor className={`w-4 h-4 ${selectedTable ? 'text-[#f472b6]' : 'text-[#f472b6] opacity-80'}`} />
-                                            <span className={`text-sm font-black ${selectedTable ? 'text-[#f472b6]' : 'text-[#f472b6] opacity-80'}`}>
+                                            <span className={`text-[16px] font-black ${selectedTable ? 'text-[#f472b6]' : 'text-[#f472b6] opacity-80'}`}>
                                                 {selectedTable ? `${selectedTable}` : 'Pilih'}
                                             </span>
                                         </button>
@@ -407,23 +440,23 @@ export default function POSInput({ user, onLogout }) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Email</label>
+                                    <label className="text-sm font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Email <span className="text-rose-500">*</span></label>
                                     <input 
                                         type="email" 
                                         placeholder="email@domain.com" 
                                         value={kontak}
                                         onChange={(e) => setKontak(e.target.value)}
-                                        className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
+                                        className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-[16px] font-bold text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all placeholder:text-slate-300"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Tipe Pesanan</label>
+                                        <label className="text-sm font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Tipe Pesanan <span className="text-rose-500">*</span></label>
                                         <select 
                                             value={tipePesanan}
                                             onChange={(e) => setTipePesanan(e.target.value)}
-                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-[16px] font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
                                         >
                                             <option value="Makan Ditempat">Makan di Tempat</option>
                                             <option value="Bawa Pulang">Bawa Pulang</option>
@@ -431,11 +464,11 @@ export default function POSInput({ user, onLogout }) {
                                         </select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Pembayaran</label>
+                                        <label className="text-sm font-black text-[#1ca3f4] uppercase tracking-widest ml-1">Pembayaran <span className="text-rose-500">*</span></label>
                                         <select 
                                             value={metodePembayaran}
                                             onChange={(e) => setMetodePembayaran(e.target.value)}
-                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-sm font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-[#f0f9ff] bg-[#f8fafc] text-[16px] font-black text-[#0c4a6e] focus:border-[#1ca3f4]/30 focus:outline-none transition-all appearance-none cursor-pointer"
                                         >
                                             <option value="QRIS">QRIS</option>
                                             <option value="Tunai">Tunai</option>
@@ -490,18 +523,30 @@ export default function POSInput({ user, onLogout }) {
                                 <div className="space-y-4">
                                     {cart.map((item) => (
                                         <div key={item.id} className="bg-white p-4 rounded-3xl border border-slate-100 flex items-center gap-4 group/item shadow-sm hover:shadow-md transition-all">
-                                            <div className="w-16 h-16 bg-[#f0f9ff] rounded-2xl flex items-center justify-center relative p-2">
-                                                <div className="absolute -top-1.5 -left-1.5 w-7 h-7 bg-[#f472b6] text-white rounded-xl flex items-center justify-center text-[11px] font-black shadow-lg shadow-pink-100">{item.qty}</div>
-                                                {React.createElement(getMenuIcon(item.nama_menu, item.kategori), { className: "w-8 h-8 text-[#1ca3f4] transition-colors" })}
+                                            <div className="w-16 h-16 rounded-2xl relative shadow-sm border-2 border-white overflow-hidden shrink-0 group-hover:ring-2 ring-slate-100 transition-all bg-slate-50">
+                                                <div className="absolute top-0 right-0 w-6 h-6 bg-[#f472b6] text-white rounded-bl-xl flex items-center justify-center text-[11px] font-black shadow-lg z-10">{item.qty}</div>
+                                                <img src={getMenuImage(item.nama_menu, item.kategori)} alt={item.nama_menu} className="w-full h-full object-cover relative z-0" loading="lazy" />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="font-black text-[18px] text-[#0c4a6e] truncate mb-0.5">{item.nama_menu}</h4>
+                                                <h4 className="font-black text-[20px] text-[#0c4a6e] truncate mb-0.5">{item.nama_menu}</h4>
+                                                
+                                                {/* Catatan Field */}
+                                                <div className="mb-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Catatan (opsional)..."
+                                                        value={item.catatan || ''}
+                                                        onChange={(e) => updateCatatan(item.id, e.target.value)}
+                                                        className="w-full bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 text-[13px] font-bold text-slate-500 focus:outline-none focus:border-sky-200 transition-all placeholder:text-slate-300"
+                                                    />
+                                                </div>
+
                                                 <div className="flex items-center justify-between mt-1">
-                                                    <p className="text-[#f472b6] font-black text-[16px]">{formatRp(item.harga * item.qty)}</p>
+                                                    <p className="text-[#f472b6] font-black text-[18px]">{formatRp(item.harga * item.qty)}</p>
                                                     <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-1.5 border border-slate-100">
-                                                        <button onClick={() => updateQty(item.id, -1)} className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-white rounded-lg transition-all"><Minus className="w-3 h-3" strokeWidth={4} /></button>
-                                                        <span className="text-[13px] font-black text-slate-600 w-5 text-center">{item.qty}</span>
-                                                        <button onClick={() => updateQty(item.id, 1)} className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-[#1ca3f4] hover:bg-white rounded-lg transition-all"><Plus className="w-3 h-3" strokeWidth={4} /></button>
+                                                        <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-white rounded-lg transition-all"><Minus className="w-4 h-4" strokeWidth={4} /></button>
+                                                        <span className="text-[15px] font-black text-slate-600 w-6 text-center">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.id, 1)} className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-[#1ca3f4] hover:bg-white rounded-lg transition-all"><Plus className="w-4 h-4" strokeWidth={4} /></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -528,12 +573,12 @@ export default function POSInput({ user, onLogout }) {
 
                             <div className="space-y-4 px-2">
                                 <div className="flex justify-between items-center">
-                                    <span className="font-bold text-sky-500 text-[15px]">Subtotal</span>
-                                    <span className="font-black text-sky-600 text-[18px]">{formatRp(totalDebit)}</span>
+                                    <span className="font-bold text-sky-500 text-[17px]">Subtotal</span>
+                                    <span className="font-black text-sky-600 text-[20px]">{formatRp(totalDebit)}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="font-bold text-pink-400 text-[15px]">Infaq (2.5%)</span>
-                                    <span className="font-black text-pink-500 text-[18px]">{formatRp(infaqSedekah)}</span>
+                                    <span className="font-bold text-pink-400 text-[17px]">Infaq (2.5%)</span>
+                                    <span className="font-black text-pink-500 text-[20px]">{formatRp(infaqSedekah)}</span>
                                 </div>
                             </div>
                         </div>
@@ -555,12 +600,12 @@ export default function POSInput({ user, onLogout }) {
                     <div className="p-8 bg-[#0c4a6e] border-t border-white/5 sticky bottom-0 z-[70] shadow-[0_-15px_40px_rgba(12,74,110,0.3)]">
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex flex-col">
-                                <span className="text-[12px] font-black text-sky-300 uppercase tracking-[0.2em] mb-1">Total Bayar</span>
-                                <span className="text-3xl font-black text-white tracking-tighter">{formatRp(totalDebit + infaqSedekah)}</span>
+                                <span className="text-[14px] font-black text-sky-300 uppercase tracking-[0.2em] mb-1">Total Bayar</span>
+                                <span className="text-4xl font-black text-white tracking-tighter">{formatRp(totalDebit + infaqSedekah)}</span>
                             </div>
                             
                             <button 
-                                disabled={cart.length === 0 || !isAgreed || (tipePesanan === 'Makan Ditempat' && !selectedTable) || !kontak || !kontak.includes('@')} 
+                                disabled={cart.length === 0 || !isAgreed || !namaPembeli.trim() || (tipePesanan === 'Makan Ditempat' && !selectedTable) || !kontak || !kontak.includes('@')} 
                                 onClick={handleCheckout} 
                                 className="flex-1 h-16 bg-[#1ca3f4] disabled:bg-[#1e293b] disabled:text-slate-500 text-white rounded-3xl font-black text-[15px] uppercase tracking-widest transition-all hover:bg-sky-400 active:scale-95 shadow-xl shadow-sky-900/20 flex items-center justify-center gap-3 border-b-4 border-sky-600 disabled:border-transparent"
                             >
@@ -577,7 +622,12 @@ export default function POSInput({ user, onLogout }) {
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-[400px] overflow-hidden flex flex-col max-h-[90vh]">
                         <div className="bg-[#f472b6] p-8 text-center text-white relative shrink-0">
-                            <button onClick={() => setShowReceipt(false)} className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 rounded-xl p-2 transition-all"><X className="w-5 h-5" /></button>
+                            <button 
+                                onClick={() => { setShowReceipt(false); window.dispatchEvent(new CustomEvent('navToWaiting')); }} 
+                                className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 rounded-xl p-2 transition-all"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
                             <div className="w-16 h-16 bg-sky-500 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-xl shadow-sky-500/20"><Coffee className="w-8 h-8 text-white" strokeWidth={2.5} /></div>
                             <h3 className="font-black text-2xl tracking-tight mb-1 uppercase">Transaksi Berhasil</h3>
                             <p className="text-sky-400 text-[10px] font-bold uppercase tracking-[0.3em]">Adhar Coffe Premium</p>
@@ -616,8 +666,14 @@ export default function POSInput({ user, onLogout }) {
                             <button onClick={handlePrint} className="flex items-center justify-center gap-2 py-4 bg-slate-100 text-slate-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition-all">
                                 <Printer className="w-4 h-4" /> Cetak
                             </button>
-                            <button onClick={() => { setShowReceipt(false); window.dispatchEvent(new CustomEvent('navToWaiting')); }} className="flex items-center justify-center gap-2 py-4 bg-sky-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-sky-600 shadow-lg shadow-sky-500/20 transition-all active:scale-95">
-                                Antrian
+                            <button 
+                                onClick={() => { 
+                                    setShowReceipt(false); 
+                                    window.dispatchEvent(new CustomEvent('navToWaiting')); 
+                                }} 
+                                className="flex items-center justify-center gap-2 py-4 bg-[#1ca3f4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-sky-400 shadow-xl shadow-[#1ca3f4]/20 transition-all active:scale-95 border-b-4 border-sky-600"
+                            >
+                                <Clock className="w-4 h-4" /> LIHAT ANTRIAN
                             </button>
                         </div>
                     </div>
